@@ -5,7 +5,10 @@ import 'feed.dart';
 import 'profile.dart';
 
 class Home extends StatefulWidget {
+  // final String userId;
   const Home({Key? key}) : super(key: key);
+
+  static const String routeName = '/home';
 
   @override
   State<Home> createState() => _Home();

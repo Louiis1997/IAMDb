@@ -1,27 +1,29 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../models/top.dart';
+import '../models/anime.dart';
 
 class TopService {
   final _baseUrl = "https://api.jikan.moe/v4/top";
 
-  Future<Top> getTopAnime() async {
-    try {
-      final response = await http.get(
-        Uri.parse("$_baseUrl/anime"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-      var responseData = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        return Top.fromJson(responseData);
+  Future<List<Anime>> getTopAnime() async {
+    final response = await http.get(
+      Uri.parse("$_baseUrl/anime"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (response.statusCode != 200) {
+      switch (response.statusCode) {
+        case 400:
+          throw Exception('Bad request');
       }
-      String jsonError = jsonDecode(response.body)["error"].source;
-      throw Exception(jsonError);
-    } catch (err) {
-      throw Exception(err);
     }
+    final jsonBody = json.decode(response.body);
+    final List<Anime> animes = [];
+    for (final userJson in jsonBody['data']) {
+      animes.add(Anime.fromJson(userJson));
+    }
+    return animes;
   }
 }

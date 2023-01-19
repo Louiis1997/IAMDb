@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/main.dart';
-import 'package:iamdb/screens/signup.dart';
 
 import '../common/utils.dart';
 import '../common/validator.dart';
+import '../main.dart';
 import '../models/user.dart';
+//import '../services/auth.dart';
+//import '../services/user.dart';
 import 'home.dart';
+import 'signup.dart';
+
+//TODO Waiting API
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
+
+  static const String routeName = '/login';
 
   @override
   LoginState createState() => LoginState();
 }
 
 class LoginState extends State<Login> {
+  //final AuthService _authService = AuthService();
+  //final UserService _userService = UserService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -40,12 +48,12 @@ class LoginState extends State<Login> {
         child: Column(
           children: [
             Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  MyApp.title,
-                  style: Theme.of(context).textTheme.headline1,
-                ),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                MyApp.title,
+                style: Theme.of(context).textTheme.headline1,
+              ),
             ),
             Container(
               padding: const EdgeInsets.all(10),
@@ -134,10 +142,7 @@ class LoginState extends State<Login> {
               return buildFormLogin();
             }
             Utils.displayAlertDialog(context, "Success", "Authentication");
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Home()),
-            );
+            Navigator.of(context).pushReplacementNamed(Home.routeName);
             return Text(snapshot.data!.email);
           default:
             return const Text("Authentication");
@@ -147,10 +152,8 @@ class LoginState extends State<Login> {
   }
 
   void onClickLoginButton() async {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const Home()),
-          (route) => false,
+    Navigator.of(context).pushReplacementNamed(
+      Home.routeName,
     );
     /*if (_formKey.currentState!.validate()) {
       try {
@@ -160,11 +163,6 @@ class LoginState extends State<Login> {
         await storage.write(key: "userId", value: response["userId"]);
         User user = await _userService.getUserById(
             response["userId"], response["token"]);
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => Home(user: user)),
-              (route) => false,
-        );
       } catch (err) {
         log("Error: $err");
         Utils.displayAlertDialog(

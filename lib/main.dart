@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iamdb/screens/login.dart';
+
+import 'common/router.dart';
 
 const storage = FlutterSecureStorage();
 
@@ -148,8 +149,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      themeMode: ThemeMode.system,
-      home: const Login(),
+      themeMode: ThemeMode.dark,
+      routes: MyRouter.routes(),
+      onGenerateRoute: MyRouter.getRouter,
     );
   }
 }

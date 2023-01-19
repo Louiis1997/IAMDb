@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/components/carousel_banner.dart';
 
-import '../models/top.dart';
-import '../services/top.dart';
+import '../components/carousel_banner.dart';
+
 
 class Feed extends StatefulWidget {
   const Feed({Key? key}) : super(key: key);
@@ -12,15 +11,6 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  final TopService _topService = TopService();
-  Future<Top>? _futureTop;
-
-  @override
-  void initState() {
-    _getTopAnime();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,7 +18,7 @@ class _FeedState extends State<Feed> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CarouselBanner(futureTop: _futureTop),
+            const CarouselBanner(),
             const SizedBox(height: 30),
             Container(
               padding: const EdgeInsets.only(left: 20),
@@ -41,12 +31,5 @@ class _FeedState extends State<Feed> {
         ),
       ),
     );
-  }
-
-  _getTopAnime() async {
-    Future<Top> top = _topService.getTopAnime();
-    setState(() {
-      _futureTop = top;
-    });
   }
 }

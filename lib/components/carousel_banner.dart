@@ -1,13 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:iamdb/models/top.dart';
 
+import '../models/anime.dart';
 import '../services/top.dart';
 
 class CarouselBanner extends StatefulWidget {
-  final Future<Top>? futureTop;
-
-  const CarouselBanner({Key? key, this.futureTop}) : super(key: key);
+  const CarouselBanner({Key? key}) : super(key: key);
 
   @override
   State<CarouselBanner> createState() => _CarouselBannerState();
@@ -15,25 +13,24 @@ class CarouselBanner extends StatefulWidget {
 
 class _CarouselBannerState extends State<CarouselBanner> {
   final TopService _topService = TopService();
+  Future<List<Anime>>? _futureTop;
   List<String> _images = [];
   List<String> _names = [];
 
   @override
   void initState() {
-    _getTopAnimeInfo();
     super.initState();
+    _futureTop = _getTopAnimeInfo();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.futureTop == null
-        ? buildFutureBuilderTopAnime()
-        : buildCarouselSliderTopAnime();
+    return buildFutureBuilderTopAnime();
   }
 
-  FutureBuilder<Top> buildFutureBuilderTopAnime() {
-    return FutureBuilder<Top>(
-      future: widget.futureTop,
+  FutureBuilder buildFutureBuilderTopAnime() {
+    return FutureBuilder(
+      future: _futureTop,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -113,11 +110,11 @@ class _CarouselBannerState extends State<CarouselBanner> {
     );
   }
 
-  _getTopAnimeInfo() async {
-    Future<Top> top = _topService.getTopAnime();
+  Future<List<Anime>> _getTopAnimeInfo() async {
+    Future<List<Anime>> top = _topService.getTopAnime();
     List<String> images = [];
     List<String> names = [];
-    top.then((value) => value.anime.forEach((element) {
+    top.then((value) => value.forEach((element) {
       images.add(element.imageUrl!);
       names.add(element.titleEnglish!);
       setState(() {
@@ -125,5 +122,6 @@ class _CarouselBannerState extends State<CarouselBanner> {
         _names = names;
       });
     }));
+    return top;
   }
 }

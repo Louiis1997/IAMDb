@@ -3,16 +3,20 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:iamdb/main.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../common/utils.dart';
 import '../common/validator.dart';
 import '../services/user.dart';
+import '../main.dart';
 import 'login.dart';
+
+//TODO Refactor: Create FutureBuilder
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
+
+  static const String routeName = '/signup';
 
   @override
   State<Signup> createState() => _SignupState();
@@ -220,10 +224,7 @@ class _SignupState extends State<Signup> {
             _lastNameController.text.trim(),
             _emailController.text.trim(),
             _passwordController.text.trim());
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Login()),
-        );
+        Navigator.of(context).pushNamed(Login.routeName);
       } catch (err) {
         log("Error: $err");
         Utils.displayAlertDialog(
