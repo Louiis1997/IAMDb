@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../screens/agenda.dart';
+import '../screens/anime_trailer.dart';
+import '../screens/anime_detail.dart';
 import '../screens/home.dart';
 import '../screens/login.dart';
 import '../screens/profile.dart';
@@ -24,13 +26,33 @@ class MyRouter {
       case Profile.routeName:
         final args = settings.arguments;
         if (args is String) {
-          screen = Profile(userId: args,);
+          screen = Profile(
+            userId: args,
+          );
         }
         break;
       case Agenda.routeName:
         final args = settings.arguments;
         if (args is String) {
-          screen = Agenda(userId: args,);
+          screen = Agenda(
+            userId: args,
+          );
+        }
+        break;
+      case AnimeDetail.routeName:
+        final args = settings.arguments;
+        if (args is int) {
+          screen = AnimeDetail(
+            animeId: args,
+          );
+        }
+        break;
+      case AnimeTrailer.routeName:
+        final args = settings.arguments;
+        if (args is String) {
+          screen = AnimeTrailer(
+            youtubeId: args,
+          );
         }
         break;
     }

@@ -1,27 +1,13 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../models/anime.dart';
 import '../services/top.dart';
+import '../screens/anime_detail.dart';
+import '../screens/anime_trailer.dart';
 
-class CarouselBanner extends StatefulWidget {
+class CarouselBanner extends StatelessWidget {
   const CarouselBanner({Key? key}) : super(key: key);
-
-  @override
-  State<CarouselBanner> createState() => _CarouselBannerState();
-}
-
-class _CarouselBannerState extends State<CarouselBanner> {
-  final TopService _topService = TopService();
-  Future<List<Anime>>? _futureTop;
-  List<String> _images = [];
-  List<String> _names = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _futureTop = _getTopAnimeInfo();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +16,7 @@ class _CarouselBannerState extends State<CarouselBanner> {
 
   FutureBuilder buildFutureBuilderTopAnime() {
     return FutureBuilder(
-      future: _futureTop,
+      future: TopService.getTopAnime(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -42,7 +28,7 @@ class _CarouselBannerState extends State<CarouselBanner> {
             if (!snapshot.hasData) {
               return Text('${snapshot.error}');
             }
-            return buildCarouselSliderTopAnime();
+            return buildCarouselSliderTopAnime(snapshot.data);
           default:
             return const Center(child: CircularProgressIndicator());
         }
@@ -50,8 +36,8 @@ class _CarouselBannerState extends State<CarouselBanner> {
     );
   }
 
-  CarouselSlider buildCarouselSliderTopAnime() {
-    return CarouselSlider(
+  CarouselSlider buildCarouselSliderTopAnime(data) {
+    return CarouselSlider.builder(
       options: CarouselOptions(
         initialPage: 0,
         autoPlay: true,
@@ -61,67 +47,92 @@ class _CarouselBannerState extends State<CarouselBanner> {
         viewportFraction: 1,
         scrollDirection: Axis.horizontal,
       ),
-      items: _images.map((image) {
-        return Builder(
-          builder: (BuildContext context) {
+      itemCount: data.length,
+      itemBuilder: (BuildContext context, int index, int realIndex) {
+        return LayoutBuilder(
+          builder: (BuildContext context, constraints) {
+            final maxHeight = constraints.maxHeight;
+            final maxWidth = constraints.maxWidth;
             return Stack(
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * .2,
-                  child: Image.network(
-                    image,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Positioned.directional(
-                  textDirection: Directionality.of(context),
-                  top: MediaQuery.of(context).size.height * .15,
-                  start: MediaQuery.of(context).size.width * .02,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                GestureDetector(
+                  child: Stack(
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * .1,
-                        width: MediaQuery.of(context).size.width * .2,
-                        child: Image.network(
-                          image,
-                          fit: BoxFit.cover,
+                        child: YoutubePlayer(
+                          controller: YoutubePlayerController(
+                            initialVideoId: data[index].youtubeId,
+                            flags: const YoutubePlayerFlags(
+                              autoPlay: false,
+                              mute: false,
+                              hideControls: true,
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 15),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * .7,
-                        child: Text(
-                          _names[_images.indexOf(image)],
-                          style: Theme.of(context).textTheme.bodyText1,
-                          maxLines: 2,
-                          overflow: TextOverflow.fade,
+                      Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black,
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Center(
+                        child: Icon(
+                            Icons.play_circle_outline_rounded,
+                            size: 100,
+                            color: Colors.white,
                         ),
                       ),
                     ],
+                  ),
+                  onTap: () {
+                    AnimeTrailer.navigateTo(context, data[index].youtubeId);
+                  },
+                ),
+                Positioned.directional(
+                  textDirection: Directionality.of(context),
+                  top: maxHeight * .6,
+                  start: maxWidth * .02,
+                  child: GestureDetector(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          height: maxHeight * .4,
+                          width: maxWidth * .2,
+                          child: Image.network(
+                            data[index].imageUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 15),
+                        SizedBox(
+                          width: maxWidth * .7,
+                          child: Text(
+                            data[index].titleEnglish,
+                            style: Theme.of(context).textTheme.bodyText1,
+                            maxLines: 2,
+                            overflow: TextOverflow.fade,
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      AnimeDetail.navigateTo(context, data[index].malId);
+                    },
                   ),
                 ),
               ],
             );
           },
         );
-      }).toList(),
+      },
     );
-  }
-
-  Future<List<Anime>> _getTopAnimeInfo() async {
-    Future<List<Anime>> top = _topService.getTopAnime();
-    List<String> images = [];
-    List<String> names = [];
-    top.then((value) => value.forEach((element) {
-      images.add(element.imageUrl!);
-      names.add(element.titleEnglish!);
-      setState(() {
-        _images = images;
-        _names = names;
-      });
-    }));
-    return top;
   }
 }
