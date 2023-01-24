@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class AnimeTrailer extends StatelessWidget {
   final String youtubeId;
+
   const AnimeTrailer({Key? key, required this.youtubeId}) : super(key: key);
 
   static const String routeName = '/anime_trailer';
@@ -13,14 +14,12 @@ class AnimeTrailer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayerBuilder(
-      player: YoutubePlayer(
-        controller: YoutubePlayerController(
-          initialVideoId: youtubeId,
-          flags: const YoutubePlayerFlags(
-            autoPlay: true,
-            mute: false,
-          ),
+    return YoutubePlayerScaffold(
+      controller: YoutubePlayerController.fromVideoId(
+        videoId: youtubeId,
+        autoPlay: true,
+        params: const YoutubePlayerParams(
+          showFullscreenButton: true,
         ),
       ),
       builder: (context, player) {
