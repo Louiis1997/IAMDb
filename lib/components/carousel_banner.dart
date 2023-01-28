@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../services/top.dart';
 import '../screens/anime_detail.dart';
@@ -59,15 +58,10 @@ class CarouselBanner extends StatelessWidget {
                   child: Stack(
                     children: [
                       SizedBox(
-                        child: YoutubePlayer(
-                          controller: YoutubePlayerController(
-                            initialVideoId: data[index].youtubeId,
-                            flags: const YoutubePlayerFlags(
-                              autoPlay: false,
-                              mute: false,
-                              hideControls: true,
-                            ),
-                          ),
+                        width: maxWidth,
+                        child: Image.network(
+                          data[index].trailerImage,
+                          fit: BoxFit.cover,
                         ),
                       ),
                       Container(

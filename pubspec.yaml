@@ -35,7 +35,6 @@ dependencies:
   permission_handler: 10.0.0
   google_fonts: 3.0.1
   carousel_slider: 4.2.1
-  youtube_player_flutter: 8.1.2
   youtube_player_iframe: 4.0.1
   flutter:
     sdk: flutter

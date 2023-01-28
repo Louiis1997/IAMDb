@@ -6,13 +6,13 @@ class Anime {
   final String? type;
   final int? episodes;
   final String? status;
-  final String? airedFrom;
-  final String? airedTo;
+  final String? airedString;
   final String? duration;
   final double? score;
   final int? scoredBy;
   final int? rank;
   final String? synopsis;
+  final String? background;
   final String? season;
   final int? year;
   final List<String> producersName;
@@ -28,13 +28,13 @@ class Anime {
     required this.type,
     required this.episodes,
     required this.status,
-    required this.airedFrom,
-    required this.airedTo,
+    required this.airedString,
     required this.duration,
     required this.score,
     required this.scoredBy,
     required this.rank,
     required this.synopsis,
+    required this.background,
     required this.season,
     required this.year,
     required this.producersName,
@@ -51,13 +51,13 @@ class Anime {
     String type = json['type'] ?? "";
     int episodes = json['episodes'] ?? 0;
     String status = json['status'] ?? "";
-    String airedFrom = json['aired']['from'] ?? "";
-    String airedTo = json['aired']['to'] ?? "";
+    String airedString = json['aired']['string'] ?? "";
     String duration = json['duration'] ?? "";
     double score = json['score'] ?? 0;
     int scoredBy = json['scored_by'] ?? 0;
     int rank = json['rank'] ?? 0;
     String synopsis = json['synopsis'] ?? "";
+    String background = json['background'] ?? "";
     String season = json['season'] ?? "";
     int year = json['premiered'] ?? 0;
     List<String> producersName = [];
@@ -89,13 +89,13 @@ class Anime {
       type: type,
       episodes: episodes,
       status: status,
-      airedFrom: airedFrom,
-      airedTo: airedTo,
+      airedString: airedString,
       duration: duration,
       score: score,
       scoredBy: scoredBy,
       rank: rank,
       synopsis: synopsis,
+      background: background,
       season: season,
       year: year,
       producersName: producersName,
@@ -107,12 +107,13 @@ class Anime {
 
   @override
   String toString() {
-    return "Anime(malId: $malId, imageUrl: $imageUrl, title: $title, "
-        "titleEnglish: $titleEnglish, type: $type, episodes: $episodes, "
-        "status: $status, airedFrom: $airedFrom, airedTo: $airedTo, "
-        "duration: $duration, score: $score, scoredBy: $scoredBy, "
-        "rank: $rank, synopsis: $synopsis, season: $season, year: $year, "
-        "producersName: $producersName, licensorsName: $licensorsName, "
-        "studiosName: $studiosName, genresName: $genresName)";
+    return 'Anime{malId: $malId, imageUrl: $imageUrl, '
+        'title: $title, titleEnglish: $titleEnglish, type: $type, '
+        'episodes: $episodes, status: $status, airedString: $airedString, '
+        'duration: $duration, score: $score, scoredBy: $scoredBy, '
+        'rank: $rank, synopsis: $synopsis, background: $background, '
+        'season: $season, year: $year, producersName: $producersName, '
+        'licensorsName: $licensorsName, studiosName: $studiosName, '
+        'genresName: $genresName}';
   }
 }

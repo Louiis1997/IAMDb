@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/services/season.dart';
 
 import '../components/carousel_banner.dart';
+import '../components/suggestion_list.dart';
+import '../services/top.dart';
 
 class Feed extends StatelessWidget {
   const Feed({Key? key}) : super(key: key);
@@ -15,12 +18,21 @@ class Feed extends StatelessWidget {
             const CarouselBanner(),
             const SizedBox(height: 10),
             Container(
-              padding: const EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
-                "Anime Hiver 2023",
+                "Anime this season",
                 style: Theme.of(context).textTheme.headline1,
               ),
             ),
+            SuggestionList(future: SeasonService.getSeasonNow()),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                "Most popular manga",
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            ),
+            SuggestionList(future: TopService.getTopManga()),
           ],
         ),
       ),
