@@ -76,6 +76,10 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.grey,
+        ),
         appBarTheme: AppBarTheme(
           titleTextStyle: GoogleFonts.roboto(
             textStyle: const TextStyle(
@@ -137,6 +141,13 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: Color.fromRGBO(0, 0, 0, 1),
             ),
+          ),
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          filled: true,
+          fillColor: Color.fromRGBO(30, 30, 30, 0.8),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
         ),
         appBarTheme: AppBarTheme(

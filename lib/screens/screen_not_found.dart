@@ -12,9 +12,10 @@ class _ScreenNotFoundState extends State<ScreenNotFound> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('not found'),
+        child: Text(
+          'not found',
+        ),
       ),
     );
   }
 }
-

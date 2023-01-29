@@ -45,7 +45,10 @@ class SuggestionList extends StatelessWidget {
               AnimeDetail.navigateTo(context, data[index].malId);
             },
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              margin: const EdgeInsets.symmetric(
+                horizontal: 5,
+                vertical: 5,
+              ),
               child: Column(
                 children: [
                   Container(
@@ -59,7 +62,9 @@ class SuggestionList extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   SizedBox(
                     width: 100,
                     child: Text(

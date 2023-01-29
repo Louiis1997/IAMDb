@@ -7,6 +7,7 @@ import '../screens/home.dart';
 import '../screens/login.dart';
 import '../screens/profile.dart';
 import '../screens/screen_not_found.dart';
+import '../screens/search.dart';
 import '../screens/signup.dart';
 
 class MyRouter {
@@ -16,6 +17,7 @@ class MyRouter {
       Login.routeName: (context) => const Login(),
       Signup.routeName: (context) => const Signup(),
       Home.routeName: (context) => const Home(),
+      Search.routeName: (context) => const Search(),
     };
   }
 

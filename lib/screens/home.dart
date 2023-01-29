@@ -10,6 +10,10 @@ class Home extends StatefulWidget {
 
   static const String routeName = '/home';
 
+  static void navigateTo(BuildContext context) {
+    Navigator.of(context).pushNamed(routeName);
+  }
+
   @override
   State<Home> createState() => _Home();
 }
