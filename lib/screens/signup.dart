@@ -155,6 +155,7 @@ class _SignupState extends State<Signup> {
                       border: OutlineInputBorder(),
                       labelText: 'Username',
                     ),
+                    textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
@@ -166,6 +167,7 @@ class _SignupState extends State<Signup> {
                       border: OutlineInputBorder(),
                       labelText: 'Firstname',
                     ),
+                    textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
@@ -177,6 +179,7 @@ class _SignupState extends State<Signup> {
                       border: OutlineInputBorder(),
                       labelText: 'LastName',
                     ),
+                    textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
@@ -188,6 +191,7 @@ class _SignupState extends State<Signup> {
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                     ),
+                    textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
@@ -201,6 +205,7 @@ class _SignupState extends State<Signup> {
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
+                    textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
@@ -214,6 +219,7 @@ class _SignupState extends State<Signup> {
                       border: OutlineInputBorder(),
                       labelText: 'Confirm Password',
                     ),
+                    textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
@@ -226,6 +232,7 @@ class _SignupState extends State<Signup> {
                       border: OutlineInputBorder(),
                       labelText: 'Bio',
                     ),
+                    textInputAction: TextInputAction.done,
                   ),
                 ),
                 Container(

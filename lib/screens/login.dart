@@ -62,6 +62,7 @@ class LoginState extends State<Login> {
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                     ),
+                    textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
@@ -87,6 +88,7 @@ class LoginState extends State<Login> {
                       border: const OutlineInputBorder(),
                       labelText: 'Password',
                     ),
+                    textInputAction: TextInputAction.done,
                   ),
                 ),
                 const SizedBox(
