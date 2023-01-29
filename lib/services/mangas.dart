@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../models/season.dart';
+import '../models/top_manga.dart';
 
-class SeasonService {
-  static const _baseUrl = "https://api.jikan.moe/v4/seasons";
+class MangaService {
+  static const _baseUrl = "http://localhost/mangas";
 
-  static Future<List<Season>> getSeasonNow() async {
+  static Future<List<TopManga>> getTopManga(String token) async {
     final response = await http.get(
-      Uri.parse("$_baseUrl/now"),
+      Uri.parse("$_baseUrl/top/manga"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization' : 'bearer $token'
       },
     );
     if (response.statusCode != 200) {
@@ -28,9 +29,9 @@ class SeasonService {
       }
     }
     final jsonBody = json.decode(response.body);
-    final List<Season> animes = [];
-    for (final animeJson in jsonBody['data']) {
-      animes.add(Season.fromJson(animeJson));
+    final List<TopManga> animes = [];
+    for (final mangaJson in jsonBody['data']) {
+      animes.add(TopManga.fromJson(mangaJson));
     }
     return animes;
   }

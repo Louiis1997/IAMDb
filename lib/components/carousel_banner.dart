@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import '../services/top.dart';
+import '../main.dart';
 import '../screens/anime_detail.dart';
 import '../screens/anime_trailer.dart';
+import '../services/animes.dart';
 
 class CarouselBanner extends StatelessWidget {
   const CarouselBanner({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class CarouselBanner extends StatelessWidget {
 
   FutureBuilder buildFutureBuilderTopAnime() {
     return FutureBuilder(
-      future: TopService.getTopAnime(),
+      future: _getTopAnime(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -128,5 +129,10 @@ class CarouselBanner extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<List<dynamic>> _getTopAnime() async {
+    final token = await storage.read(key: "token");
+    return AnimeService.getTopAnime(token!);
   }
 }

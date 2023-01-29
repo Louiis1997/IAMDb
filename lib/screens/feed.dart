@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/screens/search.dart';
-import 'package:iamdb/services/season.dart';
 
 import '../components/carousel_banner.dart';
 import '../components/suggestion_list.dart';
-import '../services/top.dart';
+import '../main.dart';
+import '../services/animes.dart';
+import '../services/mangas.dart';
+import 'search.dart';
 
 class Feed extends StatelessWidget {
   const Feed({Key? key}) : super(key: key);
@@ -50,11 +51,14 @@ class Feed extends StatelessWidget {
               ),
               child: Text(
                 "Anime this season",
-                style: Theme.of(context).textTheme.headline1,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline1,
               ),
             ),
             SuggestionList(
-              future: SeasonService.getSeasonNow(),
+              future: _getSeasonNow(),
             ),
             Container(
               padding: const EdgeInsets.symmetric(
@@ -62,15 +66,28 @@ class Feed extends StatelessWidget {
               ),
               child: Text(
                 "Most popular manga",
-                style: Theme.of(context).textTheme.headline1,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline1,
               ),
             ),
             SuggestionList(
-              future: TopService.getTopManga(),
+              future: _getTopManga(),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<List<dynamic>> _getTopManga() async {
+    final token = await storage.read(key: "token");
+    return MangaService.getTopManga(token!);
+  }
+
+  Future<List<dynamic>> _getSeasonNow() async {
+    final token = await storage.read(key: "token");
+    return AnimeService.getSeasonNow(token!);
   }
 }

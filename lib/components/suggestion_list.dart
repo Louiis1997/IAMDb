@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../screens/anime_detail.dart';
 
 class SuggestionList extends StatelessWidget {
-  final Future<List<dynamic>>? future;
+  final Future<List<dynamic>> future;
 
   const SuggestionList({Key? key, required this.future}) : super(key: key);
 
