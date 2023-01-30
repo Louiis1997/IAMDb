@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../common/validator.dart';
-
 class BirthdayScrollDatePicker extends StatefulWidget {
   final TextEditingController birthdayController;
 
@@ -21,7 +19,6 @@ class _BirthdayScrollDatePickerState extends State<BirthdayScrollDatePicker> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.birthdayController,
-      validator: (value) => Validator.validateForm(value ?? ""),
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         labelText: 'Date of birth (yyyy-mm-dd)',

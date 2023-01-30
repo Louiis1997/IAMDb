@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../main.dart';
 import '../screens/anime_detail.dart';
 import '../screens/anime_trailer.dart';
-import '../services/animes.dart';
+import '../services/anime.dart';
 
 class CarouselBanner extends StatelessWidget {
   const CarouselBanner({Key? key}) : super(key: key);

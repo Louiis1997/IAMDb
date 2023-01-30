@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../common/validator.dart';
-
 const List<String> status = <String>[
   'Noob 🍚', 'Néophyte 🍣', 'Intermédiaire 🇯🇵', 'Otaku 🎎', 'Weeaboo 👺'];
 
@@ -37,7 +35,6 @@ class _StatusDropDownButtonState extends State<StatusDropDownButton> {
           child: Text(value),
         );
       }).toList(),
-      validator: (value) => Validator.validateForm(value ?? ""),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),

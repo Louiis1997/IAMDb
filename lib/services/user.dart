@@ -10,7 +10,7 @@ class UserService {
       Uri.parse("$_baseUrl/profile"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {
@@ -37,7 +37,7 @@ class UserService {
       Uri.parse("$_baseUrl/{email}?email=$email"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'authorization' : 'bearer$token'
+        'authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {
@@ -59,13 +59,30 @@ class UserService {
     return user;
   }
 
-  static Future<User> updateUser(String token) async {
+  static Future<User> updateUser(
+      String token,
+      String username,
+      String firstname,
+      String lastname,
+      String email,
+      String bio,
+      String birthday,
+      String status) async {
     final response = await http.post(
       Uri.parse("$_baseUrl/profile/update"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'authorization' : 'bearer$token'
+        'authorization': 'bearer $token'
       },
+      body: jsonEncode(<String, String>{
+        'username': username,
+        'firstname': firstname,
+        'lastname': lastname,
+        'email': email,
+        'bio': bio,
+        'birthday': birthday,
+        'status': status
+      }),
     );
     if (response.statusCode != 201) {
       switch (response.statusCode) {

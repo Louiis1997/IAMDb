@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../components/carousel_banner.dart';
 import '../components/suggestion_list.dart';
 import '../main.dart';
-import '../services/animes.dart';
-import '../services/mangas.dart';
+import '../services/anime.dart';
+import '../services/manga.dart';
 import 'search.dart';
 
 class Feed extends StatelessWidget {

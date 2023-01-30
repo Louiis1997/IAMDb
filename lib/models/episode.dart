@@ -32,4 +32,10 @@ class Episode {
       filler: filler,
     );
   }
+
+  @override
+  String toString() {
+    return 'Episode{malId: $malId, title: $title, duration: $duration, '
+        'aired: $aired, score: $score, filler: $filler}';
+  }
 }

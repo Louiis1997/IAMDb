@@ -89,4 +89,13 @@ class Manga {
     );
   }
 
+  @override
+  String toString() {
+    return 'Manga{malId: $malId, imageUrl: $imageUrl, title: $title, '
+        'titleEnglish: $titleEnglish, type: $type, chapters: $chapters, '
+        'volumes: $volumes, status: $status, publishedString: $publishedString, '
+        'score: $score, scoredBy: $scoredBy, rank: $rank, synopsis: $synopsis, '
+        'background: $background, authorsName: $authorsName, '
+        'serializationsName: $serializationsName, genresName: $genresName}';
+  }
 }
