@@ -7,7 +7,7 @@ class Agenda {
   final Anime anime;
   final String userId;
   final User user;
-  final Object status;
+  final String status;
   final String createdAt;
   final String updatedAt;
   final String deletedAt;
@@ -30,7 +30,7 @@ class Agenda {
     Anime anime = Anime.fromJson(json['anime']);
     String userId = json['userId'];
     User user = User.fromJson(json['user']);
-    Object status = json['status'];
+    String status = json['status'];
     String createdAt = json['createdAt'];
     String updatedAt = json['updatedAt'];
     String deletedAt = json['deletedAt'];

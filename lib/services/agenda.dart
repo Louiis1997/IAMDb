@@ -1,15 +1,13 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
+import 'package:iamdb/models/agenda.dart';
 
-import '../models/character.dart';
+class RatingService {
+  static const _baseUrl = "http://localhost/agendas";
 
-class CharacterService {
-  static const _baseUrl = "http://localhost/characters";
-
-  Future<List<Character>> getCharacters(String token, String id) async {
+  static Future<List<Agenda>> getAgenda(String token) async {
     final response = await http.get(
-      Uri.parse("$_baseUrl/anime/$id"),
+      Uri.parse(_baseUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization' : 'bearer $token'
@@ -30,16 +28,40 @@ class CharacterService {
       }
     }
     final jsonBody = json.decode(response.body);
-    final List<Character> characters = [];
-    for (final characterJson in jsonBody['data']['character']) {
-      characters.add(Character.fromJson(characterJson));
+    final List<Agenda> agendas = [];
+    for (final agendaJson in jsonBody) {
+      agendas.add(Agenda.fromJson(agendaJson));
     }
-    return characters;
+    return agendas;
   }
 
-  static Future<Character> getCharacterById(String token, String id) async {
+  static Future updateAgendaStatus(String token, int id, String status) async {
+    final response = await http.post(
+      Uri.parse("$_baseUrl/anime/$id/$status"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': 'bearer $token'
+      },
+    );
+    if (response.statusCode != 201) {
+      switch (response.statusCode) {
+        case 400:
+          throw Exception('Bad request');
+        case 404:
+          throw Exception('Not Found');
+        case 429:
+          throw Exception('Too Many Request');
+        case 500:
+          throw Exception('Internal Server Error');
+        case 503:
+          throw Exception('Service Unavailable');
+      }
+    }
+  }
+
+  static Future<List<Agenda>> getAgendaByStatus(String token, String status) async {
     final response = await http.get(
-      Uri.parse("$_baseUrl/$id"),
+      Uri.parse("$_baseUrl/$status"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization' : 'bearer $token'
@@ -60,7 +82,10 @@ class CharacterService {
       }
     }
     final jsonBody = json.decode(response.body);
-    final Character character = Character.fromJson(jsonBody['data']);
-    return character;
+    final List<Agenda> agendas = [];
+    for (final agendaJson in jsonBody) {
+      agendas.add(Agenda.fromJson(agendaJson));
+    }
+    return agendas;
   }
 }
