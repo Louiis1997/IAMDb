@@ -111,7 +111,7 @@ class CarouselBanner extends StatelessWidget {
                           width: maxWidth * .7,
                           child: Text(
                             data[index].titleEnglish,
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.button,
                             maxLines: 2,
                             overflow: TextOverflow.fade,
                           ),

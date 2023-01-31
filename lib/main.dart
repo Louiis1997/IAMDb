@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
         ),
         inputDecorationTheme: const InputDecorationTheme(
           filled: true,
-          fillColor: Colors.grey,
+          fillColor: Color.fromRGBO(200, 200, 200, 0.8),
         ),
         appBarTheme: AppBarTheme(
           titleTextStyle: GoogleFonts.roboto(
@@ -89,6 +89,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        cardColor: const Color.fromRGBO(200, 200, 200, 0.8),
+        primaryColor: const Color.fromRGBO(244, 197, 24, 1),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -159,6 +161,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        cardColor: const Color.fromRGBO(30, 30, 30, 0.8),
+        primaryColor: const Color.fromRGBO(244, 197, 24, 1),
       ),
       themeMode: ThemeMode.dark,
       routes: MyRouter.routes(),

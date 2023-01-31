@@ -1,4 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:iamdb/screens/anime_detail.dart';
+import 'package:iamdb/services/anime.dart';
+
+import '../components/anime_card_widget.dart';
+import '../main.dart';
+import '../models/anime.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -15,6 +23,16 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
+  final List<String> _filters = [
+    "Tv",
+    "Movie",
+    "Ova",
+    "Special",
+    "Ona",
+    "Music"
+  ];
+  List<Anime> _animes = [];
+  String _filter = "";
 
   @override
   Widget build(BuildContext context) {
@@ -27,54 +45,107 @@ class _SearchState extends State<Search> {
               child: TextField(
                 autofocus: true,
                 controller: _controller,
-                /*onChanged: (text) {
-              if (text != '') {
-                setState(() {
-                  _getUsers(text);
-                });
-              } else {
-                setState(() {
-                  _users.clear();
-                });
-              }
-            },*/
+                onChanged: _onChanged(),
                 decoration: InputDecoration(
                   hintText: 'Search...',
                   prefixIcon: IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
-                      //Home.navigateTo(context);
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
                   suffixIcon: IconButton(
                     onPressed: () {
-                      /*setState(() {
-                    _users.clear();
-                    _controller.clear();
-                  });*/
+                      setState(() {
+                        _animes.clear();
+                        _controller.clear();
+                      });
                     },
                     icon: const Icon(Icons.close),
                   ),
                 ),
               ),
             ),
-            /*Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: _users.length,
-            itemBuilder: (context, index) {
-              return UserWidget(
-                user: _users[index],
-                onTap: () => _onPostTap(_users[index]),
-              );
-            },
-          ),
-        ),*/
+            SizedBox(
+              height: 60,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: _filters
+                    .map(
+                      (type) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _filter == type
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey,
+                          ),
+                          onPressed: () {
+                            _onPressed(type);
+                          },
+                          child: Text(type),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: _animes.length,
+                itemBuilder: (context, index) {
+                  return AnimeCardWidget(
+                    anime: _animes[index],
+                    onTap: () =>
+                        {AnimeDetail.navigateTo(context, _animes[index].malId)},
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void _getAnimes(String name) async {
+    try {
+      final token = await storage.read(key: "token");
+      var response = await AnimeService.search(token!, name, _filter);
+      setState(() {
+        _animes = response;
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  void Function(String) _onChanged() {
+    return (String text) {
+      if (text != '') {
+        setState(() {
+          _getAnimes(text);
+        });
+      } else {
+        setState(() {
+          _animes.clear();
+        });
+      }
+    };
+  }
+
+  void _onPressed(String filter) {
+    if(_controller.text != '') {
+      setState(() {
+        _filter = filter;
+        _getAnimes(_controller.text.trim());
+      });
+    } else {
+      setState(() {
+        _filter = filter;
+      });
+    }
   }
 }

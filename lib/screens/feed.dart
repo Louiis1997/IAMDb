@@ -36,7 +36,7 @@ class Feed extends StatelessWidget {
                   hintText: 'Search...',
                   suffixIcon: Icon(
                     Icons.search,
-                    color: Colors.grey,
+                    color:  Colors.black,
                   ),
                 ),
               ),
