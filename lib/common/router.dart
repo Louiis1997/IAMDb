@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../screens/splash.dart';
 import '../screens/agenda.dart';
 import '../screens/anime_trailer.dart';
 import '../screens/anime_detail.dart';
@@ -13,7 +14,7 @@ import '../screens/signup.dart';
 class MyRouter {
   static Map<String, Widget Function(BuildContext context)> routes() {
     return {
-      '/': (context) => const Login(),
+      '/': (context) => const SplashScreen(),
       Login.routeName: (context) => const Login(),
       Signup.routeName: (context) => const Signup(),
       Home.routeName: (context) => const Home(),

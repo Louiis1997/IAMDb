@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../components/agenda_list.dart';
+import '../main.dart';
+import '../services/agenda.dart';
+import 'search.dart';
+
 class Agenda extends StatelessWidget {
   const Agenda({Key? key}) : super(key: key);
 
@@ -26,12 +31,20 @@ class Agenda extends StatelessWidget {
               return [
                 SliverAppBar(
                   title: const Text('Agenda'),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: () {
+                        Search.navigateTo(context);
+                      },
+                    ),],
                   pinned: true,
                   floating: true,
                   forceElevated: true,
                   bottom: TabBar(
                     labelStyle: Theme.of(context).tabBarTheme.labelStyle,
-                    unselectedLabelStyle: Theme.of(context).tabBarTheme.unselectedLabelStyle,
+                    unselectedLabelStyle:
+                        Theme.of(context).tabBarTheme.unselectedLabelStyle,
                     indicatorColor: Colors.white,
                     tabs: agendaTabs,
                   ),
@@ -40,14 +53,14 @@ class Agenda extends StatelessWidget {
             },
             body: TabBarView(
               children: [
-                Container(
-                  color: Colors.red,
+                AgendaList(
+                  future: _getAgenda("En cours ⏳"),
                 ),
-                Container(
-                  color: Colors.blue,
+                AgendaList(
+                  future: _getAgenda("En pause 🤒"),
                 ),
-                Container(
-                  color: Colors.green,
+                AgendaList(
+                  future: _getAgenda("Envie de voir 🤤"),
                 ),
               ],
             ),
@@ -55,5 +68,10 @@ class Agenda extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<List<dynamic>> _getAgenda(String status) async {
+    final token = await storage.read(key: "token");
+    return AgendaService.getAgendaByStatus(token!, status);
   }
 }

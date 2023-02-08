@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../screens/anime_detail.dart';
 
-class SuggestionList extends StatelessWidget {
+class AgendaList extends StatelessWidget {
   final Future<List<dynamic>> future;
 
-  const SuggestionList({Key? key, required this.future}) : super(key: key);
+  const AgendaList({Key? key, required this.future}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class SuggestionList extends StatelessWidget {
               if (data == null || data.isEmpty) {
                 return const Center(child: Text('No data'));
               }
-              return buildSuggestionListView(snapshot.data);
+              return buildAgendaListView(snapshot.data);
             }
             if (snapshot.hasError) {
               return Text('${snapshot.error}');
@@ -36,7 +36,7 @@ class SuggestionList extends StatelessWidget {
     );
   }
 
-  SizedBox buildSuggestionListView(data) {
+  SizedBox buildAgendaListView(data) {
     return SizedBox(
       height: 170,
       child: ListView.builder(
@@ -80,7 +80,7 @@ class SuggestionList extends StatelessWidget {
             ),
           );
         },
-        scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.vertical,
       ),
     );
   }

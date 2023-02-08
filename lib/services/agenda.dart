@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:iamdb/models/agenda.dart';
 
-class RatingService {
+class AgendaService {
   static const _baseUrl = "http://localhost/agendas";
 
   static Future<List<Agenda>> getAgenda(String token) async {
