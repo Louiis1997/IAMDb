@@ -18,6 +18,8 @@ class MyRouter {
       Signup.routeName: (context) => const Signup(),
       Home.routeName: (context) => const Home(),
       Search.routeName: (context) => const Search(),
+      Agenda.routeName: (context) => const Agenda(),
+      Profile.routeName: (context) => const Profile(),
     };
   }
 
@@ -25,22 +27,6 @@ class MyRouter {
     Widget screen = const ScreenNotFound();
 
     switch (settings.name) {
-      case Profile.routeName:
-        final args = settings.arguments;
-        if (args is String) {
-          screen = Profile(
-            userId: args,
-          );
-        }
-        break;
-      case Agenda.routeName:
-        final args = settings.arguments;
-        if (args is String) {
-          screen = Agenda(
-            userId: args,
-          );
-        }
-        break;
       case AnimeDetail.routeName:
         final args = settings.arguments;
         if (args is int) {

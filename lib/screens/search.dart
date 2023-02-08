@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:iamdb/screens/anime_detail.dart';
 import 'package:iamdb/services/anime.dart';
 
-import '../components/anime_card_widget.dart';
+import '../common/debouncer.dart';
+import '../components/anime_card.dart';
 import '../main.dart';
 import '../models/anime.dart';
 
@@ -23,6 +24,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
+  final _debouncer = Debouncer(milliseconds: 1000);
   final List<String> _filters = [
     "Tv",
     "Movie",
@@ -96,7 +98,7 @@ class _SearchState extends State<Search> {
                 shrinkWrap: true,
                 itemCount: _animes.length,
                 itemBuilder: (context, index) {
-                  return AnimeCardWidget(
+                  return AnimeCard(
                     anime: _animes[index],
                     onTap: () =>
                         {AnimeDetail.navigateTo(context, _animes[index].malId)},
@@ -110,10 +112,10 @@ class _SearchState extends State<Search> {
     );
   }
 
-  void _getAnimes(String name) async {
+  void _getAnimes(String name, String filter) async {
     try {
       final token = await storage.read(key: "token");
-      var response = await AnimeService.search(token!, name, _filter);
+      var response = await AnimeService.search(token!, name, filter);
       setState(() {
         _animes = response;
       });
@@ -124,23 +126,25 @@ class _SearchState extends State<Search> {
 
   void Function(String) _onChanged() {
     return (String text) {
-      if (text != '') {
-        setState(() {
-          _getAnimes(text);
-        });
-      } else {
-        setState(() {
-          _animes.clear();
-        });
-      }
+      _debouncer.run(() {
+        if (text != '') {
+          setState(() {
+            _getAnimes(text.trim(), _filter);
+          });
+        } else {
+          setState(() {
+            _animes.clear();
+          });
+        }
+      });
     };
   }
 
   void _onPressed(String filter) {
-    if(_controller.text != '') {
+    if (_controller.text != '') {
       setState(() {
         _filter = filter;
-        _getAnimes(_controller.text.trim());
+        _getAnimes(_controller.text.trim(), filter);
       });
     } else {
       setState(() {

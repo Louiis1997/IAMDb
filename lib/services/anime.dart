@@ -81,6 +81,7 @@ class AnimeService {
   }
 
   static Future<List<Season>> getSeasonNow(String token) async {
+    await Future.delayed(const Duration(seconds: 1));
     final response = await http.get(
       Uri.parse("$_baseUrl/seasons/now"),
       headers: <String, String>{

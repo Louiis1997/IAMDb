@@ -27,7 +27,7 @@ class AnimeTrailer extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Trailer'),
           ),
-          body: player,
+          body: Center(child: player),
         );
       },
     );

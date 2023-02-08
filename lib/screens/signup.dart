@@ -205,7 +205,8 @@ class _SignupState extends State<Signup> {
             _passwordController.text.trim(),
             _bioController.text.trim(),
             _birthdayController.text.trim(),
-            _status);
+            _status,
+            _imageFile);
         Login.navigateTo(context);
       } catch (err) {
         log("Error: $err");

@@ -46,33 +46,43 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: Color.fromRGBO(244, 197, 24, 1),
             ),
-          ), // Titre 1
+          ),
+          // Titre 1
           headline2: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Color.fromRGBO(0, 0, 0, 1),
             ),
-          ), // Titre 2
+          ),
+          // Titre 2
           bodyText1: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color.fromRGBO(0, 0, 0, 1),
             ),
-          ), // Texte normal
+          ),
+          // Texte normal
           bodyText2: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color.fromRGBO(0, 0, 0, 0.7),
             ),
-          ), // Texte normal grisé
-          button: GoogleFonts.roboto(
-            textStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color.fromRGBO(255, 255, 255, 1),
+          ),
+          // Texte normal grisé
+        ),
+        tabBarTheme: const TabBarTheme(
+          labelColor: Color.fromRGBO(0, 0, 0, 1),
+          labelStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
+          indicator: UnderlineTabIndicator(
+            borderSide: BorderSide(
+              color: Color.fromRGBO(0, 0, 0, 1),
+              width: 2,
             ),
           ),
         ),
@@ -115,33 +125,43 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: Color.fromRGBO(244, 197, 24, 1),
             ),
-          ), // Titre 1
+          ),
+          // Titre 1
           headline2: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Color.fromRGBO(255, 255, 255, 1),
             ),
-          ), // Titre 2
+          ),
+          // Titre 2
           bodyText1: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color.fromRGBO(255, 255, 255, 1),
             ),
-          ), // Texte normal
+          ),
+          // Texte normal
           bodyText2: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color.fromRGBO(255, 255, 255, 0.7),
             ),
-          ), // Texte normal grisé
-          button: GoogleFonts.roboto(
-            textStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color.fromRGBO(0, 0, 0, 1),
+          ),
+          // Texte normal grisé
+        ),
+        tabBarTheme: const TabBarTheme(
+          labelColor: Color.fromRGBO(0, 0, 0, 1),
+          labelStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
+          indicator: UnderlineTabIndicator(
+            borderSide: BorderSide(
+              color: Color.fromRGBO(255, 255, 255, 1),
+              width: 2,
             ),
           ),
         ),

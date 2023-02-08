@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../models/anime.dart';
 
-class AnimeCardWidget extends StatelessWidget {
+class AnimeCard extends StatelessWidget {
   final Anime anime;
   final Function() onTap;
 
-  const AnimeCardWidget({Key? key, required this.anime, required this.onTap})
+  const AnimeCard({Key? key, required this.anime, required this.onTap})
       : super(key: key);
 
   @override

@@ -7,6 +7,7 @@ class MangaService {
   static const _baseUrl = "http://localhost/mangas";
 
   static Future<List<TopManga>> getTopManga(String token) async {
+    await Future.delayed(const Duration(seconds: 2));
     final response = await http.get(
       Uri.parse("$_baseUrl/top/manga"),
       headers: <String, String>{

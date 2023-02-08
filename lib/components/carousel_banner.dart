@@ -19,16 +19,18 @@ class CarouselBanner extends StatelessWidget {
       future: _getTopAnime(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return const Center(child: CircularProgressIndicator());
           case ConnectionState.done:
+            if (snapshot.hasData) {
+              final animes = snapshot.data;
+              if (animes == null || animes.isEmpty) {
+                return const Center(child: Text('No data'));
+              }
+              return buildCarouselSliderTopAnime(snapshot.data);
+            }
             if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }
-            if (!snapshot.hasData) {
-              return Text('${snapshot.error}');
-            }
-            return buildCarouselSliderTopAnime(snapshot.data);
+            return Text('${snapshot.error}');
           default:
             return const Center(child: CircularProgressIndicator());
         }
@@ -111,7 +113,7 @@ class CarouselBanner extends StatelessWidget {
                           width: maxWidth * .7,
                           child: Text(
                             data[index].titleEnglish,
-                            style: Theme.of(context).textTheme.button,
+                            style: Theme.of(context).textTheme.bodyText1,
                             maxLines: 2,
                             overflow: TextOverflow.fade,
                           ),

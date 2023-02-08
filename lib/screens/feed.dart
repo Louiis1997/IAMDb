@@ -36,7 +36,7 @@ class Feed extends StatelessWidget {
                   hintText: 'Search...',
                   suffixIcon: Icon(
                     Icons.search,
-                    color:  Colors.black,
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -51,10 +51,7 @@ class Feed extends StatelessWidget {
               ),
               child: Text(
                 "Anime this season",
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline1,
+                style: Theme.of(context).textTheme.headline1,
               ),
             ),
             SuggestionList(
@@ -66,10 +63,7 @@ class Feed extends StatelessWidget {
               ),
               child: Text(
                 "Most popular manga",
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline1,
+                style: Theme.of(context).textTheme.headline1,
               ),
             ),
             SuggestionList(

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'agenda.dart';
 import 'feed.dart';
 import 'profile.dart';
+import 'event.dart';
 
 class Home extends StatefulWidget {
-  // final String userId;
   const Home({Key? key}) : super(key: key);
 
   static const String routeName = '/home';
@@ -23,8 +23,9 @@ class _Home extends State<Home> {
 
   final List<Widget> _screens = [
     const Feed(),
-    const Agenda(userId: ""),
-    const Profile(userId: ""),
+    const Agenda(),
+    const Event(),
+    const Profile(),
   ];
 
   @override
@@ -39,12 +40,16 @@ class _Home extends State<Home> {
             icon: Icon(_currentScreen == 0 ? Icons.home : Icons.home_outlined),
             label: "Home",
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.all_inbox_rounded),
+          BottomNavigationBarItem(
+            icon: Icon(_currentScreen == 1 ? Icons.event : Icons.event_outlined),
             label: "Agenda",
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.person_pin_outlined),
+          BottomNavigationBarItem(
+            icon: Icon(_currentScreen == 2 ? Icons.people_rounded : Icons.people_outline_rounded),
+            label: "Event",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(_currentScreen == 3 ? Icons.person_pin_sharp : Icons.person_pin_outlined),
             label: "Profile",
           ),
         ],

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class AuthService {
@@ -32,23 +33,23 @@ class AuthService {
   }
 
   static Future register(String username, String firstname, String lastname,
-      String email, String password, String bio, String birthdate, String status) async {
-    final response = await http.post(
-      Uri.parse("$_baseUrl/register"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        "username": username,
-        "firstName": firstname,
-        "lastName": lastname,
-        "email": email,
-        "password": password,
-        "bio": bio,
-        "birthdate": birthdate,
-        "status": status
-      }),
-    );
+      String email, String password, String bio, String birthdate, String status,
+      File? image) async {
+    final request = http.MultipartRequest('POST', Uri.parse("$_baseUrl/register"));
+    if(image != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath('file', image.path)
+      );
+    }
+    request.fields['username'] = username;
+    request.fields['firstName'] = firstname;
+    request.fields['lastName'] = lastname;
+    request.fields['email'] = email;
+    request.fields['password'] = password;
+    if (bio != "") request.fields['bio'] = bio;
+    if (birthdate != "") request.fields['birthdate'] = birthdate;
+    if (status != "") request.fields['status'] = status;
+    final response = await request.send();
     if (response.statusCode != 201) {
       switch (response.statusCode) {
         case 400:
@@ -61,8 +62,8 @@ class AuthService {
           throw Exception('Service Unavailable');
       }
     }
-    final responseData = json.decode(response.body);
-    return responseData;
+    var responseData = await http.Response.fromStream(response);
+    return json.decode(responseData.body);
   }
 
   static Future updatePassword(String email, String oldPassword,

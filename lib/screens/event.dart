@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
+class Event extends StatelessWidget {
+  const Event({Key? key}) : super(key: key);
 
-  static const String routeName = '/profile';
+  static const String routeName = '/event';
 
   static void navigateTo(BuildContext context) {
     Navigator.of(context).pushNamed(routeName);
@@ -11,6 +11,6 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Placeholder();
   }
 }
