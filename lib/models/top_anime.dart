@@ -15,13 +15,14 @@ class TopAnime {
     required this.trailerImage,
   });
 
-  factory TopAnime.fromJson(Map<String, dynamic> json){
+  factory TopAnime.fromJson(Map<String, dynamic> json) {
     int malId = json['mal_id'];
     String imageUrl = json['images']['jpg']['image_url'] ?? "";
     String title = json['title'];
     String titleEnglish = json['title_english'] ?? json['title'];
     String youtubeId = json['trailer']['youtube_id'] ?? "dQw4w9WgXcQ";
-    String trailerImage = json['trailer']['images']['large_image_url'] ?? "https://i.ytimg.com/vi/36VSV-zw18o/maxresdefault.jpg";
+    String trailerImage = json['trailer']['images']['large_image_url'] ??
+        "https://i.ytimg.com/vi/36VSV-zw18o/maxresdefault.jpg";
 
     return TopAnime(
       malId: malId,

@@ -12,7 +12,7 @@ class MangaService {
       Uri.parse("$_baseUrl/top/manga"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {

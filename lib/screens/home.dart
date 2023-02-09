@@ -41,15 +41,20 @@ class _Home extends State<Home> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(_currentScreen == 1 ? Icons.event : Icons.event_outlined),
+            icon:
+                Icon(_currentScreen == 1 ? Icons.event : Icons.event_outlined),
             label: "Agenda",
           ),
           BottomNavigationBarItem(
-            icon: Icon(_currentScreen == 2 ? Icons.people_rounded : Icons.people_outline_rounded),
+            icon: Icon(_currentScreen == 2
+                ? Icons.people_rounded
+                : Icons.people_outline_rounded),
             label: "Event",
           ),
           BottomNavigationBarItem(
-            icon: Icon(_currentScreen == 3 ? Icons.person_pin_sharp : Icons.person_pin_outlined),
+            icon: Icon(_currentScreen == 3
+                ? Icons.person_pin_sharp
+                : Icons.person_pin_outlined),
             label: "Profile",
           ),
         ],

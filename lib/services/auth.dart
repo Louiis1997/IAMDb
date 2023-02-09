@@ -11,10 +11,8 @@ class AuthService {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'username': email,
-        'password': password
-      }),
+      body:
+          jsonEncode(<String, String>{'username': email, 'password': password}),
     );
     if (response.statusCode != 201) {
       switch (response.statusCode) {
@@ -32,14 +30,20 @@ class AuthService {
     return responseData;
   }
 
-  static Future register(String username, String firstname, String lastname,
-      String email, String password, String bio, String birthdate, String status,
+  static Future register(
+      String username,
+      String firstname,
+      String lastname,
+      String email,
+      String password,
+      String bio,
+      String birthdate,
+      String status,
       File? image) async {
-    final request = http.MultipartRequest('POST', Uri.parse("$_baseUrl/register"));
-    if(image != null) {
-      request.files.add(
-        await http.MultipartFile.fromPath('file', image.path)
-      );
+    final request =
+        http.MultipartRequest('POST', Uri.parse("$_baseUrl/register"));
+    if (image != null) {
+      request.files.add(await http.MultipartFile.fromPath('file', image.path));
     }
     request.fields['username'] = username;
     request.fields['firstName'] = firstname;
@@ -66,8 +70,8 @@ class AuthService {
     return json.decode(responseData.body);
   }
 
-  static Future updatePassword(String email, String oldPassword,
-      String newPassword) async {
+  static Future updatePassword(
+      String email, String oldPassword, String newPassword) async {
     final response = await http.post(
       Uri.parse("$_baseUrl/update-password"),
       headers: <String, String>{

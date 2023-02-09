@@ -81,9 +81,9 @@ class CarouselBanner extends StatelessWidget {
                       ),
                       const Center(
                         child: Icon(
-                            Icons.play_circle_outline_rounded,
-                            size: 100,
-                            color: Colors.white,
+                          Icons.play_circle_outline_rounded,
+                          size: 100,
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -113,7 +113,7 @@ class CarouselBanner extends StatelessWidget {
                           width: maxWidth * .7,
                           child: Text(
                             data[index].titleEnglish,
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.subtitle2,
                             maxLines: 2,
                             overflow: TextOverflow.fade,
                           ),

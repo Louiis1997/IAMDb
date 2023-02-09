@@ -11,7 +11,7 @@ class TopManga {
     required this.titleEnglish,
   });
 
-  factory TopManga.fromJson(Map<String, dynamic> json){
+  factory TopManga.fromJson(Map<String, dynamic> json) {
     int malId = json['mal_id'];
     String imageUrl = json['images']['jpg']['image_url'] ?? "";
     String title = json['title'];

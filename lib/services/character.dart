@@ -12,7 +12,7 @@ class CharacterService {
       Uri.parse("$_baseUrl/anime/$id"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {
@@ -42,7 +42,7 @@ class CharacterService {
       Uri.parse("$_baseUrl/$id"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {

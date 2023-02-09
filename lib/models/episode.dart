@@ -15,7 +15,7 @@ class Episode {
     required this.recap,
   });
 
-  factory Episode.fromJson(Map<String, dynamic> json){
+  factory Episode.fromJson(Map<String, dynamic> json) {
     int malId = json['mal_id'];
     String title = json['title'];
     String duration = json['duration'] ?? "";

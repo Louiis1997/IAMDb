@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 const List<String> status = <String>[
-  'Noob 🍚', 'Néophyte 🍣', 'Intermédiaire 🇯🇵', 'Otaku 🎎', 'Weeaboo 👺'];
+  'Noob 🍚',
+  'Néophyte 🍣',
+  'Intermédiaire 🇯🇵',
+  'Otaku 🎎',
+  'Weeaboo 👺'
+];
 
 class StatusDropDownButton extends StatefulWidget {
   final void Function(String) onChanged;
+
   const StatusDropDownButton({super.key, required this.onChanged});
 
   @override

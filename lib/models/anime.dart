@@ -6,7 +6,8 @@ class Anime {
   final String? type;
   final int? episodes;
   final String? status;
-  final String? airedString;
+
+  //final String? airedString;
   final String? duration;
   final num? score;
   final int? scoredBy;
@@ -28,7 +29,7 @@ class Anime {
     required this.type,
     required this.episodes,
     required this.status,
-    required this.airedString,
+    //required this.airedString,
     required this.duration,
     required this.score,
     required this.scoredBy,
@@ -43,7 +44,7 @@ class Anime {
     required this.genresName,
   });
 
-  factory Anime.fromJson(Map<String, dynamic> json){
+  factory Anime.fromJson(Map<String, dynamic> json) {
     int malId = json['mal_id'];
     String imageUrl = json['images']['jpg']['image_url'] ?? "";
     String title = json['title'];
@@ -51,7 +52,7 @@ class Anime {
     String type = json['type'] ?? "";
     int episodes = json['episodes'] ?? 0;
     String status = json['status'] ?? "";
-    String airedString = json['aired']['string'] ?? "";
+    //String airedString = json['aired']['string'] ?? "";
     String duration = json['duration'] ?? "";
     num score = json['score'] ?? 0.00;
     int scoredBy = json['scored_by'] ?? 0;
@@ -65,19 +66,19 @@ class Anime {
     List<String> studiosName = [];
     List<String> genresName = [];
 
-    for (var producer in json['producers']){
+    for (var producer in json['producers']) {
       producersName.add(producer['name']);
     }
 
-    for (var licensor in json['licensors']){
+    for (var licensor in json['licensors']) {
       licensorsName.add(licensor['name']);
     }
 
-    for (var studio in json['studios']){
+    for (var studio in json['studios']) {
       studiosName.add(studio['name']);
     }
 
-    for (var genre in json['genres']){
+    for (var genre in json['genres']) {
       genresName.add(genre['name']);
     }
 
@@ -89,7 +90,7 @@ class Anime {
       type: type,
       episodes: episodes,
       status: status,
-      airedString: airedString,
+      //airedString: airedString,
       duration: duration,
       score: score,
       scoredBy: scoredBy,
@@ -109,7 +110,7 @@ class Anime {
   String toString() {
     return 'Anime{malId: $malId, imageUrl: $imageUrl, '
         'title: $title, titleEnglish: $titleEnglish, type: $type, '
-        'episodes: $episodes, status: $status, airedString: $airedString, '
+        'episodes: $episodes, status: $status, '
         'duration: $duration, score: $score, scoredBy: $scoredBy, '
         'rank: $rank, synopsis: $synopsis, background: $background, '
         'season: $season, year: $year, producersName: $producersName, '

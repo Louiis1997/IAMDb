@@ -10,7 +10,7 @@ class AgendaService {
       Uri.parse(_baseUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {
@@ -59,12 +59,13 @@ class AgendaService {
     }
   }
 
-  static Future<List<Agenda>> getAgendaByStatus(String token, String status) async {
+  static Future<List<Agenda>> getAgendaByStatus(
+      String token, String status) async {
     final response = await http.get(
       Uri.parse("$_baseUrl/$status"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {

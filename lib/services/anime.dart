@@ -9,14 +9,15 @@ import '../models/top_anime.dart';
 class AnimeService {
   static const _baseUrl = "http://localhost/animes";
 
-  static Future<List<Anime>> search(String token, String letter, String filter) async {
+  static Future<List<Anime>> search(
+      String token, String letter, String filter) async {
     final http.Response response;
     if (filter == "") {
       response = await http.get(
         Uri.parse("$_baseUrl/search?letter=$letter"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization' : 'bearer $token'
+          'Authorization': 'bearer $token'
         },
       );
     } else {
@@ -24,7 +25,7 @@ class AnimeService {
         Uri.parse("$_baseUrl/search?type=$filter&letter=$letter"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization' : 'bearer $token'
+          'Authorization': 'bearer $token'
         },
       );
     }
@@ -55,7 +56,7 @@ class AnimeService {
       Uri.parse("$_baseUrl/top"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {
@@ -86,7 +87,7 @@ class AnimeService {
       Uri.parse("$_baseUrl/seasons/now"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {
@@ -111,12 +112,12 @@ class AnimeService {
     return animes;
   }
 
-  static Future<Anime> getAnimeById(String token, String id) async {
+  static Future<Anime> getAnimeById(String token, int id) async {
     final response = await http.get(
       Uri.parse("$_baseUrl/$id"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {
@@ -134,16 +135,16 @@ class AnimeService {
       }
     }
     final jsonBody = json.decode(response.body);
-    final Anime anime = Anime.fromJson(jsonBody);
+    final Anime anime = Anime.fromJson(jsonBody['anime']);
     return anime;
   }
 
-  static Future<List<Episode>> getAnimeEpisodes(String token, String id) async {
+  static Future<List<Episode>> getAnimeEpisodes(String token, int id) async {
     final response = await http.get(
       Uri.parse("$_baseUrl/$id/episodes"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {

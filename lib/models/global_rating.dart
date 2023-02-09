@@ -9,7 +9,7 @@ class GlobalRating {
     required this.totalCount,
   });
 
-  factory GlobalRating.fromJson(Map<String, dynamic> json){
+  factory GlobalRating.fromJson(Map<String, dynamic> json) {
     double average = json['average'];
     String presentableAverage = json['presentableAverage'];
     int totalCount = json['totalCount'];

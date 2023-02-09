@@ -11,10 +11,13 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
       splash: "images/iamdb-logo.png",
+      splashIconSize: MediaQuery.of(context).size.width * .5,
       nextScreen: const Login(),
       splashTransition: SplashTransition.fadeTransition,
       pageTransitionType: PageTransitionType.fade,
-      backgroundColor: Colors.black,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark)
+          ? Colors.black
+          : Colors.white,
     );
   }
 }

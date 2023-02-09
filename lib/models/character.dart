@@ -9,7 +9,7 @@ class Character {
     required this.name,
   });
 
-  factory Character.fromJson(Map<String, dynamic> json){
+  factory Character.fromJson(Map<String, dynamic> json) {
     int malId = json['mal_id'];
     String imageUrl = json['images']['jpg']['image_url'] ?? "";
     String name = json['name'];

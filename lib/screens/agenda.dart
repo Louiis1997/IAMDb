@@ -37,7 +37,8 @@ class Agenda extends StatelessWidget {
                       onPressed: () {
                         Search.navigateTo(context);
                       },
-                    ),],
+                    ),
+                  ],
                   pinned: true,
                   floating: true,
                   forceElevated: true,

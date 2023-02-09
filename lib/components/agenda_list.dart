@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../main.dart';
 import '../screens/anime_detail.dart';
+import '../services/anime.dart';
+import 'anime_card.dart';
 
 class AgendaList extends StatelessWidget {
   final Future<List<dynamic>> future;
@@ -38,50 +41,45 @@ class AgendaList extends StatelessWidget {
 
   SizedBox buildAgendaListView(data) {
     return SizedBox(
-      height: 170,
       child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () {
-              AnimeDetail.navigateTo(context, data[index].malId);
+          return FutureBuilder(
+            future: _getAnime(data[index].animeId, index),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.done:
+                  if (snapshot.hasData) {
+                    final anime = snapshot.data;
+                    if (anime == null) {
+                      return const Center(child: Text('No data'));
+                    }
+                    return AnimeCard(
+                      anime: anime,
+                      onTap: () =>
+                          {AnimeDetail.navigateTo(context, anime.malId)},
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return Text('${snapshot.error}');
+                default:
+                  return const Center(child: CircularProgressIndicator());
+              }
             },
-            child: Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 5,
-                vertical: 5,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    width: 100,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: NetworkImage(data[index].imageUrl),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    width: 100,
-                    child: Text(
-                      data[index].titleEnglish,
-                      style: Theme.of(context).textTheme.bodyText1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           );
         },
-        scrollDirection: Axis.vertical,
       ),
     );
+  }
+
+  Future<dynamic> _getAnime(int id, int index) async {
+    await Future.delayed(Duration(seconds: (index / 2).round()));
+    final token = await storage.read(key: "token");
+    final anime = await AnimeService.getAnimeById(token!, id);
+    return anime;
   }
 }

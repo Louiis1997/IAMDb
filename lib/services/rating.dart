@@ -11,7 +11,7 @@ class RatingService {
       Uri.parse(_baseUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {
@@ -41,7 +41,7 @@ class RatingService {
       Uri.parse("$_baseUrl/anime/$id/rate"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
       body: jsonEncode(<String, double>{
         'rating': newRating,
@@ -68,7 +68,7 @@ class RatingService {
       Uri.parse("$_baseUrl/user-ratings"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $token'
+        'Authorization': 'bearer $token'
       },
     );
     if (response.statusCode != 200) {

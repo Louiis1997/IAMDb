@@ -6,7 +6,7 @@ class User {
   final String email;
   final String createdAt;
   final String updatedAt;
-  final String deletedAt;
+  final String? deletedAt;
   final String? bio;
   final String? birthdate;
   final String? status;
@@ -33,7 +33,7 @@ class User {
     String email = json['email'];
     String createdAt = json['createdAt'];
     String updatedAt = json['updatedAt'];
-    String deletedAt = json['deletedAt'];
+    String deletedAt = json['deletedAt'] ?? "";
     String bio = json['bio'] ?? "";
     String birthdate = json['birthdate'] ?? "";
     String status = json['status'] ?? "";

@@ -32,12 +32,12 @@ class Manga {
     required this.rank,
     required this.synopsis,
     required this.background,
-     required this.authorsName,
+    required this.authorsName,
     required this.serializationsName,
     required this.genresName,
   });
 
-  factory Manga.fromJson(Map<String, dynamic> json){
+  factory Manga.fromJson(Map<String, dynamic> json) {
     int malId = json['mal_id'];
     String imageUrl = json['images']['jpg']['image_url'] ?? "";
     String title = json['title'];
@@ -56,15 +56,15 @@ class Manga {
     List<String> serializationsName = [];
     List<String> genresName = [];
 
-    for (var authors in json['authors']){
+    for (var authors in json['authors']) {
       authorsName.add(authors['name']);
     }
 
-    for (var serializations in json['serializations']){
+    for (var serializations in json['serializations']) {
       serializationsName.add(serializations['name']);
     }
 
-    for (var genre in json['genres']){
+    for (var genre in json['genres']) {
       genresName.add(genre['name']);
     }
 

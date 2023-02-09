@@ -52,7 +52,8 @@ class _SignupState extends State<Signup> {
             child: Column(
               children: [
                 Center(
-                  child: ProfileImagePicker(pickImage: _pickImage, imageFile: _imageFile),
+                  child: ProfileImagePicker(
+                      pickImage: _pickImage, imageFile: _imageFile),
                 ),
                 Container(
                   alignment: Alignment.center,

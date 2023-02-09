@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AnimeDetail extends StatelessWidget {
   final int animeId;
+
   const AnimeDetail({Key? key, required this.animeId}) : super(key: key);
 
   static const String routeName = '/anime_detail';
