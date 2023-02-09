@@ -133,10 +133,9 @@ class LoginState extends State<Login> {
     if (_formKey.currentState!.validate()) {
       try {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Processing Data',
-            ),
+          SnackBar(
+            content: Text('Processing Data',
+                style: Theme.of(context).textTheme.bodyText1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
