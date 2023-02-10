@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/screens/search.dart';
 
 import 'agenda.dart';
 import 'feed.dart';
@@ -31,6 +32,21 @@ class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Image.asset(
+          'images/iamdb-logo.png',
+          fit: BoxFit.contain,
+          height: 64,
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Search.navigateTo(context);
+            },
+          ),
+        ],
+      ),
       body: _screens[_currentScreen],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).primaryColor,
@@ -55,7 +71,7 @@ class _Home extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon:
-                Icon(_currentScreen == 3 ? Icons.person : Icons.person_outline),
+                Icon(_currentScreen == 3 ? Icons.person_rounded : Icons.person_outline_rounded),
             label: "Profile",
           ),
         ],

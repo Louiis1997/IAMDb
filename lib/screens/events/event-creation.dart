@@ -349,7 +349,6 @@ class _EventCreationState extends State<EventCreation> {
   }
 
   void onClickCreateEventButton() async {
-    Navigator.pop(context);
     if (_formKey.currentState!.validate()) {
       try {
         String startDateTime = _startDateController.text.trim() +
@@ -425,19 +424,3 @@ class _EventCreationState extends State<EventCreation> {
     }
   }
 }
-
-// flutter: London Anime & Gaming Con 2023
-// flutter: Animeleague exists to bring anime fans, gaming fans, cosplayers and general geeks together. We do this through online forums, social media, real-life meetups and conventions to help build one big family and community of friends together. We run over fifty events a year ranging from small free community meetups to free minicons to full-scale conventions.
-//
-// Our extremely active and friendly forums and community meetups which take place across every major city in the UK are free to join and come along to. Whether it's anime, gaming, cosplay, or just general chat and discussion about life in general, AL has something for everyone and all are invited. Make sure to be a part of one of the top anime communities in the world and join us today!.
-// flutter: Anime and Games
-// flutter: Animeleague
-// flutter: Novotel London West
-// flutter: London
-// flutter: W6 8DR
-// flutter: UK
-// flutter: 2023-08-12
-// flutter: 10:00:00
-// flutter: 2023-08-13
-// flutter: 21:00:00
-// flutter: true

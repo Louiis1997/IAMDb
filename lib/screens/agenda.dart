@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../components/agenda_list.dart';
 import '../main.dart';
 import '../services/agenda.dart';
-import 'search.dart';
 
 class Agenda extends StatelessWidget {
   const Agenda({Key? key}) : super(key: key);
@@ -30,15 +29,7 @@ class Agenda extends StatelessWidget {
             headerSliverBuilder: (context, _) {
               return [
                 SliverAppBar(
-                  title: const Text('Agenda'),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.search),
-                      onPressed: () {
-                        Search.navigateTo(context);
-                      },
-                    ),
-                  ],
+                  title: const Text('Animes'),
                   pinned: true,
                   floating: true,
                   forceElevated: true,
@@ -49,6 +40,7 @@ class Agenda extends StatelessWidget {
                     indicatorColor: Colors.white,
                     tabs: agendaTabs,
                   ),
+                  backgroundColor: Color.fromRGBO(255, 255, 255, 0.8),
                 ),
               ];
             },

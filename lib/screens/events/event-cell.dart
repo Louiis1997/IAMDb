@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/common/date.helpers.dart';
+import 'package:iamdb/common/date_helpers.dart';
 import '../../models/event.dart';
 import '../../screens/events/event-details.dart';
 

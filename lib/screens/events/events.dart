@@ -22,15 +22,13 @@ class Events extends StatelessWidget {
       body: DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Events'),
-            bottom: const TabBar(
-              tabs: [
-                Tab(text: '👴🏻 Past 👵🏻'),
-                Tab(text: 'Live 👇🏻'),
-                Tab(text: 'Upcoming 🔮'),
-              ],
-            ),
+          appBar: TabBar(
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            tabs: [
+              Tab(text: '👴🏻 Past 👵🏻'),
+              Tab(text: 'Live 👇🏻'),
+              Tab(text: 'Upcoming 🔮'),
+            ],
           ),
           body: TabBarView(
             children: [
