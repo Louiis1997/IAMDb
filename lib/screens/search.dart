@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
+import '../common/utils.dart';
 import '../screens/anime_detail.dart';
 import '../services/anime.dart';
 import '../common/debouncer.dart';
@@ -119,8 +118,14 @@ class _SearchState extends State<Search> {
       setState(() {
         _animes = response;
       });
-    } catch (e) {
-      log(e.toString());
+    } catch (err) {
+      if (err.toString().contains("500")) {
+        Utils.displayAlertDialog(context, "Error during the Authentication",
+            "Internal Server Error");
+      } else {
+        Utils.displayAlertDialog(
+            context, "Error during the Authentication", err.toString());
+      }
     }
   }
 

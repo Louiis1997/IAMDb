@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:iamdb/exceptions/not-found.exception.dart';
 import 'package:iamdb/exceptions/unauthorized.exception.dart';
@@ -175,7 +174,7 @@ class LoginState extends State<Login> {
             "The email or password you entered is incorrect",
           );
         }
-        if (err is NotFoundException) {
+        else if (err is NotFoundException) {
           Utils.displayAlertDialog(
             context,
             "Authentication failed",
