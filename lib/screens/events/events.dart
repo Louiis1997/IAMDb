@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iamdb/main.dart';
+import 'package:iamdb/screens/events/event-creation.dart';
 import 'package:iamdb/screens/events/live_events.dart';
 import 'package:iamdb/screens/events/past_events.dart';
 import 'package:iamdb/screens/events/upcoming_events.dart';
@@ -44,6 +45,15 @@ class Events extends StatelessWidget {
               ),
             ],
           ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              EventCreation.navigateTo(context);
+            },
+            child: const Icon(Icons.add, color: Colors.white),
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+          floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         ),
       ),
     );

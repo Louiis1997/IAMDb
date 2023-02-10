@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'agenda.dart';
 import 'feed.dart';
 import 'profile.dart';
-import 'events/event.dart';
+import 'events/events.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -33,6 +33,8 @@ class _Home extends State<Home> {
     return Scaffold(
       body: _screens[_currentScreen],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).primaryColor,
         currentIndex: _currentScreen,
         onTap: _onTap,
         items: [

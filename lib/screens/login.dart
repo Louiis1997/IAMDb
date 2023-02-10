@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:iamdb/exceptions/not-found.exception.dart';
+import 'package:iamdb/exceptions/unauthorized.exception.dart';
 
 import '../common/utils.dart';
 import '../common/validator.dart';
@@ -58,7 +60,8 @@ class LoginState extends State<Login> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     controller: _emailController,
                     validator: (value) {
@@ -75,7 +78,8 @@ class LoginState extends State<Login> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     obscureText: _showPassword,
                     controller: _passwordController,
@@ -124,12 +128,10 @@ class LoginState extends State<Login> {
                       'Don\'t have an account yet?',
                     ),
                     TextButton(
-                      child: const Text(
-                        'Sign up',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        )
-                      ),
+                      child: const Text('Sign up',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )),
                       onPressed: () {
                         Signup.navigateTo(context);
                       },
@@ -166,8 +168,26 @@ class LoginState extends State<Login> {
         Navigator.of(context).pushReplacementNamed(Home.routeName);
       } catch (err) {
         log("Error: $err");
-        Utils.displayAlertDialog(
-            context, "Error during the Authentication", err.toString());
+        if (err is UnauthorizedException) {
+          Utils.displayAlertDialog(
+            context,
+            "Authentication failed",
+            "The email or password you entered is incorrect",
+          );
+        }
+        if (err is NotFoundException) {
+          Utils.displayAlertDialog(
+            context,
+            "Authentication failed",
+            "The email or password you entered is incorrect",
+          );
+        } else {
+          Utils.displayAlertDialog(
+            context,
+            "Authentication failed",
+            "Something went wrong",
+          );
+        }
       }
     }
   }
