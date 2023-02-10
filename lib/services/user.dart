@@ -71,7 +71,7 @@ class UserService {
       String status,
       File? image) async {
     final request =
-        http.MultipartRequest('POST', Uri.parse("$_baseUrl/register"));
+        http.MultipartRequest('PATCH', Uri.parse("$_baseUrl/profile"));
     if (image != null) {
       request.files.add(await http.MultipartFile.fromPath('file', image.path));
     }
@@ -99,5 +99,52 @@ class UserService {
     }
     var responseData = await http.Response.fromStream(response);
     return json.decode(responseData.body);
+  }
+
+  static Future updatePassword(String oldPassword, String newPassword) async {
+    final response = await http.patch(
+      Uri.parse("$_baseUrl/update-password"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'oldPassword': oldPassword,
+        'newPassword': newPassword
+      }),
+    );
+    if (response.statusCode != 201) {
+      switch (response.statusCode) {
+        case 400:
+          throw Exception('Bad request');
+        case 404:
+          throw Exception('Not Found');
+        case 500:
+          throw Exception('Internal Server Error');
+        case 503:
+          throw Exception('Service Unavailable');
+      }
+    }
+  }
+
+  static Future delete(String token) async {
+    final response = await http.delete(
+      Uri.parse("$_baseUrl/users"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'bearer $token'
+      },
+    );
+    if (response.statusCode != 201) {
+      switch (response.statusCode) {
+        case 400:
+          throw Exception('Bad request');
+        case 404:
+          throw Exception('Not Found');
+        case 500:
+          throw Exception('Internal Server Error');
+        case 503:
+          throw Exception('Service Unavailable');
+      }
+    }
   }
 }
