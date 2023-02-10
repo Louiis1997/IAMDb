@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../screens/anime_detail.dart';
-
 class SuggestionList extends StatelessWidget {
   final Future<List<dynamic>> future;
+  final onTap;
 
-  const SuggestionList({Key? key, required this.future}) : super(key: key);
+  const SuggestionList({Key? key, required this.future, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,12 @@ class SuggestionList extends StatelessWidget {
             if (snapshot.hasData) {
               final data = snapshot.data;
               if (data == null || data.isEmpty) {
-                return const Center(child: Text('No data'));
+                return Center(
+                  child: Text(
+                    'No anime or manga found',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                );
               }
               return buildSuggestionListView(snapshot.data);
             }
@@ -40,11 +45,12 @@ class SuggestionList extends StatelessWidget {
     return SizedBox(
       height: 170,
       child: ListView.builder(
+        scrollDirection: Axis.horizontal,
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              AnimeDetail.navigateTo(context, data[index].malId);
+              onTap(context, data[index].malId);
             },
             child: Container(
               margin: const EdgeInsets.symmetric(
@@ -80,7 +86,6 @@ class SuggestionList extends StatelessWidget {
             ),
           );
         },
-        scrollDirection: Axis.horizontal,
       ),
     );
   }

@@ -190,7 +190,7 @@ class MyApp extends StatelessWidget {
         cardColor: const Color.fromRGBO(30, 30, 30, 0.8),
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
       ),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       routes: MyRouter.routes(),
       onGenerateRoute: MyRouter.getRouter,
     );

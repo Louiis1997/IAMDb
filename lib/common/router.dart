@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/screens/events/event-details.dart';
+import 'package:iamdb/screens/manga_detail.dart';
 
+import '../screens/events/event-details.dart';
 import '../screens/splash.dart';
 import '../screens/agenda.dart';
 import '../screens/anime_trailer.dart';
@@ -37,6 +38,14 @@ class MyRouter {
         if (args is int) {
           screen = AnimeDetail(
             animeId: args,
+          );
+        }
+        break;
+      case MangaDetail.routeName:
+        final args = settings.arguments;
+        if (args is int) {
+          screen = MangaDetail(
+            mangaId: args,
           );
         }
         break;

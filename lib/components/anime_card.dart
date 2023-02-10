@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../services/agenda.dart';
+import '../main.dart';
 import '../models/anime.dart';
 
 class AnimeCard extends StatefulWidget {
@@ -14,7 +16,13 @@ class AnimeCard extends StatefulWidget {
 }
 
 class _AnimeCardState extends State<AnimeCard> {
-  bool state = false;
+  String _status = "";
+
+  @override
+  void initState() {
+    _getStatus(widget.anime.malId.toString());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,86 +73,9 @@ class _AnimeCardState extends State<AnimeCard> {
                 ),
                 IconButton(
                   onPressed: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return StatefulBuilder(
-                          builder:
-                              (BuildContext context, StateSetter setState) {
-                            return Container(
-                              height: 250,
-                              color: Colors.amber,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CheckboxListTile(
-                                    title: const Text("Envie de voir"),
-                                    value: state,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        state = value ?? state;
-                                      });
-                                    },
-                                    activeColor: Colors.orange,
-                                    checkboxShape: const CircleBorder(),
-                                    secondary: const Icon(
-                                      Icons.access_time_outlined,
-                                      color: Colors.orange,
-                                    ),
-                                  ),
-                                  CheckboxListTile(
-                                    title: const Text("En pause"),
-                                    value: state,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        state = value ?? state;
-                                      });
-                                    },
-                                    activeColor: Colors.orange,
-                                    checkboxShape: const CircleBorder(),
-                                    secondary: const Icon(
-                                      Icons.pause_circle_outline,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  CheckboxListTile(
-                                    title: const Text("En cours"),
-                                    value: state,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        state = value ?? state;
-                                      });
-                                    },
-                                    activeColor: Colors.orange,
-                                    checkboxShape: const CircleBorder(),
-                                    secondary: const Icon(
-                                      Icons.play_circle_outline,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                  CheckboxListTile(
-                                    title: const Text("Terminés"),
-                                    value: state,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        state = value ?? state;
-                                      });
-                                    },
-                                    activeColor: Colors.orange,
-                                    checkboxShape: const CircleBorder(),
-                                    secondary: const Icon(
-                                        Icons.check_circle_outline,
-                                        color: Colors.blue),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
+                    _showModalBottomSheet();
                   },
-                  icon: const Icon(Icons.add_circle_outline),
+                  icon: _icon(),
                 ),
               ],
             ),
@@ -152,5 +83,105 @@ class _AnimeCardState extends State<AnimeCard> {
         );
       },
     );
+  }
+
+  void _showModalBottomSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              height: 250,
+              color: Theme.of(context).primaryColor,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CheckboxListTile(
+                    title: const Text("Envie de voir"),
+                    value: _status == "Envie de voir 🤤",
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _status = value == true ? "Envie de voir 🤤" : "";
+                      });
+                    },
+                    activeColor: Colors.orange,
+                    checkboxShape: const CircleBorder(),
+                    secondary: const Icon(
+                      Icons.access_time_outlined,
+                      color: Colors.orange,
+                    ),
+                  ),
+                  CheckboxListTile(
+                    title: const Text("En pause"),
+                    value: _status == "En pause 🤒",
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _status = value == true ? "En pause 🤒" : "";
+                      });
+                    },
+                    activeColor: Colors.orange,
+                    checkboxShape: const CircleBorder(),
+                    secondary: const Icon(
+                      Icons.pause_circle_outline,
+                      color: Colors.red,
+                    ),
+                  ),
+                  CheckboxListTile(
+                    title: const Text("En cours"),
+                    value: _status == "En cours ⏳",
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _status = value == true ? "En cours ⏳" : "";
+                      });
+                    },
+                    activeColor: Colors.orange,
+                    checkboxShape: const CircleBorder(),
+                    secondary: const Icon(
+                      Icons.play_circle_outline,
+                      color: Colors.green,
+                    ),
+                  ),
+                  CheckboxListTile(
+                    title: const Text("Terminés"),
+                    value: _status == "Terminés ✅",
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _status = value == true ? "Terminés ✅" : "";
+                      });
+                    },
+                    activeColor: Colors.orange,
+                    checkboxShape: const CircleBorder(),
+                    secondary: const Icon(Icons.check_circle_outline,
+                        color: Colors.blue),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _getStatus(String animeId) async {
+    final token = await storage.read(key: "token");
+    String status = await AgendaService.getAnimeStatus(token!, animeId);
+    setState(() {
+      _status = status;
+    });
+  }
+
+  Icon _icon() {
+    if (_status == "Terminés ✅") {
+      return Icon(Icons.check_circle_outline, color: Colors.blue);
+    } else if (_status == "En cours ⏳") {
+      return Icon(Icons.play_circle_outline, color: Colors.green);
+    } else if (_status == "En pause 🤒") {
+      return Icon(Icons.pause_circle_outline, color: Colors.red);
+    } else if (_status == "Envie de voir 🤤") {
+      return Icon(Icons.access_time_outlined, color: Colors.orange);
+    }
+    return Icon(Icons.add_circle_outline);
   }
 }

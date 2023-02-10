@@ -23,7 +23,12 @@ class CarouselBanner extends StatelessWidget {
             if (snapshot.hasData) {
               final animes = snapshot.data;
               if (animes == null || animes.isEmpty) {
-                return const Center(child: Text('No data'));
+                return Center(
+                  child: Text(
+                    'No anime found',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                );
               }
               return buildCarouselSliderTopAnime(snapshot.data);
             }

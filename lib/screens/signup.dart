@@ -2,10 +2,10 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:iamdb/components/status_drop_down_button.dart';
-import 'package:iamdb/services/auth.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../components/status_drop_down_button.dart';
+import '../services/auth.dart';
 import '../common/utils.dart';
 import '../common/validator.dart';
 import '../components/birthday_date_picker.dart';

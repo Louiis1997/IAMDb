@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/common/date.helpers.dart';
-import 'package:iamdb/main.dart';
-import 'package:iamdb/models/event.dart';
-import 'package:iamdb/services/event.service.dart';
+
+import '../../common/date_helpers.dart';
+import '../../models/event.dart';
 
 class EventDetails extends StatelessWidget {
   final Event event;

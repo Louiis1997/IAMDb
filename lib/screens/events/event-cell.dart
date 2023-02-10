@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/common/date.helpers.dart';
-import 'package:iamdb/models/event.dart';
-import 'package:iamdb/screens/events/event-details.dart';
+import '../../common/date_helpers.dart';
+import '../../models/event.dart';
+import '../../screens/events/event-details.dart';
 
 class EventCell extends StatelessWidget {
   final Event event;

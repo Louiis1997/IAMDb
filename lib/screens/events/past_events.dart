@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/models/event.dart';
-import 'package:iamdb/screens/events/event-cell.dart';
+
+import '../../models/event.dart';
+import '../../screens/events/event-cell.dart';
 
 class PastEvents extends StatelessWidget {
   final Future<List<dynamic>> future;

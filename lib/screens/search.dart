@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:iamdb/screens/anime_detail.dart';
-import 'package:iamdb/services/anime.dart';
 
+import '../screens/anime_detail.dart';
+import '../services/anime.dart';
 import '../common/debouncer.dart';
 import '../components/anime_card.dart';
 import '../main.dart';
