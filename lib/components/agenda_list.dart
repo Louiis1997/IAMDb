@@ -24,7 +24,12 @@ class AgendaList extends StatelessWidget {
             if (snapshot.hasData) {
               final data = snapshot.data;
               if (data == null || data.isEmpty) {
-                return const Center(child: Text('No data'));
+                return Center(
+                  child: Text(
+                    'No anime added yet',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                );
               }
               return buildAgendaListView(snapshot.data);
             }
@@ -54,7 +59,12 @@ class AgendaList extends StatelessWidget {
                   if (snapshot.hasData) {
                     final anime = snapshot.data;
                     if (anime == null) {
-                      return const Center(child: Text('No data'));
+                      return Center(
+                        child: Text(
+                          'No anime added yet',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      );
                     }
                     return AnimeCard(
                       anime: anime,

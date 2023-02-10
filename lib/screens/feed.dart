@@ -5,6 +5,8 @@ import '../components/suggestion_list.dart';
 import '../main.dart';
 import '../services/anime.dart';
 import '../services/manga.dart';
+import 'anime_detail.dart';
+import 'manga_detail.dart';
 import 'search.dart';
 
 class Feed extends StatelessWidget {
@@ -56,6 +58,7 @@ class Feed extends StatelessWidget {
             ),
             SuggestionList(
               future: _getSeasonNow(),
+              onTap: _onTapToAnime,
             ),
             Container(
               padding: const EdgeInsets.symmetric(
@@ -68,6 +71,7 @@ class Feed extends StatelessWidget {
             ),
             SuggestionList(
               future: _getTopManga(),
+              onTap: _onTapToManga,
             ),
           ],
         ),
@@ -83,5 +87,13 @@ class Feed extends StatelessWidget {
   Future<List<dynamic>> _getSeasonNow() async {
     final token = await storage.read(key: "token");
     return AnimeService.getSeasonNow(token!);
+  }
+
+  void _onTapToAnime(BuildContext context, int id) {
+    AnimeDetail.navigateTo(context, id);
+  }
+
+  void _onTapToManga(BuildContext context, int id) {
+    MangaDetail.navigateTo(context, id);
   }
 }

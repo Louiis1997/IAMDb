@@ -15,9 +15,9 @@ class Agenda extends StatelessWidget {
   }
 
   static const List<Tab> agendaTabs = <Tab>[
-    Tab(text: 'En cours'),
-    Tab(text: 'En pause'),
-    Tab(text: 'Envie de voir'),
+    Tab(text: 'In progress'),
+    Tab(text: 'Paused'),
+    Tab(text: 'Want to see'),
   ];
 
   @override

@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        cardColor: const Color.fromRGBO(200, 200, 200, 0.8),
+        cardColor: const Color.fromRGBO(230, 230, 230, 0.8),
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
       ),
       darkTheme: ThemeData(

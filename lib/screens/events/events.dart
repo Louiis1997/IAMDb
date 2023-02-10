@@ -4,7 +4,7 @@ import 'package:iamdb/screens/events/event-creation.dart';
 import 'package:iamdb/screens/events/live_events.dart';
 import 'package:iamdb/screens/events/past_events.dart';
 import 'package:iamdb/screens/events/upcoming_events.dart';
-import 'package:iamdb/services/event.service.dart';
+import 'package:iamdb/services/event.dart';
 
 class Events extends StatelessWidget {
   const Events({Key? key}) : super(key: key);

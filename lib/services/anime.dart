@@ -52,6 +52,7 @@ class AnimeService {
   }
 
   static Future<List<TopAnime>> getTopAnime(String token) async {
+    await Future.delayed(const Duration(seconds: 1));
     final response = await http.get(
       Uri.parse("$_baseUrl/top"),
       headers: <String, String>{

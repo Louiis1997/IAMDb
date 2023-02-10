@@ -11,7 +11,7 @@ import 'package:iamdb/exceptions/events/event-creation.exception.dart';
 import 'package:iamdb/exceptions/events/event-duplicate.exception.dart';
 import 'package:iamdb/exceptions/unauthorized.exception.dart';
 import 'package:iamdb/main.dart';
-import 'package:iamdb/services/event.service.dart';
+import 'package:iamdb/services/event.dart';
 
 class EventCreation extends StatefulWidget {
   const EventCreation({Key? key}) : super(key: key);

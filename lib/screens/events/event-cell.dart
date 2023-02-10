@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iamdb/common/date.helpers.dart';
-import 'package:iamdb/models/event.dart';
-import 'package:iamdb/screens/events/event-details.dart';
+import '../../models/event.dart';
+import '../../screens/events/event-details.dart';
 
 class EventCell extends StatelessWidget {
   final Event event;
@@ -19,7 +19,7 @@ class EventCell extends StatelessWidget {
         children: [
           Expanded(
             child: Card(
-              color: Color.fromRGBO(255, 255, 255, 0.8),
+              color: Theme.of(context).cardColor,
               child: InkWell(
                 onTap: () {
                   EventDetails.navigateTo(context, event);

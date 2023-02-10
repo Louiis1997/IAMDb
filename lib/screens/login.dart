@@ -158,7 +158,7 @@ class LoginState extends State<Login> {
                 Radius.circular(10),
               ),
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).primaryColor,
             duration: Duration(seconds: 1),
           ),
         );
