@@ -69,33 +69,4 @@ class AuthService {
     var responseData = await http.Response.fromStream(response);
     return json.decode(responseData.body);
   }
-
-  static Future updatePassword(
-      String email, String oldPassword, String newPassword) async {
-    final response = await http.post(
-      Uri.parse("$_baseUrl/update-password"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': email,
-        'oldPassword': oldPassword,
-        'newPassword': newPassword
-      }),
-    );
-    if (response.statusCode != 201) {
-      switch (response.statusCode) {
-        case 400:
-          throw Exception('Bad request');
-        case 404:
-          throw Exception('Not Found');
-        case 500:
-          throw Exception('Internal Server Error');
-        case 503:
-          throw Exception('Service Unavailable');
-      }
-    }
-    final responseData = json.decode(response.body);
-    return responseData;
-  }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +11,11 @@ const storage = FlutterSecureStorage();
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  runApp(const MyApp());
+  runApp(
+      ProviderScope(
+          child: const MyApp(),
+      ),
+  );
 }
 
 class MyApp extends StatelessWidget {

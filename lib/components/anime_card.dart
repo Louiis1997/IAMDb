@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../services/agenda.dart';
@@ -103,6 +105,7 @@ class _AnimeCardState extends State<AnimeCard> {
                     onChanged: (bool? value) {
                       setState(() {
                         _status = value == true ? "Envie de voir 🤤" : "";
+                        _updateStatus();
                       });
                     },
                     activeColor: Colors.orange,
@@ -118,6 +121,7 @@ class _AnimeCardState extends State<AnimeCard> {
                     onChanged: (bool? value) {
                       setState(() {
                         _status = value == true ? "En pause 🤒" : "";
+                        _updateStatus();
                       });
                     },
                     activeColor: Colors.orange,
@@ -133,6 +137,7 @@ class _AnimeCardState extends State<AnimeCard> {
                     onChanged: (bool? value) {
                       setState(() {
                         _status = value == true ? "En cours ⏳" : "";
+                        _updateStatus();
                       });
                     },
                     activeColor: Colors.orange,
@@ -148,6 +153,7 @@ class _AnimeCardState extends State<AnimeCard> {
                     onChanged: (bool? value) {
                       setState(() {
                         _status = value == true ? "Terminés ✅" : "";
+                        _updateStatus();
                       });
                     },
                     activeColor: Colors.orange,
@@ -170,6 +176,14 @@ class _AnimeCardState extends State<AnimeCard> {
     setState(() {
       _status = status;
     });
+  }
+
+  void _updateStatus() async {
+    final token = await storage.read(key: "token");
+    if(_status == "")
+      await AgendaService.deleteAnimeStatus(token!, widget.anime.malId.toString());
+    else
+      await AgendaService.updateAgendaStatus(token!, widget.anime.malId, _status);
   }
 
   Icon _icon() {
