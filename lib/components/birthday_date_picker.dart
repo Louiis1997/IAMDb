@@ -21,7 +21,9 @@ class _BirthdayScrollDatePickerState extends State<BirthdayScrollDatePicker> {
       controller: widget.birthdayController,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Date of birth (yyyy-mm-dd)',
+        labelText: 'Date of birth',
+        hintText: '1984-01-01',
+        filled: false,
       ),
       onTap: _onTap,
     );

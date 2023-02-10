@@ -64,55 +64,63 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     controller: _userNameController,
                     validator: (value) => Validator.validateForm(value ?? ""),
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username',
+                      hintText: 'john.doe',
+                      filled: false,
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     controller: _firstNameController,
                     validator: (value) => Validator.validateForm(value ?? ""),
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Firstname',
+                      hintText: 'John',
+                      filled: false,
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     controller: _lastNameController,
                     validator: (value) => Validator.validateForm(value ?? ""),
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'LastName',
+                      labelText: 'Lastname',
+                      hintText: 'Doe',
+                      filled: false,
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
                   child: TextFormField(
                     controller: _emailController,
                     validator: (value) => Validator.validateEmail(value ?? ""),
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
+                      hintText: 'john.doe@example.com',
+                      filled: false,
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     obscureText: true,
                     controller: _passwordController,
@@ -121,12 +129,14 @@ class _SignupState extends State<Signup> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
+                      hintText: '********',
+                      filled: false,
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     obscureText: true,
                     controller: _passwordConfirmationController,
@@ -135,29 +145,34 @@ class _SignupState extends State<Signup> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Confirm Password',
+                      hintText: '********',
+                      filled: false,
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
                   child: TextFormField(
                     controller: _bioController,
                     maxLines: 3,
                     maxLength: 150,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Bio',
+                      labelText: 'Biography',
+                      hintText: 'I am a developer and I love Flutter!',
+                      helperText: 'Enter a short biography of yourself',
+                      filled: false,
                     ),
                     textInputAction: TextInputAction.done,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: StatusDropDownButton(onChanged: _onChanged),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: BirthdayScrollDatePicker(
                     birthdayController: _birthdayController,
                   ),

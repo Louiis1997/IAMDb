@@ -33,7 +33,7 @@ class LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          MyApp.title,
+          'Login',
         ),
       ),
       body: SingleChildScrollView(
@@ -45,14 +45,20 @@ class LoginState extends State<Login> {
               children: [
                 Container(
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    MyApp.title,
-                    style: Theme.of(context).textTheme.headline1,
+                  padding: const EdgeInsets.all(50),
+                  child: Column(
+                    children: [
+                      // Image of the app
+                      Image.asset(
+                        'images/iamdb-logo.png',
+                        width: 100,
+                        height: 100,
+                      ),
+                    ],
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     controller: _emailController,
                     validator: (value) {
@@ -60,13 +66,16 @@ class LoginState extends State<Login> {
                     },
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Email',
+                      labelText: 'Email address',
+                      hintText: 'john.doe@example.com',
+                      helperText: 'Enter your email address',
+                      filled: false,
                     ),
                     textInputAction: TextInputAction.next,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     obscureText: _showPassword,
                     controller: _passwordController,
@@ -74,6 +83,7 @@ class LoginState extends State<Login> {
                       return Validator.validatePassword(value ?? "");
                     },
                     decoration: InputDecoration(
+                      filled: false,
                       suffixIcon: GestureDetector(
                         onTap: () {
                           setState(() => _showPassword = !_showPassword);
@@ -87,6 +97,8 @@ class LoginState extends State<Login> {
                       ),
                       border: const OutlineInputBorder(),
                       labelText: 'Password',
+                      hintText: '********',
+                      helperText: 'Enter your password',
                     ),
                     textInputAction: TextInputAction.done,
                   ),
@@ -109,11 +121,14 @@ class LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     const Text(
-                      'Does not have account?',
+                      'Don\'t have an account yet?',
                     ),
                     TextButton(
                       child: const Text(
                         'Sign up',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        )
                       ),
                       onPressed: () {
                         Signup.navigateTo(context);

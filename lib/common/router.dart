@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/screens/events/event-details.dart';
 
 import '../screens/splash.dart';
 import '../screens/agenda.dart';
@@ -10,6 +11,8 @@ import '../screens/profile.dart';
 import '../screens/screen_not_found.dart';
 import '../screens/search.dart';
 import '../screens/signup.dart';
+import '../screens/events/event.dart';
+import '../models/event.dart';
 
 class MyRouter {
   static Map<String, Widget Function(BuildContext context)> routes() {
@@ -21,6 +24,7 @@ class MyRouter {
       Search.routeName: (context) => const Search(),
       Agenda.routeName: (context) => const Agenda(),
       Profile.routeName: (context) => const Profile(),
+      Events.routeName: (context) => const Events(),
     };
   }
 
@@ -41,6 +45,15 @@ class MyRouter {
         if (args is String) {
           screen = AnimeTrailer(
             youtubeId: args,
+          );
+        }
+        break;
+      case EventDetails.routeName:
+        print('EventDetails.routeName: ${settings.arguments}');
+        final args = settings.arguments;
+        if (args is Event) {
+          screen = EventDetails(
+            event: args,
           );
         }
         break;

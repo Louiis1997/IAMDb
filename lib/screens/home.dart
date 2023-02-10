@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'agenda.dart';
 import 'feed.dart';
 import 'profile.dart';
-import 'event.dart';
+import 'events/event.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _Home extends State<Home> {
   final List<Widget> _screens = [
     const Feed(),
     const Agenda(),
-    const Event(),
+    const Events(),
     const Profile(),
   ];
 
@@ -41,20 +41,19 @@ class _Home extends State<Home> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon:
-                Icon(_currentScreen == 1 ? Icons.event : Icons.event_outlined),
+            icon: Icon(_currentScreen == 1
+                ? Icons.calendar_month
+                : Icons.calendar_today_outlined),
             label: "Agenda",
           ),
           BottomNavigationBarItem(
-            icon: Icon(_currentScreen == 2
-                ? Icons.people_rounded
-                : Icons.people_outline_rounded),
-            label: "Event",
+            icon:
+                Icon(_currentScreen == 2 ? Icons.place : Icons.place_outlined),
+            label: "Events",
           ),
           BottomNavigationBarItem(
-            icon: Icon(_currentScreen == 3
-                ? Icons.person_pin_sharp
-                : Icons.person_pin_outlined),
+            icon:
+                Icon(_currentScreen == 3 ? Icons.person : Icons.person_outline),
             label: "Profile",
           ),
         ],

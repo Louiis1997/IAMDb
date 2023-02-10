@@ -94,11 +94,11 @@ class MyApp extends StatelessWidget {
           fillColor: Color.fromRGBO(200, 200, 200, 0.8),
         ),
         appBarTheme: AppBarTheme(
-          titleTextStyle: GoogleFonts.roboto(
+          titleTextStyle: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               color: Color.fromRGBO(0, 0, 0, 1),
               fontSize: 32,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w900,
             ),
           ),
         ),
@@ -183,7 +183,7 @@ class MyApp extends StatelessWidget {
             textStyle: const TextStyle(
               color: Color.fromRGBO(0, 0, 0, 1),
               fontSize: 32,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w900,
             ),
           ),
         ),

@@ -44,12 +44,13 @@ class Utils {
     );
   }
 
-  static void displayAlertDialogChoices(
-      {required BuildContext context,
-      required String title,
-      required String question,
-      required Widget cancelBtn,
-      required Widget confirmBtn}) {
+  static void displayAlertDialogChoices({
+    required BuildContext context,
+    required String title,
+    required String question,
+    required Widget cancelBtn,
+    required Widget confirmBtn,
+  }) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

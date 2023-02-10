@@ -25,14 +25,14 @@ class _StatusDropDownButtonState extends State<StatusDropDownButton> {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       value: _dropdownValue,
-      hint: const Text('Status'),
+      hint: const Text('Social status'),
       elevation: 16,
       style: Theme.of(context).textTheme.bodyText1,
       onChanged: (String? value) {
         setState(() {
           _dropdownValue = value!;
           widget.onChanged(_dropdownValue!);
-          _labelText = 'Status';
+          _labelText = 'Social status';
         });
       },
       items: status.map<DropdownMenuItem<String>>((String value) {
