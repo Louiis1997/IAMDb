@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import '../common/utils.dart';
@@ -58,7 +56,8 @@ class LoginState extends State<Login> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     controller: _emailController,
                     validator: (value) {
@@ -75,7 +74,8 @@ class LoginState extends State<Login> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     obscureText: _showPassword,
                     controller: _passwordController,
@@ -124,12 +124,10 @@ class LoginState extends State<Login> {
                       'Don\'t have an account yet?',
                     ),
                     TextButton(
-                      child: const Text(
-                        'Sign up',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        )
-                      ),
+                      child: const Text('Sign up',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )),
                       onPressed: () {
                         Signup.navigateTo(context);
                       },
@@ -165,9 +163,13 @@ class LoginState extends State<Login> {
         await storage.write(key: "token", value: response["access_token"]);
         Navigator.of(context).pushReplacementNamed(Home.routeName);
       } catch (err) {
-        log("Error: $err");
-        Utils.displayAlertDialog(
-            context, "Error during the Authentication", err.toString());
+        if (err.toString().contains("404")) {
+          Utils.displayAlertDialog(context, "Error during the Authentication",
+              "Invalid credentials");
+        } else {
+          Utils.displayAlertDialog(
+              context, "Error during the Authentication", err.toString());
+        }
       }
     }
   }

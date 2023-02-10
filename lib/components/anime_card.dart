@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import '../services/agenda.dart';
@@ -180,10 +178,12 @@ class _AnimeCardState extends State<AnimeCard> {
 
   void _updateStatus() async {
     final token = await storage.read(key: "token");
-    if(_status == "")
-      await AgendaService.deleteAnimeStatus(token!, widget.anime.malId.toString());
+    if (_status == "")
+      await AgendaService.deleteAnimeStatus(
+          token!, widget.anime.malId.toString());
     else
-      await AgendaService.updateAgendaStatus(token!, widget.anime.malId, _status);
+      await AgendaService.updateAgendaStatus(
+          token!, widget.anime.malId, _status);
   }
 
   Icon _icon() {

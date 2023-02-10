@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -64,7 +63,8 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     controller: _userNameController,
                     validator: (value) => Validator.validateForm(value ?? ""),
@@ -78,7 +78,8 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     controller: _firstNameController,
                     validator: (value) => Validator.validateForm(value ?? ""),
@@ -92,7 +93,8 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     controller: _lastNameController,
                     validator: (value) => Validator.validateForm(value ?? ""),
@@ -106,7 +108,8 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 5),
                   child: TextFormField(
                     controller: _emailController,
                     validator: (value) => Validator.validateEmail(value ?? ""),
@@ -120,7 +123,8 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     obscureText: true,
                     controller: _passwordController,
@@ -136,7 +140,8 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
                     obscureText: true,
                     controller: _passwordConfirmationController,
@@ -152,7 +157,8 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 5),
                   child: TextFormField(
                     controller: _bioController,
                     maxLines: 3,
@@ -168,11 +174,13 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: StatusDropDownButton(onChanged: _onChanged),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: BirthdayScrollDatePicker(
                     birthdayController: _birthdayController,
                   ),
@@ -225,9 +233,13 @@ class _SignupState extends State<Signup> {
             _imageFile);
         Login.navigateTo(context);
       } catch (err) {
-        log("Error: $err");
-        Utils.displayAlertDialog(
-            context, "Error during the Registration", err.toString());
+        if (err.toString().contains("500")) {
+          Utils.displayAlertDialog(context, "Error during the Authentication",
+              "Internal Server Error");
+        } else {
+          Utils.displayAlertDialog(
+              context, "Error during the Authentication", err.toString());
+        }
       }
     }
   }

@@ -61,7 +61,7 @@ class AgendaList extends StatelessWidget {
                     if (anime == null) {
                       return Center(
                         child: Text(
-                          'No anime added yet',
+                          'No anime found',
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       );

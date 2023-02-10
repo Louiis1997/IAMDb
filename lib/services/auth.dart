@@ -17,13 +17,17 @@ class AuthService {
     if (response.statusCode != 201) {
       switch (response.statusCode) {
         case 400:
-          throw Exception('Bad request');
+          throw Exception('400: Bad request');
+        case 401:
+          throw Exception('401: Unauthorized');
         case 404:
-          throw Exception('Not Found');
+          throw Exception('404: Not Found');
+        case 429:
+          throw Exception('429: Too Many Request');
         case 500:
-          throw Exception('Internal Server Error');
+          throw Exception('500: Internal Server Error');
         case 503:
-          throw Exception('Service Unavailable');
+          throw Exception('503: Service Unavailable');
       }
     }
     final responseData = json.decode(response.body);
@@ -57,13 +61,17 @@ class AuthService {
     if (response.statusCode != 201) {
       switch (response.statusCode) {
         case 400:
-          throw Exception('Bad request');
+          throw Exception('400: Bad request');
+        case 401:
+          throw Exception('401: Unauthorized');
         case 404:
-          throw Exception('Not Found');
+          throw Exception('404: Not Found');
+        case 429:
+          throw Exception('429: Too Many Request');
         case 500:
-          throw Exception('Internal Server Error');
+          throw Exception('500: Internal Server Error');
         case 503:
-          throw Exception('Service Unavailable');
+          throw Exception('503: Service Unavailable');
       }
     }
     var responseData = await http.Response.fromStream(response);
