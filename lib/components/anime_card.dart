@@ -102,12 +102,7 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
                   CheckboxListTile(
                     title: const Text("Envie de voir"),
                     value: _status == "Envie de voir 🤤",
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _status = value == true ? "Envie de voir 🤤" : "";
-                        _updateStatus();
-                      });
-                    },
+                    onChanged: (bool? value) => setState(() => _onChanged(value, "Envie de voir 🤤")),
                     activeColor: Colors.orange,
                     checkboxShape: const CircleBorder(),
                     secondary: const Icon(
@@ -118,12 +113,7 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
                   CheckboxListTile(
                     title: const Text("En pause"),
                     value: _status == "En pause 🤒",
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _status = value == true ? "En pause 🤒" : "";
-                        _updateStatus();
-                      });
-                    },
+                    onChanged: (bool? value) => setState(() => _onChanged(value, "En pause 🤒")),
                     activeColor: Colors.orange,
                     checkboxShape: const CircleBorder(),
                     secondary: const Icon(
@@ -134,12 +124,7 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
                   CheckboxListTile(
                     title: const Text("En cours"),
                     value: _status == "En cours ⏳",
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _status = value == true ? "En cours ⏳" : "";
-                        _updateStatus();
-                      });
-                    },
+                    onChanged: (bool? value) => setState(() => _onChanged(value, "En cours ⏳")),
                     activeColor: Colors.orange,
                     checkboxShape: const CircleBorder(),
                     secondary: const Icon(
@@ -150,12 +135,7 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
                   CheckboxListTile(
                     title: const Text("Terminés"),
                     value: _status == "Terminés ✅",
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _status = value == true ? "Terminés ✅" : "";
-                        _updateStatus();
-                      });
-                    },
+                    onChanged: (bool? value) => setState(() => _onChanged(value, "Terminés ✅")),
                     activeColor: Colors.orange,
                     checkboxShape: const CircleBorder(),
                     secondary: const Icon(Icons.check_circle_outline,
@@ -167,7 +147,7 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
           },
         );
       },
-    );
+    ).whenComplete(() => _updateStatus());
   }
 
   void _getStatus(String animeId) async {
@@ -200,5 +180,9 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
       return Icon(Icons.access_time_outlined, color: Colors.orange);
     }
     return Icon(Icons.add_circle_outline);
+  }
+
+  void _onChanged(bool? value, String status) {
+    _status = value == true ? status : "";
   }
 }

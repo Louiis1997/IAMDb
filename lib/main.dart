@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           onPrimary: Color.fromRGBO(0, 0, 0, 1),
           secondary: Colors.grey,
           onSecondary: Colors.grey,
-          background: Colors.grey,
+          background: Color.fromRGBO(255, 255, 255, 0.8),
           onBackground: Colors.grey,
           error: Color.fromRGBO(255, 0, 0, 1),
           onError: Color.fromRGBO(244, 197, 24, 1),
@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
           ),
           indicator: UnderlineTabIndicator(
             borderSide: BorderSide(
-              color: Color.fromRGBO(0, 0, 0, 1),
+              color: Color.fromRGBO(244, 197, 24, 1),
               width: 2,
             ),
           ),
@@ -129,7 +129,7 @@ class MyApp extends StatelessWidget {
           onPrimary: Color.fromRGBO(0, 0, 0, 1),
           secondary: Color.fromRGBO(244, 197, 24, 1),
           onSecondary: Colors.grey,
-          background: Colors.grey,
+          background: Color.fromRGBO(255, 255, 255, 0.8),
           onBackground: Colors.grey,
           error: Color.fromRGBO(255, 0, 0, 1),
           onError: Color.fromRGBO(244, 197, 24, 1),
@@ -179,7 +179,7 @@ class MyApp extends StatelessWidget {
           ),
           indicator: UnderlineTabIndicator(
             borderSide: BorderSide(
-              color: Color.fromRGBO(255, 255, 255, 1),
+              color: Color.fromRGBO(244, 197, 24, 1),
               width: 2,
             ),
           ),
@@ -206,7 +206,7 @@ class MyApp extends StatelessWidget {
         primaryColorLight: const Color.fromRGBO(
             255, 223, 99, 1.0),
       ),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       routes: MyRouter.routes(),
       onGenerateRoute: MyRouter.getRouter,
     );

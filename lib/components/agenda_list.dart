@@ -89,7 +89,6 @@ class AgendaList extends StatelessWidget {
   Future<dynamic> _getAnime(int id, int index) async {
     await Future.delayed(Duration(seconds: (index / 2).round()));
     final token = await storage.read(key: "token");
-    final anime = await AnimeService.getAnimeById(token!, id);
-    return anime;
+    return AnimeService.getAnimeById(token!, id);
   }
 }
