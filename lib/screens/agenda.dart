@@ -35,8 +35,6 @@ class Agenda extends ConsumerWidget {
                 SliverAppBar(
                   title: const Text('Animes'),
                   pinned: true,
-                  floating: true,
-                  forceElevated: true,
                   bottom: TabBar(
                     labelStyle: Theme.of(context).tabBarTheme.labelStyle,
                     unselectedLabelStyle:
