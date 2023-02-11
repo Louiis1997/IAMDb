@@ -34,7 +34,7 @@ class _Home extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
-          'images/iamdb-logo.png',
+          'assets/iamdb-logo.png',
           fit: BoxFit.contain,
           height: 64,
         ),

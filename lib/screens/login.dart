@@ -24,7 +24,6 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-  var animationLink = 'images/character.riv';
   StateMachineController? controller;
   SMIInput<bool>? isChecking;
   SMIInput<double>? numLook;
@@ -76,7 +75,7 @@ class LoginState extends State<Login> {
                           isHandsUp = controller?.findInput("isHandsUp");
                           trigSuccess = controller?.findInput("trigSuccess");
                           trigFail = controller?.findInput("trigFail");
-                        }), 'images/character.riv'),
+                        }), 'assets/character.riv'),
                   ),
                 Container(
                   padding:

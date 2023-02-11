@@ -24,7 +24,7 @@ class EventDetails extends StatelessWidget {
       appBar: AppBar(
         title: Expanded(
           child: Image.asset(
-            'images/iamdb-logo.png',
+            'assets/iamdb-logo.png',
             fit: BoxFit.contain,
             height: 64,
           ),

@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:iamdb/models/user.dart';
+
+import '../models/user.dart';
 
 class UserService {
   static const _baseUrl = "http://localhost/users";

@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splash: "images/iamdb-logo.png",
+      splash: "assets/iamdb-logo.png",
       splashIconSize: MediaQuery.of(context).size.width * .5,
       nextScreen: const Login(),
       splashTransition: SplashTransition.fadeTransition,
