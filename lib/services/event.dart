@@ -82,7 +82,6 @@ class EventService {
       'startDate': eventStartDate.toIso8601String(),
       'endDate': eventEndDate.toIso8601String(),
     });
-    print("Body create event: $body");
     final response = await http.post(
       Uri.parse("$_baseUrl"),
       headers: <String, String>{

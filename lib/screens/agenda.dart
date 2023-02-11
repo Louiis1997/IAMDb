@@ -31,8 +31,6 @@ class Agenda extends StatelessWidget {
                 SliverAppBar(
                   title: const Text('Animes'),
                   pinned: true,
-                  floating: true,
-                  forceElevated: true,
                   bottom: TabBar(
                     labelStyle: Theme.of(context).tabBarTheme.labelStyle,
                     unselectedLabelStyle:

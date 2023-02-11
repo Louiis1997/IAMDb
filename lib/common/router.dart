@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/components/maps/map-view.dart';
+import 'package:iamdb/models/maps/map-arguments.dart';
 import 'package:iamdb/screens/events/event-creation.dart';
 import 'package:iamdb/screens/events/event-details.dart';
 import 'package:iamdb/screens/manga_detail.dart';
@@ -60,11 +62,18 @@ class MyRouter {
         }
         break;
       case EventDetails.routeName:
-        print('EventDetails.routeName: ${settings.arguments}');
         final args = settings.arguments;
         if (args is Event) {
           screen = EventDetails(
             event: args,
+          );
+        }
+        break;
+      case MapView.routeName:
+        final args = settings.arguments;
+        if (args is MapArguments) {
+          screen = MapView(
+            mapArguments: args,
           );
         }
         break;

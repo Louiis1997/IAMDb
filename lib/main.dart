@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,8 +10,9 @@ import 'common/router.dart';
 
 const storage = FlutterSecureStorage();
 
-void main() {
+Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
+  await dotenv.load();
   runApp(
       ProviderScope(
           child: const MyApp(),
@@ -107,6 +109,9 @@ class MyApp extends StatelessWidget {
         ),
         cardColor: const Color.fromRGBO(230, 230, 230, 0.8),
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
+        primaryColorLight: const Color.fromRGBO(
+            255, 223, 99, 1.0),
+        secondaryHeaderColor: const Color.fromRGBO(255, 240, 178, 1.0),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -189,6 +194,8 @@ class MyApp extends StatelessWidget {
         ),
         cardColor: const Color.fromRGBO(30, 30, 30, 0.8),
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
+        primaryColorLight: const Color.fromRGBO(
+            255, 223, 99, 1.0),
       ),
       themeMode: ThemeMode.system,
       routes: MyRouter.routes(),
