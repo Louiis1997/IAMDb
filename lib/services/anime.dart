@@ -126,33 +126,47 @@ class AnimeService {
   }
 
   static Future<Anime> getAnimeById(int id) async {
-    final token = await StorageUtils.getAuthToken();
-    final response = await http.get(
-      Uri.parse("$_baseUrl/$id"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'bearer $token'
-      },
-    );
-    if (response.statusCode != 200) {
-      switch (response.statusCode) {
-        case 400:
-          throw Exception('400: Bad request');
-        case 401:
-          throw Exception('401: Unauthorized');
-        case 404:
-          throw Exception('404: Not Found');
-        case 429:
-          throw Exception('429: Too Many Request');
-        case 500:
-          throw Exception('500: Internal Server Error');
-        case 503:
-          throw Exception('503: Service Unavailable');
+    int retry = 0;
+    while (retry < 20) {
+      try {
+        final token = await StorageUtils.getAuthToken();
+        final response = await http.get(
+          Uri.parse("$_baseUrl/$id"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'bearer $token'
+          },
+        );
+        if (response.statusCode != 200) {
+          switch (response.statusCode) {
+            case 400:
+              throw Exception('400: Bad request');
+            case 401:
+              throw Exception('401: Unauthorized');
+            case 404:
+              throw Exception('404: Not Found');
+            case 429:
+              throw Exception('429: Too Many Request');
+            case 500:
+              throw Exception('500: Internal Server Error');
+            case 503:
+              throw Exception('503: Service Unavailable');
+          }
+        }
+        final jsonBody = json.decode(response.body);
+        final Anime anime = Anime.fromJson(jsonBody['anime']);
+        return anime;
+      } catch (e) {
+        retry++;
+        print('Échec de la requête. Nombre de tentatives restantes : $retry');
+        if (retry == 20) {
+          print('Nombre maximum de tentatives atteint');
+          break;
+        }
+        await Future.delayed(Duration(milliseconds: 800));
       }
     }
-    final jsonBody = json.decode(response.body);
-    final Anime anime = Anime.fromJson(jsonBody['anime']);
-    return anime;
+    return Future.error(Exception('500: Impossible de récupérer les données'));
   }
 
   static Future<List<Episode>> getAnimeEpisodes(int id) async {

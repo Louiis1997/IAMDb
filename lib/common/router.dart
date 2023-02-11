@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/screens/anime_grid.dart';
+import 'package:iamdb/components/maps/map-view.dart';
+import 'package:iamdb/models/maps/map-arguments.dart';
+import 'package:iamdb/screens/events/event-creation.dart';
+import 'package:iamdb/screens/events/event-details.dart';
+import 'package:iamdb/screens/manga_detail.dart';
 
 import '../components/maps/map-view.dart';
 import '../models/maps/map-arguments.dart';
@@ -76,6 +82,14 @@ class MyRouter {
         if (args is MapArguments) {
           screen = MapView(
             mapArguments: args,
+          );
+        }
+        break;
+      case AnimeGrid.routeName:
+        final args = settings.arguments;
+        if (args is String) {
+          screen = AnimeGrid(
+            status: args,
           );
         }
         break;

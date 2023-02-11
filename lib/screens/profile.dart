@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/services/user.dart';
+
+import '../components/agenda_list_profil.dart';
+import '../main.dart';
+import '../services/agenda.dart';
+
+enum Status { enCours, enPause, envieDeVoir }
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
 
   static const String routeName = '/profile';
+
+  static const Map<Enum, String> status = {
+    Status.enCours: "En cours ⏳",
+    Status.enPause: "En pause 🤒",
+    Status.envieDeVoir: "Envie de voir 🤤",
+  };
 
   static void navigateTo(BuildContext context) {
     Navigator.of(context).pushNamed(routeName);
@@ -11,6 +24,53 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, _) {
+          return [
+            SliverAppBar(
+              title: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Profile',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              floating: true,
+              forceElevated: true,
+            ),
+          ];
+        },
+        body: ListView(
+          children: [
+            Container(
+
+            ),
+            AgendaListProfil(
+              future: _getAgenda(status[Status.enCours]!),
+              status: status[Status.enCours]!,
+            ),
+            AgendaListProfil(
+              future: _getAgenda(status[Status.enPause]!),
+              status: status[Status.enPause]!,
+            ),
+            AgendaListProfil(
+              future: _getAgenda(status[Status.envieDeVoir]!),
+              status: status[Status.envieDeVoir]!,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<List<dynamic>> _getAgenda(String status) async {
+    final token = await storage.read(key: "token");
+    return AgendaService.getAgendaByStatus(token!, status);
+  }
+
+  Future<dynamic> _getUserProfil() async {
+    final token = await storage.read(key: "token");
+    return await  UserService.getUser(token!);
   }
 }
