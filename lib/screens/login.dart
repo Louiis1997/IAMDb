@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 
 import '../exceptions/not-found.exception.dart';
 import '../exceptions/unauthorized.exception.dart';
@@ -23,10 +24,27 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
+  var animationLink = 'images/character.riv';
+  StateMachineController? controller;
+  SMIInput<bool>? isChecking;
+  SMIInput<double>? numLook;
+  SMIInput<bool>? isHandsUp;
+  SMIInput<bool>? trigSuccess;
+  SMIInput<bool>? trigFail;
+  FocusNode passwordFocusNode = FocusNode();
+  FocusNode emailFocusNode = FocusNode();
+  UnfocusDisposition disposition = UnfocusDisposition.scope;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _showPassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    emailFocusNode.addListener(emailFocus);
+    passwordFocusNode.addListener(passwordFocus);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +61,31 @@ class LoginState extends State<Login> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(50),
-                  child: Column(
-                    children: [
-                      // Image of the app
-                      Image.asset(
-                        'images/iamdb-logo.png',
-                        width: 100,
-                        height: 100,
-                      ),
-                    ],
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * .3,
+                    child: RiveAnimation.asset(
+                        stateMachines: const ["Login Machine"],
+                        onInit: ((artboard) {
+                          controller = StateMachineController.fromArtboard(
+                              artboard, "Login Machine");
+                          if (controller == null) return;
+                          artboard.addController(controller!);
+                          isChecking = controller?.findInput("isChecking");
+                          numLook = controller?.findInput("numLook");
+                          isHandsUp = controller?.findInput("isHandsUp");
+                          trigSuccess = controller?.findInput("trigSuccess");
+                          trigFail = controller?.findInput("trigFail");
+                        }), 'images/character.riv'),
                   ),
-                ),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
+                    focusNode: emailFocusNode,
+                    onChanged: (value) {
+                      numLook?.change(value.length.toDouble());
+                    },
                     controller: _emailController,
                     validator: (value) {
                       return Validator.validateEmail(value ?? "");
@@ -79,6 +104,7 @@ class LoginState extends State<Login> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextFormField(
+                    focusNode: passwordFocusNode,
                     obscureText: _showPassword,
                     controller: _passwordController,
                     validator: (value) {
@@ -145,6 +171,7 @@ class LoginState extends State<Login> {
   }
 
   void onClickLoginButton() async {
+    passwordFocusNode.unfocus(disposition: disposition);
     if (_formKey.currentState!.validate()) {
       try {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -163,6 +190,8 @@ class LoginState extends State<Login> {
         Map<String, dynamic> response = await AuthService.login(
             _emailController.text.trim(), _passwordController.text.trim());
         await storage.write(key: "token", value: response["access_token"]);
+        trigSuccess?.change(true);
+        await Future.delayed(Duration(seconds: 2));
         Navigator.of(context).pushReplacementNamed(Home.routeName);
       } catch (err) {
         if (err is UnauthorizedException) {
@@ -171,8 +200,7 @@ class LoginState extends State<Login> {
             "Authentication failed",
             "The email or password you entered is incorrect",
           );
-        }
-        else if (err is NotFoundException) {
+        } else if (err is NotFoundException) {
           Utils.displayAlertDialog(
             context,
             "Authentication failed",
@@ -187,5 +215,14 @@ class LoginState extends State<Login> {
         }
       }
     }
+    trigFail?.change(true);
+  }
+
+  void emailFocus() {
+    isChecking?.change(emailFocusNode.hasFocus);
+  }
+
+  void passwordFocus() {
+    isHandsUp?.change(passwordFocusNode.hasFocus);
   }
 }
