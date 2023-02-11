@@ -171,6 +171,7 @@ class LoginState extends State<Login> {
   }
 
   void onClickLoginButton() async {
+    await Future.delayed(Duration(seconds: 1));
     passwordFocusNode.unfocus(disposition: disposition);
     if (_formKey.currentState!.validate()) {
       try {
@@ -191,7 +192,7 @@ class LoginState extends State<Login> {
             _emailController.text.trim(), _passwordController.text.trim());
         await storage.write(key: "token", value: response["access_token"]);
         trigSuccess?.change(true);
-        await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(Duration(seconds: 1));
         Navigator.of(context).pushReplacementNamed(Home.routeName);
       } catch (err) {
         if (err is UnauthorizedException) {

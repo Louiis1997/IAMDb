@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
           // surface: Color.fromRGBO(244, 197, 24, 1),
-          surface: Colors.white,
+          surface: Color.fromRGBO(255, 255, 255, 1),
           onSurface: Color.fromRGBO(0, 0, 0, 1),
           // Colors that are not relevant to AppBar in DARK mode:
           primary: Color.fromRGBO(244, 197, 24, 1),
@@ -107,6 +107,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w900,
             ),
           ),
+          backgroundColor: const Color.fromRGBO(244, 197, 24, 1),
         ),
         cardColor: const Color.fromRGBO(230, 230, 230, 0.8),
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
@@ -115,7 +116,8 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         colorScheme: const ColorScheme(
           brightness: Brightness.dark,
-          surface: Color.fromRGBO(244, 197, 24, 1),
+          // surface: Color.fromRGBO(244, 197, 24, 1),
+          surface: Color.fromRGBO(40, 40, 40, 1),
           onSurface: Color.fromRGBO(0, 0, 0, 1),
           // Colors that are not relevant to AppBar in DARK mode:
           primary: Color.fromRGBO(244, 197, 24, 1),
@@ -192,11 +194,12 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w900,
             ),
           ),
+          backgroundColor: const Color.fromRGBO(244, 197, 24, 1),
         ),
         cardColor: const Color.fromRGBO(30, 30, 30, 0.8),
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       routes: MyRouter.routes(),
       onGenerateRoute: MyRouter.getRouter,
     );

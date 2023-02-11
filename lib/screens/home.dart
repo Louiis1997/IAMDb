@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/screens/search.dart';
 
+import '../screens/search.dart';
 import 'agenda.dart';
 import 'feed.dart';
 import 'profile.dart';
