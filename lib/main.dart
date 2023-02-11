@@ -32,7 +32,8 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          surface: Color.fromRGBO(244, 197, 24, 1),
+          // surface: Color.fromRGBO(244, 197, 24, 1),
+          surface: Colors.white,
           onSurface: Color.fromRGBO(0, 0, 0, 1),
           // Colors that are not relevant to AppBar in DARK mode:
           primary: Color.fromRGBO(244, 197, 24, 1),
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(244, 197, 24, 1),
             ),
           ),
+          // Titre 1
           headline2: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 24,
@@ -59,6 +61,7 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(0, 0, 0, 1),
             ),
           ),
+          // Titre 2
           bodyText1: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 16,
@@ -66,6 +69,7 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(0, 0, 0, 1),
             ),
           ),
+          // Texte normal
           bodyText2: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 16,
@@ -73,13 +77,7 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(0, 0, 0, 0.7),
             ),
           ),
-          subtitle2: GoogleFonts.roboto(
-            textStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Color.fromRGBO(255, 255, 255, 1),
-            ),
-          ),
+          // Texte normal grisé
         ),
         tabBarTheme: const TabBarTheme(
           labelColor: Color.fromRGBO(0, 0, 0, 1),
@@ -107,7 +105,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        cardColor: const Color.fromRGBO(200, 200, 200, 0.8),
+        cardColor: const Color.fromRGBO(230, 230, 230, 0.8),
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
       ),
       darkTheme: ThemeData(
@@ -134,6 +132,7 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(244, 197, 24, 1),
             ),
           ),
+          // Titre 1
           headline2: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 24,
@@ -141,6 +140,7 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(255, 255, 255, 1),
             ),
           ),
+          // Titre 2
           bodyText1: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 16,
@@ -148,6 +148,7 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(255, 255, 255, 1),
             ),
           ),
+          // Texte normal
           bodyText2: GoogleFonts.roboto(
             textStyle: const TextStyle(
               fontSize: 16,
@@ -155,13 +156,7 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(255, 255, 255, 0.7),
             ),
           ),
-          subtitle2: GoogleFonts.roboto(
-            textStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Color.fromRGBO(255, 255, 255, 1),
-            ),
-          ),
+          // Texte normal grisé
         ),
         tabBarTheme: const TabBarTheme(
           labelColor: Color.fromRGBO(0, 0, 0, 1),

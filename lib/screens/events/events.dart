@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
+import '..screens/events/event-creation.dart';
 import '../../screens/events/live_events.dart';
 import '../../screens/events/past_events.dart';
 import '../../screens/events/upcoming_events.dart';
@@ -22,15 +23,13 @@ class Events extends StatelessWidget {
       body: DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Events'),
-            bottom: const TabBar(
-              tabs: [
-                Tab(text: '👴🏻 Past 👵🏻'),
-                Tab(text: 'Live 👇🏻'),
-                Tab(text: 'Upcoming 🔮'),
-              ],
-            ),
+          appBar: TabBar(
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            tabs: [
+              Tab(text: '👴🏻 Past 👵🏻'),
+              Tab(text: 'Live 👇🏻'),
+              Tab(text: 'Upcoming 🔮'),
+            ],
           ),
           body: TabBarView(
             children: [
@@ -45,6 +44,15 @@ class Events extends StatelessWidget {
               ),
             ],
           ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              EventCreation.navigateTo(context);
+            },
+            child: const Icon(Icons.add, color: Colors.white),
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+          floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         ),
       ),
     );

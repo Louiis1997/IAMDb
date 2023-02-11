@@ -45,6 +45,7 @@ class _StatusDropDownButtonState extends State<StatusDropDownButton> {
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: _labelText,
+        filled: false,
       ),
     );
   }

@@ -7,7 +7,6 @@ import '../services/anime.dart';
 import '../services/manga.dart';
 import 'anime_detail.dart';
 import 'manga_detail.dart';
-import 'search.dart';
 
 class Feed extends StatelessWidget {
   const Feed({Key? key}) : super(key: key);
@@ -19,30 +18,6 @@ class Feed extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                onTap: () {
-                  Search.navigateTo(context);
-                },
-                readOnly: true,
-                decoration: const InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                  ),
-                  hintText: 'Search...',
-                  suffixIcon: Icon(
-                    Icons.search,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
             const CarouselBanner(),
             const SizedBox(
               height: 10,

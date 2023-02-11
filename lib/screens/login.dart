@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../exceptions/not-found.exception.dart';
+import '../exceptions/unauthorized.exception.dart';
 import '../common/utils.dart';
 import '../common/validator.dart';
 import '../main.dart';
@@ -163,12 +165,25 @@ class LoginState extends State<Login> {
         await storage.write(key: "token", value: response["access_token"]);
         Navigator.of(context).pushReplacementNamed(Home.routeName);
       } catch (err) {
-        if (err.toString().contains("404")) {
-          Utils.displayAlertDialog(context, "Error during the Authentication",
-              "Invalid credentials");
+        if (err is UnauthorizedException) {
+          Utils.displayAlertDialog(
+            context,
+            "Authentication failed",
+            "The email or password you entered is incorrect",
+          );
+        }
+        else if (err is NotFoundException) {
+          Utils.displayAlertDialog(
+            context,
+            "Authentication failed",
+            "The email or password you entered is incorrect",
+          );
         } else {
           Utils.displayAlertDialog(
-              context, "Error during the Authentication", err.toString());
+            context,
+            "Authentication failed",
+            "Something went wrong",
+          );
         }
       }
     }

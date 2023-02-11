@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:iamdb/exceptions/not-found.exception.dart';
+import 'package:iamdb/exceptions/unauthorized.exception.dart';
 
 class AuthService {
   static const _baseUrl = "http://localhost/auth";
@@ -17,17 +19,17 @@ class AuthService {
     if (response.statusCode != 201) {
       switch (response.statusCode) {
         case 400:
-          throw Exception('400: Bad request');
+          throw Exception('Bad request');
         case 401:
-          throw Exception('401: Unauthorized');
+          throw UnauthorizedException('Unauthorized');
         case 404:
-          throw Exception('404: Not Found');
+          throw NotFoundException('Not Found');
         case 429:
-          throw Exception('429: Too Many Request');
+          throw Exception('Too Many Request');
         case 500:
-          throw Exception('500: Internal Server Error');
+          throw Exception('Internal Server Error');
         case 503:
-          throw Exception('503: Service Unavailable');
+          throw Exception('Service Unavailable');
       }
     }
     final responseData = json.decode(response.body);

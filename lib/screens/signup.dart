@@ -9,7 +9,6 @@ import '../common/utils.dart';
 import '../common/validator.dart';
 import '../components/birthday_date_picker.dart';
 import '../components/profile_image_picker.dart';
-import '../main.dart';
 import 'login.dart';
 
 class Signup extends StatefulWidget {
@@ -42,7 +41,7 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(MyApp.title)),
+      appBar: AppBar(title: const Text('Sign up')),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,

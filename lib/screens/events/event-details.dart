@@ -11,7 +11,7 @@ class EventDetails extends StatelessWidget {
     required this.event,
   }) : super(key: key);
 
-  static const String routeName = '/event_details';
+  static const String routeName = '/event-details';
 
   static void navigateTo(BuildContext context, Event event) {
     Navigator.of(context).pushNamed(routeName, arguments: event);
@@ -37,58 +37,11 @@ class EventDetails extends StatelessWidget {
             padding: const EdgeInsets.all(15.0),
             child: Row(
               children: [
-                Text(
-                  event.name,
-                  style: Theme.of(context).appBarTheme.titleTextStyle,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Text(
-                      event.address,
-                      style: const TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Text(
-                      '${event.city} ${event.zipCode}',
-                      style: const TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Text(
-                      event.country,
-                      style: const TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                Flexible(
+                  child: Text(
+                    event.name,
+                    style: Theme.of(context).appBarTheme.titleTextStyle,
+                  ),
                 ),
               ],
             ),
@@ -117,7 +70,7 @@ class EventDetails extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
             child: Row(
               children: [
                 Expanded(child: Container()),
@@ -125,10 +78,73 @@ class EventDetails extends StatelessWidget {
                   DateHelpers.formatEventDates(
                       startDate: event.startDate, endDate: event.endDate),
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 16
-                  ),
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+
+          // TODO Add a map here to do location & directions using google maps
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Flexible(
+                      child: Text(
+                        '📍 ${event.address}',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      flex: 0,
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Flexible(
+                      child: Text(
+                        '${event.city} ${event.zipCode}',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
+                      flex: 0,
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Flexible(
+                      child: Text(
+                        event.country,
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      flex: 0,
+                    ),
+                  ],
                 ),
               ],
             ),

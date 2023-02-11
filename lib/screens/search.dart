@@ -49,6 +49,7 @@ class _SearchState extends State<Search> {
                 onChanged: _onChanged(),
                 decoration: InputDecoration(
                   hintText: 'Search...',
+                  filled: false,
                   prefixIcon: IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -79,7 +80,7 @@ class _SearchState extends State<Search> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _filter == type
                                 ? Theme.of(context).primaryColor
-                                : Colors.grey,
+                                : Color.fromRGBO(240, 240, 240, 0.8),
                           ),
                           onPressed: () {
                             _onPressed(type);
