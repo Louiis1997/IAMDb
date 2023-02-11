@@ -1,7 +1,6 @@
 class Episode {
   final int malId;
   final String title;
-  final String? duration;
   final String? aired;
   final bool? filler;
   final bool? recap;
@@ -9,7 +8,6 @@ class Episode {
   Episode({
     required this.malId,
     required this.title,
-    required this.duration,
     required this.aired,
     required this.filler,
     required this.recap,
@@ -18,7 +16,6 @@ class Episode {
   factory Episode.fromJson(Map<String, dynamic> json) {
     int malId = json['mal_id'];
     String title = json['title'];
-    String duration = json['duration'] ?? "";
     String aired = json['aired'] ?? "";
     bool filler = json['filler'] ?? false;
     bool recap = json['recap'] ?? false;
@@ -26,7 +23,6 @@ class Episode {
     return Episode(
       malId: malId,
       title: title,
-      duration: duration,
       aired: aired,
       filler: filler,
       recap: recap,
@@ -35,7 +31,7 @@ class Episode {
 
   @override
   String toString() {
-    return 'Episode{malId: $malId, title: $title, duration: $duration, '
-        'aired: $aired, filler: $filler, recap: $recap}';
+    return 'Episode{malId: $malId, title: $title, aired: $aired, '
+        'filler: $filler, recap: $recap}';
   }
 }

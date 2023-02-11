@@ -27,7 +27,7 @@ class Agenda extends ConsumerWidget {
     bool _changed = ref.watch(boolProvider);
     return Scaffold(
       body: DefaultTabController(
-        length: 3,
+        length: agendaTabs.length,
         child: Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: (context, _) {
@@ -35,14 +35,15 @@ class Agenda extends ConsumerWidget {
                 SliverAppBar(
                   title: const Text('Animes'),
                   pinned: true,
+                  floating: true,
+                  forceElevated: true,
+                  backgroundColor: Theme.of(context).colorScheme.background,
                   bottom: TabBar(
-                    labelStyle: Theme.of(context).tabBarTheme.labelStyle,
-                    unselectedLabelStyle:
-                        Theme.of(context).tabBarTheme.unselectedLabelStyle,
-                    indicatorColor: Colors.white,
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+                    indicatorSize: TabBarIndicatorSize.label,
                     tabs: agendaTabs,
                   ),
-                  backgroundColor: Color.fromRGBO(255, 255, 255, 0.8),
                 ),
               ];
             },

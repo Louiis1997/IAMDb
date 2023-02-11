@@ -6,7 +6,6 @@ class Anime {
   final String? type;
   final int? episodes;
   final String? status;
-
   //final String? airedString;
   final String? duration;
   final num? score;
@@ -49,9 +48,9 @@ class Anime {
     String imageUrl = json['images']['jpg']['image_url'] ?? "";
     String title = json['title'];
     String titleEnglish = json['title_english'] ?? json['title'];
-    String type = json['type'] ?? "";
+    String type = json['type'] ?? "?";
     int episodes = json['episodes'] ?? 0;
-    String status = json['status'] ?? "";
+    String status = json['status'] ?? "?";
     //String airedString = json['aired']['string'] ?? "";
     String duration = json['duration'] ?? "";
     num score = json['score'] ?? 0.00;
@@ -59,7 +58,7 @@ class Anime {
     int rank = json['rank'] ?? 0;
     String synopsis = json['synopsis'] ?? "";
     String background = json['background'] ?? "";
-    String season = json['season'] ?? "";
+    String season = json['season'] ?? "?";
     int year = json['year'] ?? 0;
     List<String> producersName = [];
     List<String> licensorsName = [];

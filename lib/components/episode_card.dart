@@ -21,36 +21,40 @@ class EpisodeCard extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                episode.malId.toString(),
-                style: Theme.of(context).textTheme.bodyText1,
+              Container(
+                width: maxWidth * .15,
+                child: Text(
+                  episode.malId.toString(),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline1,
+                ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: maxWidth * .6,
-                    child: Text(
-                      episode.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+              Container(
+                width: maxWidth * .55,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(episode.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyText1?.color,
+                          fontSize:
+                              Theme.of(context).textTheme.bodyText1?.fontSize,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    const SizedBox(height: 10),
+                    Text(
+                      "Aired on: ${episode.aired != "" ? episode.aired?.substring(0, 10) : 'Not aired yet 😔'}",
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "${episode.duration} min",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Aired on: ${episode.aired?.substring(0, 10)}",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ],
+                  ],
+                ),
               ),
+              SizedBox(width: maxWidth * .03),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -64,7 +68,6 @@ class EpisodeCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
                   Text.rich(
                     TextSpan(
                       children: [
