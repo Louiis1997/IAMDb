@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
-import '..screens/events/event-creation.dart';
+import '../../screens/events/event-creation.dart';
 import '../../screens/events/live_events.dart';
 import '../../screens/events/past_events.dart';
 import '../../screens/events/upcoming_events.dart';

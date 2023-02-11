@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../components/agenda_list.dart';
 import '../main.dart';
 import '../services/agenda.dart';
 
-class Agenda extends StatelessWidget {
+final boolProvider = StateProvider((ref) => false);
+
+class Agenda extends ConsumerWidget {
   const Agenda({Key? key}) : super(key: key);
 
   static const String routeName = '/agenda';
@@ -20,7 +23,8 @@ class Agenda extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    bool _changed = ref.watch(boolProvider);
     return Scaffold(
       body: DefaultTabController(
         length: 3,
@@ -47,13 +51,13 @@ class Agenda extends StatelessWidget {
             body: TabBarView(
               children: [
                 AgendaList(
-                  future: _getAgenda("En cours ⏳"),
+                  future: (_changed == true) ? _getAgenda("En cours ⏳") : _getAgenda("En cours ⏳"),
                 ),
                 AgendaList(
-                  future: _getAgenda("En pause 🤒"),
+                  future: (_changed == true) ? _getAgenda("En pause 🤒") : _getAgenda("En pause 🤒"),
                 ),
                 AgendaList(
-                  future: _getAgenda("Envie de voir 🤤"),
+                  future: (_changed == true) ? _getAgenda("Envie de voir 🤤") : _getAgenda("Envie de voir 🤤"),
                 ),
               ],
             ),

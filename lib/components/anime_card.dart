@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../screens/agenda.dart';
 import '../services/agenda.dart';
 import '../main.dart';
 import '../models/anime.dart';
 
-class AnimeCard extends StatefulWidget {
+class AnimeCard extends ConsumerStatefulWidget {
   final Anime anime;
   final Function() onTap;
 
@@ -12,10 +14,10 @@ class AnimeCard extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<AnimeCard> createState() => _AnimeCardState();
+  AnimeCardState createState() => AnimeCardState();
 }
 
-class _AnimeCardState extends State<AnimeCard> {
+class AnimeCardState extends ConsumerState<AnimeCard> {
   String _status = "";
 
   @override
@@ -184,6 +186,7 @@ class _AnimeCardState extends State<AnimeCard> {
     else
       await AgendaService.updateAgendaStatus(
           token!, widget.anime.malId, _status);
+    ref.read(boolProvider.notifier).state = !ref.watch(boolProvider);
   }
 
   Icon _icon() {
