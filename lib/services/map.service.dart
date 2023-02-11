@@ -59,16 +59,24 @@ class MapService {
     );
   }
 
-  void applyCameraReajustmentWithUserAndDestination(
+  void applyCameraReajustmentWithStartAndDestination(
     GoogleMapController mapController,
-    double userLatitude,
-    double userLongitude,
+    double startLatitude,
+    double startLongitude,
     double destinationLatitude,
     double destinationLongitude,
   ) {
+    if (destinationLatitude == 0.0 && destinationLongitude == 0.0) {
+      MapService().moveCameraTo(
+        mapController,
+        startLatitude,
+        startLongitude,
+      );
+      return;
+    }
     MapCameraPosition cameraCorrection = getCorrectZoomFromStartAndDestination(
-      startLatitude: userLatitude,
-      startLongitude: userLongitude,
+      startLatitude: startLatitude,
+      startLongitude: startLongitude,
       destinationLatitude: destinationLatitude,
       destinationLongitude: destinationLongitude,
     );

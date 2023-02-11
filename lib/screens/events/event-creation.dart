@@ -1,6 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:iamdb/common/date_helpers.dart';
+import 'package:iamdb/components/maps/map-view.dart';
+import 'package:iamdb/models/maps/map-arguments.dart';
+import 'package:iamdb/services/locator.service.dart';
 import '../../common/utils.dart';
 import '../../common/validator.dart';
 import '../../components/event_end_date_picker.dart';
@@ -40,7 +44,10 @@ class _EventCreationState extends State<EventCreation> {
   final TextEditingController _eventZipCodeController = TextEditingController();
   final TextEditingController _eventCountryController = TextEditingController();
 
-  // TODO Map controller
+  double _eventLatitude = 0;
+  double _eventLongitude = 0;
+  String _eventFullAddress = '';
+
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
 
@@ -49,9 +56,17 @@ class _EventCreationState extends State<EventCreation> {
 
   bool _withEndDate = true;
 
+  resetLatitudeAndLongitudeToZero() {
+    setState(() {
+      _eventLatitude = 0;
+      _eventLongitude = 0;
+    });
+  }
+
   // This page contains a form to create an event
   @override
   Widget build(BuildContext context) {
+    // Add listener on address information to set _eventLatitude and _eventLongitude to 0 when change
     return Scaffold(
         appBar: AppBar(
           title: const Text('Creation'),
@@ -161,6 +176,7 @@ class _EventCreationState extends State<EventCreation> {
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: TextFormField(
                       controller: _eventAddressController,
+                      onChanged: (value) => resetLatitudeAndLongitudeToZero(),
                       validator: (value) => Validator.validateForm(value ?? ""),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -179,6 +195,8 @@ class _EventCreationState extends State<EventCreation> {
                         Expanded(
                           child: TextFormField(
                             controller: _eventCityController,
+                            onChanged: (value) =>
+                                resetLatitudeAndLongitudeToZero(),
                             validator: (value) =>
                                 Validator.validateForm(value ?? ""),
                             decoration: const InputDecoration(
@@ -194,6 +212,8 @@ class _EventCreationState extends State<EventCreation> {
                         Expanded(
                           child: TextFormField(
                             controller: _eventZipCodeController,
+                            onChanged: (value) =>
+                                resetLatitudeAndLongitudeToZero(),
                             validator: (value) =>
                                 Validator.validateForm(value ?? ""),
                             decoration: const InputDecoration(
@@ -213,6 +233,7 @@ class _EventCreationState extends State<EventCreation> {
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: TextFormField(
                       controller: _eventCountryController,
+                      onChanged: (value) => resetLatitudeAndLongitudeToZero(),
                       validator: (value) => Validator.validateForm(value ?? ""),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -222,6 +243,66 @@ class _EventCreationState extends State<EventCreation> {
                       ),
                       textInputAction: TextInputAction.next,
                     ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: ButtonTheme(
+                            minWidth: double.infinity,
+                            child: ElevatedButton(
+                                onPressed: onClickCheckEventLocation,
+                                child: Text(
+                                    _eventLatitude != 0 && _eventLongitude != 0
+                                        ? 'Correct location ✅'
+                                        : 'Check location'),
+                                style: ElevatedButton.styleFrom(
+                                  primary: _eventLatitude != 0 &&
+                                          _eventLongitude != 0
+                                      ? Colors.green
+                                      : Colors.black87,
+                                  onPrimary: Colors.white,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                )),
+                          ),
+                        ),
+                      ),
+                      // TODO : Add a location chooser to set the latitude and longitude
+                      _eventLatitude != 0 && _eventLongitude != 0
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: ButtonTheme(
+                                minWidth: double.infinity,
+                                child: ClipOval(
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Material(
+                                    color: Color.fromRGBO(230, 230, 230, 0.9),
+                                    child: InkWell(
+                                      splashColor:
+                                          Theme.of(context).primaryColorLight,
+                                      child: SizedBox(
+                                        width: 46,
+                                        height: 46,
+                                        child: Icon(Icons.location_pin,
+                                            color: Colors.black87),
+                                      ),
+                                      onTap: () {
+                                        onClickDisplayEventLocation();
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -266,6 +347,18 @@ class _EventCreationState extends State<EventCreation> {
                               Expanded(
                                 child: EventEndScrollDatePicker(
                                   eventEndDateController: _endDateController,
+                                  minDate: _startDateController.text != '' &&
+                                          _startTimeController.text != ''
+                                      ? DateHelpers.parseDateTime(
+                                          _startDateController.text,
+                                          _startTimeController.text,
+                                        )
+                                      : _startDateController.text != ''
+                                          ? DateHelpers.parseDateTime(
+                                              _startDateController.text,
+                                              '00:00:00',
+                                            )
+                                          : DateTime.now(),
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -348,19 +441,83 @@ class _EventCreationState extends State<EventCreation> {
         ));
   }
 
+  Future<bool> onClickCheckEventLocation() async {
+    if (_eventAddressController.text.trim() != '' &&
+        _eventCityController.text.trim() != '' &&
+        _eventZipCodeController.text.trim() != '' &&
+        _eventCountryController.text.trim() != '') {
+      try {
+        String address = _eventAddressController.text.trim() +
+            ', ' +
+            _eventCityController.text.trim() +
+            ', ' +
+            _eventZipCodeController.text.trim() +
+            ', ' +
+            _eventCountryController.text.trim();
+        final location =
+            (await LocatorService().getLocationsFromAddress(address)).first;
+        setState(() {
+          _eventLatitude = location.latitude;
+          _eventLongitude = location.longitude;
+        });
+        return true;
+      } catch (e) {
+        print(e);
+        setState(() {
+          _eventLatitude = 0;
+          _eventLongitude = 0;
+          _eventFullAddress = '';
+        });
+        Utils.displayAlertDialog(
+            context, 'Location', 'Could not find location');
+        return false;
+      }
+    } else {
+      setState(() {
+        _eventLatitude = 0;
+        _eventLongitude = 0;
+        _eventFullAddress = '';
+      });
+      Utils.displayAlertDialog(context, 'No!',
+          'Please fill all the address fields (address, city, zip code, country)');
+      return false;
+    }
+  }
+
+  Future<void> onClickDisplayEventLocation() async {
+    _eventFullAddress = await LocatorService().getAddressFromCoordinates(
+      _eventLatitude,
+      _eventLongitude,
+    );
+
+    MapView.navigateTo(
+      context,
+      MapArguments(
+        startLatitude: _eventLatitude,
+        startLongitude: _eventLongitude,
+        startFullAddress: _eventFullAddress,
+        withRouting: false,
+      ),
+    );
+  }
+
   void onClickCreateEventButton() async {
+    if (onClickCheckEventLocation() == false) {
+      print("Location not found");
+      return;
+    }
     if (_formKey.currentState!.validate()) {
       try {
-        String startDateTime = _startDateController.text.trim() +
-            'T' +
-            _startTimeController.text.trim() +
-            'Z';
-        DateTime parsedStartDatetime = DateTime.parse(startDateTime);
-        String endDateTime = _endDateController.text.trim() +
-            'T' +
-            _endTimeController.text.trim() +
-            'Z';
-        DateTime parsedEndDatetime = DateTime.parse(endDateTime);
+        DateTime parsedStartDatetime = DateHelpers.parseDateTime(
+            _startDateController.text, _startTimeController.text);
+        DateTime parsedEndDatetime = DateHelpers.parseDateTime(
+            _endDateController.text, _endTimeController.text);
+
+        if (parsedStartDatetime.isAfter(parsedEndDatetime)) {
+          Utils.displayAlertDialog(context, 'No way!',
+              'The event start date and time must be before the end date and time');
+          return;
+        }
 
         final token = await storage.read(key: "token");
         if (token == null) {
@@ -387,10 +544,11 @@ class _EventCreationState extends State<EventCreation> {
           eventCountry: _eventCountryController.text.trim(),
           eventStartDate: parsedStartDatetime,
           eventEndDate: parsedEndDatetime,
-          eventLongitude: 0.0,
-          eventLatitude: 0.0,
+          eventLongitude: _eventLongitude,
+          eventLatitude: _eventLatitude,
           token: token,
         );
+        Navigator.pop(context);
         Navigator.pop(context);
       } catch (err) {
         log("Error: $err");

@@ -20,4 +20,12 @@ class DateHelpers {
       throw Exception('Invalid event dates : $startDate - $endDate');
     }
   }
+
+  static DateTime parseDateTime(String date, String time) {
+    String startDateTime = date.trim() +
+        'T' +
+        time.trim() +
+        'Z';
+    return DateTime.parse(startDateTime);
+  }
 }

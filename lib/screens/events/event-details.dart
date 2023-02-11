@@ -233,12 +233,13 @@ class _EventDetailsState extends State<EventDetails> {
                                       MapView.navigateTo(
                                         context,
                                         MapArguments(
-                                          userLatitude: _userLatitude,
-                                          userLongitude: _userLongitude,
-                                          userFullAddress: _userFullAddress,
+                                          startLatitude: _userLatitude,
+                                          startLongitude: _userLongitude,
+                                          startFullAddress: _userFullAddress,
                                           destinationLatitude: _eventLatitude,
                                           destinationLongitude: _eventLongitude,
                                           destinationFullAddress: eventFullAddress,
+                                          withRouting: true,
                                         ),
                                       );
                                     },

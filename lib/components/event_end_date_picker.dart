@@ -3,10 +3,13 @@ import 'package:intl/intl.dart';
 
 class EventEndScrollDatePicker extends StatefulWidget {
   final TextEditingController eventEndDateController;
+  final DateTime minDate;
 
-  const EventEndScrollDatePicker(
-      {Key? key, required this.eventEndDateController})
-      : super(key: key);
+  const EventEndScrollDatePicker({
+    Key? key,
+    required this.eventEndDateController,
+    required this.minDate,
+  }) : super(key: key);
 
   @override
   State<EventEndScrollDatePicker> createState() =>
@@ -35,7 +38,7 @@ class _EventEndScrollDatePickerState extends State<EventEndScrollDatePicker> {
     showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime.now(),
+      firstDate: widget.minDate,
       lastDate: DateTime.now().add(const Duration(days: 365 * 100)),
     ).then((value) {
       if (value != null) {
