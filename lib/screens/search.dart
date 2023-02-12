@@ -34,76 +34,100 @@ class _SearchState extends State<Search> {
   ];
   List<Anime> _animes = [];
   String _filter = "";
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                autofocus: true,
-                controller: _controller,
-                onChanged: _onChanged(),
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  filled: false,
-                  prefixIcon: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _animes.clear();
-                        _controller.clear();
-                      });
-                    },
-                    icon: const Icon(Icons.close),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    autofocus: true,
+                    controller: _controller,
+                    onChanged: _onChanged(),
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      filled: false,
+                      prefixIcon: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(Icons.arrow_back),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _animes.clear();
+                            _controller.clear();
+                          });
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 60,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: _filters
-                    .map(
-                      (type) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: _filter == type
-                                ? Theme.of(context).primaryColor
-                                : Color.fromRGBO(240, 240, 240, 0.8),
+                SizedBox(
+                  height: 60,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: _filters
+                        .map(
+                          (type) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: _filter == type
+                                    ? Theme.of(context).primaryColor
+                                    : Color.fromRGBO(240, 240, 240, 0.8),
+                              ),
+                              onPressed: () {
+                                _onPressed(type);
+                              },
+                              child: Text(type),
+                            ),
                           ),
-                          onPressed: () {
-                            _onPressed(type);
-                          },
-                          child: Text(type),
-                        ),
+                        )
+                        .toList(),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: _animes.length,
+                    itemBuilder: (context, index) {
+                      return AnimeCard(
+                        anime: _animes[index],
+                        onTap: () =>
+                            {AnimeDetail.navigateTo(context, _animes[index].malId)},
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Visibility(
+                child: AlertDialog(
+                  elevation: 500,
+                  backgroundColor: Colors.transparent,
+                  content: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor,
                       ),
-                    )
-                    .toList(),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: _animes.length,
-                itemBuilder: (context, index) {
-                  return AnimeCard(
-                    anime: _animes[index],
-                    onTap: () =>
-                        {AnimeDetail.navigateTo(context, _animes[index].malId)},
-                  );
-                },
+                    ),
+                  ),
+                ),
+                visible: _isLoading,
               ),
             ),
           ],
@@ -114,6 +138,9 @@ class _SearchState extends State<Search> {
 
   void _getAnimes(String name, String filter) async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
       final token = await storage.read(key: "token");
       var response = await AnimeService.search(token!, name, filter);
       setState(() {
@@ -121,12 +148,22 @@ class _SearchState extends State<Search> {
       });
     } catch (err) {
       if (err.toString().contains("500")) {
-        Utils.displayAlertDialog(context, "Error during the Authentication",
-            "Internal Server Error");
+        Utils.displaySnackBar(
+            context: context,
+            message: "Internal Server Error",
+            messageType: MessageType.error
+        );
       } else {
-        Utils.displayAlertDialog(
-            context, "Error during the Authentication", err.toString());
+        Utils.displaySnackBar(
+            context: context,
+            message: "An error occurred while searching. Please try again later or contact us.",
+            messageType: MessageType.error
+        );
       }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

@@ -55,9 +55,20 @@ class _MapViewState extends State<MapView> {
   double _destinationLatitude = 0;
   double _destinationLongitude = 0;
 
+  double _userLatitude = 0;
+  double _userLongitude = 0;
+
   @override
   void initState() {
     super.initState();
+    // User's current location
+    LocatorService().localizeMe().then((position) => {
+          setState(() {
+            _userLatitude = position.latitude;
+            _userLongitude = position.longitude;
+          })
+        });
+
     // Initial location of the Map view
     _initialLocation = CameraPosition(
         target: LatLng(widget.mapArguments.startLatitude,
@@ -69,7 +80,8 @@ class _MapViewState extends State<MapView> {
       _startLongitude = widget.mapArguments.startLongitude;
     }
     if (_destinationAddressController.text == '') {
-      _destinationFullAddress = widget.mapArguments.destinationFullAddress ?? '';
+      _destinationFullAddress =
+          widget.mapArguments.destinationFullAddress ?? '';
       _destinationLatitude = widget.mapArguments.destinationLatitude ?? 0;
       _destinationLongitude = widget.mapArguments.destinationLongitude ?? 0;
     }
@@ -101,19 +113,12 @@ class _MapViewState extends State<MapView> {
         widget.mapArguments.withRouting == true) {
       return;
     }
+    setState(() {
+      _isLoading = true;
+    });
 
     if (!fromInitialisation) {
       _distanceInMetersFromStartToDestination = "Computing...";
-      _isLoading = true;
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      );
     }
 
     // Determine latitude & longitude of the start & destination addresses
@@ -124,15 +129,14 @@ class _MapViewState extends State<MapView> {
       _startLatitude = startLocation.latitude;
       _startLongitude = startLocation.longitude;
     } catch (e) {
-      _isLoading = false;
-      Navigator.of(context).pop();
       setState(() {
+        _isLoading = false;
         _distanceInMetersFromStartToDestination = "impossible";
       });
-      Utils.displayAlertDialog(
-        context,
-        'Start address validity',
-        'Could not find start address on the map',
+      Utils.displaySnackBar(
+        context: context,
+        message: 'Could not find start address on the map',
+        messageType: MessageType.error,
       );
       return;
     }
@@ -145,15 +149,14 @@ class _MapViewState extends State<MapView> {
       _destinationLongitude = destinationLocation.longitude;
     } catch (e) {
       if (widget.mapArguments.withRouting == true) {
-        _isLoading = false;
-        Navigator.of(context).pop();
         setState(() {
+          _isLoading = false;
           _distanceInMetersFromStartToDestination = "impossible";
         });
-        Utils.displayAlertDialog(
-          context,
-          'Destination address validity',
-          'Could not find destination address on the map',
+        Utils.displaySnackBar(
+          context: context,
+          message: 'Could not find destination address on the map',
+          messageType: MessageType.error,
         );
         return;
       }
@@ -180,15 +183,14 @@ class _MapViewState extends State<MapView> {
       });
     } catch (e) {
       if (widget.mapArguments.withRouting == true) {
-        _isLoading = false;
-        Navigator.of(context).pop();
         setState(() {
+          _isLoading = false;
           _distanceInMetersFromStartToDestination = "impossible";
         });
-        Utils.displayAlertDialog(
-          context,
-          'Start address validity',
-          'Could not find start address on the map',
+        Utils.displaySnackBar(
+          context: context,
+          message: 'Could not find start address on the map',
+          messageType: MessageType.error,
         );
         return;
       }
@@ -211,15 +213,14 @@ class _MapViewState extends State<MapView> {
         });
       } catch (e) {
         if (widget.mapArguments.withRouting == true) {
-          _isLoading = false;
-          Navigator.of(context).pop();
           setState(() {
+            _isLoading = false;
             _distanceInMetersFromStartToDestination = "impossible";
           });
-          Utils.displayAlertDialog(
-            context,
-            'Destination address validity',
-            'Could not find destination address on the map',
+          Utils.displaySnackBar(
+            context: context,
+            message: 'Could not find destination address on the map',
+            messageType: MessageType.error,
           );
           return;
         }
@@ -241,15 +242,15 @@ class _MapViewState extends State<MapView> {
           );
         } catch (e) {
           if (widget.mapArguments.withRouting == true) {
-            _isLoading = false;
-            Navigator.of(context).pop();
             setState(() {
+              _isLoading = false;
               _distanceInMetersFromStartToDestination = "impossible";
             });
-            Utils.displayAlertDialog(
-              context,
-              'Route validity',
-              'Could not find a route between the two addresses',
+            Utils.displaySnackBar(
+              context: context,
+              message:
+                  'Could not find a route between the two addresses, please try again with another travel mode or start address.',
+              messageType: MessageType.warning,
             );
             return;
           }
@@ -266,12 +267,15 @@ class _MapViewState extends State<MapView> {
         double preciseDistance = 0;
         if (widget.mapArguments.withRouting == true) {
           if (createdPolylines.polylineCoordinates.isEmpty) {
-            _isLoading = false;
-            Navigator.of(context).pop();
-            Utils.displayAlertDialog(
-              context,
-              'Routing',
-              'Could not find a route between the two addresses',
+            setState(() {
+              _isLoading = false;
+              _distanceInMetersFromStartToDestination = "impossible";
+            });
+            Utils.displaySnackBar(
+              context: context,
+              message:
+                  'Could not find a route between the two addresses, please try again with another travel mode or start address.',
+              messageType: MessageType.warning,
             );
           } else {
             preciseDistance =
@@ -295,6 +299,9 @@ class _MapViewState extends State<MapView> {
           _polylineCoordinates = createdPolylines.polylineCoordinates;
           _polylinePoints = createdPolylines.polylinePoints;
 
+          _isLoading = false;
+          print("Loading finished");
+
           // Storing the calculated total distance of the route
           _distanceInMetersFromStartToDestination = preciseDistance == 0
               ? "impossible"
@@ -310,10 +317,7 @@ class _MapViewState extends State<MapView> {
         _destinationLatitude,
         _destinationLongitude,
       );
-      if (_isLoading) {
-        Navigator.of(context).pop();
-        _isLoading = false;
-      }
+      _isLoading = false;
     });
   }
 
@@ -397,7 +401,10 @@ class _MapViewState extends State<MapView> {
                                 createTextField(
                                     label: 'Start',
                                     hint: 'Choose starting point',
-                                    prefixIcon: Icon(Icons.looks_one),
+                                    prefixIcon: Icon(
+                                      Icons.looks_one,
+                                      color: Colors.black87,
+                                    ),
                                     suffixIcon: IconButton(
                                       icon: Icon(Icons.my_location),
                                       onPressed: () async {
@@ -433,7 +440,10 @@ class _MapViewState extends State<MapView> {
                                     label: 'Destination',
                                     hint: 'Event location',
                                     isModifiable: false,
-                                    prefixIcon: Icon(Icons.looks_two),
+                                    prefixIcon: Icon(
+                                      Icons.looks_two,
+                                      color: Colors.red,
+                                    ),
                                     controller: _destinationAddressController,
                                     focusNode: _destinationAddressFocusNode,
                                     width: width,
@@ -464,7 +474,7 @@ class _MapViewState extends State<MapView> {
                                         clipBehavior: Clip.antiAlias,
                                         child: Material(
                                           color: Color.fromRGBO(
-                                              230, 230, 230, 0.9),
+                                              245, 245, 245, 0.9),
                                           child: InkWell(
                                             splashColor: Theme.of(context)
                                                 .primaryColorLight,
@@ -485,28 +495,27 @@ class _MapViewState extends State<MapView> {
                                       child: ElevatedButton(
                                         onPressed: () async {
                                           if (_startFullAddress.isEmpty) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content:
-                                                    Text('Enter start address'),
-                                              ),
+                                            Utils.displaySnackBar(
+                                              context: context,
+                                              message:
+                                                  'Please enter start address',
+                                              messageType: MessageType.warning,
                                             );
                                             return;
                                           }
                                           if (_destinationFullAddress.isEmpty) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                    'Enter destination address'),
-                                              ),
+                                            Utils.displaySnackBar(
+                                              context: context,
+                                              message:
+                                                  'Please enter destination address',
+                                              messageType: MessageType.warning,
                                             );
                                             return;
                                           }
 
                                           _startAddressFocusNode.unfocus();
-                                          _destinationAddressFocusNode.unfocus();
+                                          _destinationAddressFocusNode
+                                              .unfocus();
 
                                           setState(() {
                                             if (_markers.isNotEmpty)
@@ -550,7 +559,7 @@ class _MapViewState extends State<MapView> {
                                               width: 46,
                                               height: 46,
                                               // no icon
-                                              child: Icon(Icons.arrow_back,
+                                              child: Icon(Icons.warning,
                                                   color: Colors.transparent),
                                             ),
                                           ),
@@ -569,7 +578,7 @@ class _MapViewState extends State<MapView> {
             // Button to move camera to the event location
             _destinationLatitude != 0 && _destinationLongitude != 0
                 ? Positioned(
-                    bottom: 298,
+                    bottom: 364,
                     right: 20,
                     child: ClipOval(
                       clipBehavior: Clip.antiAlias,
@@ -599,10 +608,10 @@ class _MapViewState extends State<MapView> {
                     ),
                   )
                 : Container(),
-            // Button to move camera to the user location
+            // Button to move camera to the start location
             Positioned(
               // bottom right
-              bottom: 232 - (widget.mapArguments.withRouting == true ? 0 : 66),
+              bottom: 298,
               right: 20,
               child: ClipOval(
                 clipBehavior: Clip.antiAlias,
@@ -614,14 +623,16 @@ class _MapViewState extends State<MapView> {
                       width: 56,
                       height: 56,
                       child: Icon(
-                        widget.mapArguments.withRouting == true
-                            ? Icons.person_outline
-                            : Icons.location_pin,
+                        Icons.location_pin,
                         color: Colors.black87,
                       ),
                     ),
                     onTap: () {
-                      // Move camera to the specified latitude & longitude
+                      if (_mapController == null) {
+                        log('MapController is null');
+                        return;
+                      }
+                      // Move camera to the start latitude & longitude
                       MapService().moveCameraTo(
                         _mapController,
                         _startLatitude,
@@ -632,39 +643,84 @@ class _MapViewState extends State<MapView> {
                 ),
               ),
             ),
-            // Button to move camera to see both user start & event location
-            _destinationLatitude != 0 && _destinationLongitude != 0
-                ? Positioned(
-                    // bottom right
-                    bottom: 166,
-                    right: 20,
-                    child: ClipOval(
-                      clipBehavior: Clip.antiAlias,
-                      child: Material(
-                        color: Color.fromRGBO(255, 255, 255, 0.9),
-                        child: InkWell(
-                          splashColor: Theme.of(context).primaryColor,
-                          child: SizedBox(
-                            width: 56,
-                            height: 56,
-                            child: Icon(Icons.zoom_out_map_sharp,
-                                color: Colors.black87),
-                          ),
-                          onTap: () {
-                            MapService()
-                                .applyCameraReajustmentWithStartAndDestination(
-                              _mapController,
-                              _startLatitude,
-                              _startLongitude,
-                              _destinationLatitude,
-                              _destinationLongitude,
-                            );
-                          },
-                        ),
-                      ),
+            // Button to move camera to the user location
+            Positioned(
+              bottom: 232,
+              right: 20,
+              child: ClipOval(
+                clipBehavior: Clip.antiAlias,
+                child: Material(
+                  color: Color.fromRGBO(255, 255, 255, 0.9),
+                  child: InkWell(
+                    splashColor: Theme.of(context).primaryColorLight,
+                    child: SizedBox(
+                      width: 56,
+                      height: 56,
+                      child: Icon(Icons.person_outline_rounded),
                     ),
-                  )
-                : Container(),
+                    onTap: () {
+                      if (_mapController == null) {
+                        log('MapController is null');
+                        return;
+                      }
+                      // Move camera to the specified latitude & longitude
+                      MapService().moveCameraTo(
+                        _mapController,
+                        _userLatitude,
+                        _userLongitude,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            // Button to move camera to see both user start & event location
+            Positioned(
+              // bottom right
+              bottom: 166,
+              right: 20,
+              child: ClipOval(
+                clipBehavior: Clip.antiAlias,
+                child: Material(
+                  color: Color.fromRGBO(255, 255, 255, 0.9),
+                  child: InkWell(
+                    splashColor: Theme.of(context).primaryColor,
+                    child: SizedBox(
+                      width: 56,
+                      height: 56,
+                      child:
+                          Icon(Icons.zoom_out_map_sharp, color: Colors.black87),
+                    ),
+                    onTap: () {
+                      if (_mapController == null) {
+                        log('MapController is null');
+                        return;
+                      }
+                      if (_destinationLatitude == 0 ||
+                          _destinationLongitude == 0) {
+                        MapService()
+                            .applyCameraReajustmentWithStartAndDestination(
+                          _mapController,
+                          _startLatitude,
+                          _startLongitude,
+                          _userLatitude,
+                          _userLongitude,
+                        );
+                        return;
+                      }
+                      MapService()
+                          .applyCameraReajustmentWithStartAndDestination(
+                        _mapController,
+                        _startLatitude,
+                        _startLongitude,
+                        _destinationLatitude,
+                        _destinationLongitude,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
             // Button to zoom in
             Positioned(
               // bottom right
@@ -712,98 +768,122 @@ class _MapViewState extends State<MapView> {
               ),
             ),
             // User can change his way of transportation
-            Positioned(
-              // bottom right
-              bottom: 166,
-              left: 20,
-              child: ClipOval(
-                clipBehavior: Clip.antiAlias,
-                child: Material(
-                  color: _travelMode == TravelMode.walking
-                      ? Theme.of(context).primaryColorLight
-                      : Color.fromRGBO(255, 255, 255, 0.9),
-                  child: InkWell(
-                    splashColor: Theme.of(context).primaryColorLight,
-                    child: SizedBox(
-                      width: 56,
-                      height: 56,
-                      child: Icon(Icons.directions_walk, color: Colors.black87),
+            _destinationLatitude != 0 && _destinationLongitude != 0
+                ? Positioned(
+                    // bottom right
+                    bottom: 166,
+                    left: 20,
+                    child: ClipOval(
+                      clipBehavior: Clip.antiAlias,
+                      child: Material(
+                        color: _travelMode == TravelMode.walking
+                            ? Theme.of(context).primaryColorLight
+                            : Color.fromRGBO(255, 255, 255, 0.9),
+                        child: InkWell(
+                          splashColor: Theme.of(context).primaryColorLight,
+                          child: SizedBox(
+                            width: 56,
+                            height: 56,
+                            child: Icon(Icons.directions_walk,
+                                color: Colors.black87),
+                          ),
+                          onTap: () {
+                            if (_travelMode == TravelMode.walking) return;
+                            // Reload the map with the new transportation mode
+                            setState(() {
+                              if (_markers.isNotEmpty) _markers.clear();
+                              if (_polylines.isNotEmpty) _polylines.clear();
+                              _travelMode = TravelMode.walking;
+                              refreshMapWithNewStartAndDestination();
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                    onTap: () {
-                      if (_travelMode == TravelMode.walking) return;
-                      // Reload the map with the new transportation mode
-                      setState(() {
-                        if (_markers.isNotEmpty) _markers.clear();
-                        if (_polylines.isNotEmpty) _polylines.clear();
-                        _travelMode = TravelMode.walking;
-                        refreshMapWithNewStartAndDestination();
-                      });
-                    },
+                  )
+                : Container(),
+            _destinationLatitude != 0 && _destinationLongitude != 0
+                ? Positioned(
+                    // bottom right
+                    bottom: 100,
+                    left: 20,
+                    child: ClipOval(
+                      clipBehavior: Clip.antiAlias,
+                      child: Material(
+                        color: _travelMode == TravelMode.bicycling
+                            ? Theme.of(context).primaryColorLight
+                            : Color.fromRGBO(255, 255, 255, 0.9),
+                        child: InkWell(
+                          splashColor: Theme.of(context).primaryColorLight,
+                          child: SizedBox(
+                            width: 56,
+                            height: 56,
+                            child: Icon(Icons.directions_bike_rounded,
+                                color: Colors.black87),
+                          ),
+                          onTap: () {
+                            if (_travelMode == TravelMode.bicycling) return;
+                            // Reload the map with the new transportation mode
+                            setState(() {
+                              if (_markers.isNotEmpty) _markers.clear();
+                              if (_polylines.isNotEmpty) _polylines.clear();
+                              _travelMode = TravelMode.bicycling;
+                              refreshMapWithNewStartAndDestination();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
+            _destinationLatitude != 0 && _destinationLongitude != 0
+                ? Positioned(
+                    // bottom right
+                    bottom: 34,
+                    left: 20,
+                    child: ClipOval(
+                      clipBehavior: Clip.antiAlias,
+                      child: Material(
+                        color: _travelMode == TravelMode.driving
+                            ? Theme.of(context).primaryColorLight
+                            : Color.fromRGBO(255, 255, 255, 0.9),
+                        child: InkWell(
+                          splashColor: Theme.of(context).primaryColorLight,
+                          child: SizedBox(
+                            width: 56,
+                            height: 56,
+                            child: Icon(Icons.directions_car,
+                                color: Colors.black87),
+                          ),
+                          onTap: () {
+                            if (_travelMode == TravelMode.driving) return;
+                            // Reload the map with the new transportation mode
+                            setState(() {
+                              if (_markers.isNotEmpty) _markers.clear();
+                              if (_polylines.isNotEmpty) _polylines.clear();
+                              _travelMode = TravelMode.driving;
+                              refreshMapWithNewStartAndDestination();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
+            Center(
+              child: Visibility(
+                child: AlertDialog(
+                  elevation: 500,
+                  backgroundColor: Colors.transparent,
+                  content: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Colors.red,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Positioned(
-              // bottom right
-              bottom: 100,
-              left: 20,
-              child: ClipOval(
-                clipBehavior: Clip.antiAlias,
-                child: Material(
-                  color: _travelMode == TravelMode.bicycling
-                      ? Theme.of(context).primaryColorLight
-                      : Color.fromRGBO(255, 255, 255, 0.9),
-                  child: InkWell(
-                    splashColor: Theme.of(context).primaryColorLight,
-                    child: SizedBox(
-                      width: 56,
-                      height: 56,
-                      child: Icon(Icons.directions_bike_rounded,
-                          color: Colors.black87),
-                    ),
-                    onTap: () {
-                      if (_travelMode == TravelMode.bicycling) return;
-                      // Reload the map with the new transportation mode
-                      setState(() {
-                        if (_markers.isNotEmpty) _markers.clear();
-                        if (_polylines.isNotEmpty) _polylines.clear();
-                        _travelMode = TravelMode.bicycling;
-                        refreshMapWithNewStartAndDestination();
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // bottom right
-              bottom: 34,
-              left: 20,
-              child: ClipOval(
-                clipBehavior: Clip.antiAlias,
-                child: Material(
-                  color: _travelMode == TravelMode.driving
-                      ? Theme.of(context).primaryColorLight
-                      : Color.fromRGBO(255, 255, 255, 0.9),
-                  child: InkWell(
-                    splashColor: Theme.of(context).primaryColorLight,
-                    child: SizedBox(
-                      width: 56,
-                      height: 56,
-                      child: Icon(Icons.directions_car, color: Colors.black87),
-                    ),
-                    onTap: () {
-                      if (_travelMode == TravelMode.driving) return;
-                      // Reload the map with the new transportation mode
-                      setState(() {
-                        if (_markers.isNotEmpty) _markers.clear();
-                        if (_polylines.isNotEmpty) _polylines.clear();
-                        _travelMode = TravelMode.driving;
-                        refreshMapWithNewStartAndDestination();
-                      });
-                    },
-                  ),
-                ),
+                visible: _isLoading,
               ),
             ),
           ],

@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:iamdb/exceptions/events/conflict.exception.dart';
+import 'package:iamdb/exceptions/not-found.exception.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../components/status_drop_down_button.dart';
@@ -37,6 +39,7 @@ class _SignupState extends State<Signup> {
   final TextEditingController _birthdayController = TextEditingController();
   String _status = '';
   File? _imageFile;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,158 +48,187 @@ class _SignupState extends State<Signup> {
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Center(
-                  child: ProfileImagePicker(
-                      pickImage: _pickImage, imageFile: _imageFile),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    'Create your Account',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    controller: _userNameController,
-                    validator: (value) => Validator.validateForm(value ?? ""),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Username',
-                      hintText: 'john.doe',
-                      filled: false,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Center(
+                      child: ProfileImagePicker(
+                          pickImage: _pickImage, imageFile: _imageFile),
                     ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    controller: _firstNameController,
-                    validator: (value) => Validator.validateForm(value ?? ""),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Firstname',
-                      hintText: 'John',
-                      filled: false,
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        'Create your Account',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
                     ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    controller: _lastNameController,
-                    validator: (value) => Validator.validateForm(value ?? ""),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Lastname',
-                      hintText: 'Doe',
-                      filled: false,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: TextFormField(
+                        controller: _userNameController,
+                        validator: (value) =>
+                            Validator.validateForm(value ?? ""),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Username',
+                          hintText: 'john.doe',
+                          filled: false,
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
                     ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 10, bottom: 5),
-                  child: TextFormField(
-                    controller: _emailController,
-                    validator: (value) => Validator.validateEmail(value ?? ""),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email',
-                      hintText: 'john.doe@example.com',
-                      filled: false,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: TextFormField(
+                        controller: _firstNameController,
+                        validator: (value) =>
+                            Validator.validateForm(value ?? ""),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Firstname',
+                          hintText: 'John',
+                          filled: false,
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
                     ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    obscureText: true,
-                    controller: _passwordController,
-                    validator: (value) =>
-                        Validator.validatePassword(value ?? ""),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                      hintText: '********',
-                      filled: false,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: TextFormField(
+                        controller: _lastNameController,
+                        validator: (value) =>
+                            Validator.validateForm(value ?? ""),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Lastname',
+                          hintText: 'Doe',
+                          filled: false,
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
                     ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    obscureText: true,
-                    controller: _passwordConfirmationController,
-                    validator: (value) => Validator.validateConfirmPassword(
-                        _passwordController.text, value ?? ""),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Confirm Password',
-                      hintText: '********',
-                      filled: false,
+                    Container(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, top: 10, bottom: 5),
+                      child: TextFormField(
+                        controller: _emailController,
+                        validator: (value) =>
+                            Validator.validateEmail(value ?? ""),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Email',
+                          hintText: 'john.doe@example.com',
+                          filled: false,
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
                     ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 10, bottom: 5),
-                  child: TextFormField(
-                    controller: _bioController,
-                    maxLines: 3,
-                    maxLength: 150,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Biography',
-                      hintText: 'I am a developer and I love Flutter!',
-                      helperText: 'Enter a short biography of yourself',
-                      filled: false,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: _passwordController,
+                        validator: (value) =>
+                            Validator.validatePassword(value ?? ""),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                          hintText: '********',
+                          filled: false,
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
                     ),
-                    textInputAction: TextInputAction.done,
-                  ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: _passwordConfirmationController,
+                        validator: (value) => Validator.validateConfirmPassword(
+                            _passwordController.text, value ?? ""),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Confirm Password',
+                          hintText: '********',
+                          filled: false,
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, top: 10, bottom: 5),
+                      child: TextFormField(
+                        controller: _bioController,
+                        maxLines: 3,
+                        maxLength: 150,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Biography',
+                          hintText: 'I am a developer and I love Flutter!',
+                          helperText: 'Enter a short biography of yourself',
+                          filled: false,
+                        ),
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: StatusDropDownButton(onChanged: _onChanged),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: BirthdayScrollDatePicker(
+                        birthdayController: _birthdayController,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: ElevatedButton(
+                        onPressed: onClickRegistrationButton,
+                        child: const Text(
+                          'Sign up',
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: StatusDropDownButton(onChanged: _onChanged),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: BirthdayScrollDatePicker(
-                    birthdayController: _birthdayController,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  height: 50,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: ElevatedButton(
-                    onPressed: onClickRegistrationButton,
-                    child: const Text(
-                      'Sign up',
+              ),
+              // Loading
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Visibility(
+                  child: AlertDialog(
+                    elevation: 500,
+                    backgroundColor: Colors.transparent,
+                    content: Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor,
+                        ),
+                      ),
                     ),
                   ),
+                  visible: _isLoading,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -205,21 +237,10 @@ class _SignupState extends State<Signup> {
 
   void onClickRegistrationButton() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       try {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Processing Data',
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-            backgroundColor: Colors.white,
-            duration: Duration(seconds: 1),
-          ),
-        );
         await AuthService.register(
             _userNameController.text.trim(),
             _firstNameController.text.trim(),
@@ -230,15 +251,45 @@ class _SignupState extends State<Signup> {
             _birthdayController.text.trim(),
             _status,
             _imageFile);
+        Utils.displaySnackBar(
+          context: context,
+          message: "Registration successful",
+          messageType: MessageType.success,
+        );
+        await Future.delayed(Duration(seconds: 1));
         Login.navigateTo(context);
       } catch (err) {
-        if (err.toString().contains("500")) {
-          Utils.displayAlertDialog(context, "Error during the Authentication",
-              "Internal Server Error");
+        print("Error: $err");
+        if (err is ConflictException) {
+          Utils.displaySnackBar(
+            context: context,
+            message: "This email or username is already used",
+            messageType: MessageType.error,
+          );
+        } else if (err is NotFoundException) {
+          Utils.displaySnackBar(
+            context: context,
+            message: "Failed to register (please try again or contact us if the problem persists))",
+            messageType: MessageType.error,
+          );
+        } else if (err.toString().contains("500")) {
+          Utils.displaySnackBar(
+            context: context,
+            message:
+                "Failed to register (please try again or contact us if the problem persists))",
+            messageType: MessageType.error,
+          );
         } else {
-          Utils.displayAlertDialog(
-              context, "Error during the Authentication", err.toString());
+          Utils.displaySnackBar(
+            context: context,
+            message: err.toString(),
+            messageType: MessageType.error,
+          );
         }
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }

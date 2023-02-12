@@ -454,11 +454,51 @@ class _EventCreationState extends State<EventCreation> {
             _eventZipCodeController.text.trim() +
             ', ' +
             _eventCountryController.text.trim();
-        final location =
-            (await LocatorService().getLocationsFromAddress(address)).first;
+        var locations;
+        try {
+          locations = (await LocatorService().getLocationsFromAddress(address));
+          if (locations.isEmpty) {
+            Utils.displaySnackBar(
+              context: context,
+              message: 'We could not find the location of your event. Please check the event address you entered.',
+              messageType: MessageType.error,
+            );
+            return false;
+          }
+        } catch (e) {
+          Utils.displaySnackBar(
+            context: context,
+            message: 'We could not find the location of your event. Please check the event address you entered.',
+            messageType: MessageType.error,
+          );
+          return false;
+        }
+
+        final location = locations.first;
+        print("Location: ${locations.first}");
         setState(() {
           _eventLatitude = location.latitude;
           _eventLongitude = location.longitude;
+        });
+        var newLocationFromCoordinates = await LocatorService()
+            .getAddressFromCoordinates(location.latitude, location.longitude);
+        print("New location from coordinates: $newLocationFromCoordinates");
+        setState(() {
+          if (newLocationFromCoordinates != address &&
+              newLocationFromCoordinates.split(',').where((element) {
+                return element.trim() != '';
+              }).isNotEmpty) {
+            _eventFullAddress = newLocationFromCoordinates;
+            _eventAddressController.text =
+                _eventFullAddress.split(',')[0].trim();
+            _eventCityController.text =
+                _eventFullAddress.split(',')[1].trim().split(' ')[0].trim();
+            _eventZipCodeController.text =
+                _eventFullAddress.split(',')[1].trim().split(' ')[1].trim();
+            _eventCountryController.text =
+                _eventFullAddress.split(',')[2].trim();
+            print("Set new location from coordinates: $_eventFullAddress");
+          }
         });
         return true;
       } catch (e) {
@@ -468,8 +508,11 @@ class _EventCreationState extends State<EventCreation> {
           _eventLongitude = 0;
           _eventFullAddress = '';
         });
-        Utils.displayAlertDialog(
-            context, 'Location', 'Could not find location');
+        Utils.displaySnackBar(
+          context: context,
+          message: 'Could not find location',
+          messageType: MessageType.error,
+        );
         return false;
       }
     } else {
@@ -478,8 +521,12 @@ class _EventCreationState extends State<EventCreation> {
         _eventLongitude = 0;
         _eventFullAddress = '';
       });
-      Utils.displayAlertDialog(context, 'No!',
-          'Please fill all the address fields (address, city, zip code, country)');
+      Utils.displaySnackBar(
+        context: context,
+        message:
+            'Please fill all the address fields (address, city, zip code, country)',
+        messageType: MessageType.warning,
+      );
       return false;
     }
   }
@@ -514,8 +561,12 @@ class _EventCreationState extends State<EventCreation> {
             _endDateController.text, _endTimeController.text);
 
         if (parsedStartDatetime.isAfter(parsedEndDatetime)) {
-          Utils.displayAlertDialog(context, 'No way!',
-              'The event start date and time must be before the end date and time');
+          Utils.displaySnackBar(
+            context: context,
+            message:
+                'The event start date and time must be before the end date and time',
+            messageType: MessageType.warning,
+          );
           return;
         }
 
@@ -552,32 +603,33 @@ class _EventCreationState extends State<EventCreation> {
         Navigator.pop(context);
       } catch (err) {
         log("Error: $err");
+        Navigator.pop(context);
+
         if (err is EventDuplicateException) {
-          return Utils.displayAlertDialog(
-            context,
-            "Duplicate",
-            "An event with this name already exists",
+          Utils.displaySnackBar(
+            context: context,
+            message: "An event with this name already exists",
+            messageType: MessageType.error,
+          );
+        } else if (err is EventCreationException) {
+          Utils.displaySnackBar(
+            context: context,
+            message: "Please check your inputs and try again",
+            messageType: MessageType.error,
+          );
+        } else if (err is UnauthorizedException) {
+          Utils.displaySnackBar(
+            context: context,
+            message: "You are not authorized to create an event",
+            messageType: MessageType.error,
+          );
+        } else {
+          Utils.displaySnackBar(
+            context: context,
+            message: "Couldn't create event. Please try again later or contact us if the problem persists.",
+            messageType: MessageType.error,
           );
         }
-        if (err is EventCreationException) {
-          return Utils.displayAlertDialog(
-            context,
-            "Invalid",
-            "Please check your inputs and try again",
-          );
-        }
-        if (err is UnauthorizedException) {
-          return Utils.displayAlertDialog(
-            context,
-            "Unauthorized",
-            "Please login again",
-          );
-        }
-        return Utils.displayAlertDialog(
-          context,
-          "Couldn't create event",
-          "Please try again later or contact us if the problem persists.",
-        );
       }
     }
   }

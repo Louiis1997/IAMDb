@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:iamdb/common/date_helpers.dart';
+import 'package:iamdb/common/utils.dart';
 import 'package:iamdb/components/maps/map-view.dart';
 import 'package:iamdb/models/event.dart';
 import 'package:iamdb/models/maps/map-arguments.dart';
@@ -195,11 +196,11 @@ class _EventDetailsState extends State<EventDetails> {
                                     onPressed: () async {
                                       if (_userLatitude == null ||
                                           _userLongitude == null) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Please wait while we get your location'),
-                                          ),
+                                        Utils.displaySnackBar(
+                                          context: context,
+                                          message:
+                                              'Please wait while we get your location :D',
+                                          messageType: MessageType.info,
                                         );
                                         return;
                                       }
@@ -211,12 +212,11 @@ class _EventDetailsState extends State<EventDetails> {
                                         eventFullAddress,
                                       );
                                       if (eventLocations.isEmpty) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
+                                        Utils.displaySnackBar(
+                                          context: context,
+                                          message:
                                               'We could not find the location of this event',
-                                            ),
-                                          ),
+                                          messageType: MessageType.error,
                                         );
                                         return;
                                       }
