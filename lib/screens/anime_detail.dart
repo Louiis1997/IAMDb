@@ -24,8 +24,12 @@ class AnimeDetail extends StatefulWidget {
   static const List<Tab> animeDetailTabs = <Tab>[
     Tab(
       text: 'Information',
+      icon: Icon(Icons.info_outline),
     ),
-    Tab(text: 'Episodes'),
+    Tab(
+      text: 'Episodes',
+      icon: Icon(Icons.list),
+    ),
   ];
 
   @override
@@ -46,7 +50,11 @@ class _AnimeDetailState extends State<AnimeDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Anime Detail'),
+        title: Image.asset(
+          'assets/iamdb-logo.png',
+          fit: BoxFit.contain,
+          height: 64,
+        ),
       ),
       body: SlidingUpPanel(
         backdropEnabled: true,
@@ -122,14 +130,32 @@ class _AnimeDetailState extends State<AnimeDetail> {
           child: Column(
             children: [
               Container(
-                constraints: const BoxConstraints.expand(height: 50),
+                // appBar: AppBar(
+                //   centerTitle: true,
+                //   title: const Text('Animes'),
+                //   bottom: PreferredSize(
+                //     preferredSize: _tabBar.preferredSize,
+                //     child: Material(
+                //       color: Colors.transparent,
+                //       child: _tabBar,
+                //     ),
+                //   ),
+                //   backgroundColor: Theme.of(context).colorScheme.surface,
+                // ),
+                constraints: const BoxConstraints.expand(height: 70),
                 child: Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.surface,
                   child: TabBar(
                     tabs: AnimeDetail.animeDetailTabs,
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                    unselectedLabelStyle:
-                        TextStyle(fontWeight: FontWeight.normal),
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    labelColor: Theme.of(context).primaryColor,
+                    unselectedLabelStyle: TextStyle(
+                      fontWeight: FontWeight.normal,
+                    ),
+                    unselectedLabelColor:
+                        Theme.of(context).textTheme.bodyText1!.color,
                     indicatorSize: TabBarIndicatorSize.label,
                   ),
                 ),

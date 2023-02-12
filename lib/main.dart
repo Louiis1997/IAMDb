@@ -193,7 +193,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           titleTextStyle: GoogleFonts.roboto(
             textStyle: const TextStyle(
-              color: Color.fromRGBO(0, 0, 0, 1),
+              color: Color.fromRGBO(244, 197, 24, 1),
               fontSize: 32,
               fontWeight: FontWeight.w900,
             ),

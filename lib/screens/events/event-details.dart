@@ -54,7 +54,6 @@ class _EventDetailsState extends State<EventDetails> {
           fit: BoxFit.contain,
           height: 64,
         ),
-        // on touch show full name bc it can be long
       ),
       body: SafeArea(
         child: SingleChildScrollView(

@@ -44,7 +44,13 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign up')),
+      appBar: AppBar(
+        title: Image.asset(
+          'assets/iamdb-logo.png',
+          fit: BoxFit.contain,
+          height: 64,
+        ),
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -54,17 +60,16 @@ class _SignupState extends State<Signup> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        'Create your account',
+                        style: Theme.of(context).appBarTheme.titleTextStyle,
+                      ),
+                    ),
                     Center(
                       child: ProfileImagePicker(
                           pickImage: _pickImage, imageFile: _imageFile),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        'Create your Account',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(

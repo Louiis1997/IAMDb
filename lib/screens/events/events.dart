@@ -19,17 +19,37 @@ class Events extends StatelessWidget {
   // This page has 3 tabs : Past events, Live events, Upcoming events
   @override
   Widget build(BuildContext context) {
+    TabBar _tabBar = TabBar(
+      labelStyle: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+        color: Theme.of(context).primaryColor,
+      ),
+      labelColor: Theme.of(context).primaryColor, // Selected text color
+      unselectedLabelColor:
+          Theme.of(context).textTheme.bodyText1!.color, // Unselected text color
+      tabs: [
+        Tab(text: 'Past 📜', icon: Icon(Icons.history)),
+        Tab(text: 'Live 👇🏻', icon: Icon(Icons.live_tv)),
+        Tab(text: 'Upcoming 🔮', icon: Icon(Icons.calendar_today)),
+      ],
+    );
+
     return Scaffold(
       body: DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: TabBar(
-            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-            tabs: [
-              Tab(text: '👴🏻 Past 👵🏻'),
-              Tab(text: 'Live 👇🏻'),
-              Tab(text: 'Upcoming 🔮'),
-            ],
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text('Events'),
+            bottom: PreferredSize(
+              preferredSize: _tabBar.preferredSize,
+              child: Material(
+                color: Colors.transparent,
+                child: _tabBar,
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.surface,
           ),
           body: TabBarView(
             children: [

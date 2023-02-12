@@ -55,7 +55,6 @@ class LoginState extends State<Login> {
           fit: BoxFit.contain,
           height: 64,
         ),
-        // TODO REMOVE on touch show full name bc it can be long
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -67,26 +66,31 @@ class LoginState extends State<Login> {
                 child: Column(
                   children: [
                     // Login title
-                    Text(
-                      'Login',
-                      style: Theme.of(context).appBarTheme.titleTextStyle,
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        'Login',
+                        style: Theme.of(context).appBarTheme.titleTextStyle,
+                      ),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * .3,
                       child: RiveAnimation.asset(
-                          stateMachines: const ["Login Machine"],
-                          onInit: ((artboard) {
-                        controller = StateMachineController.fromArtboard(
-                            artboard, "Login Machine");
-                        if (controller == null) return;
-                        artboard.addController(controller!);
-                        isChecking = controller?.findInput("isChecking");
-                        numLook = controller?.findInput("numLook");
-                        isHandsUp = controller?.findInput("isHandsUp");
-                        trigSuccess = controller?.findInput("trigSuccess");
-                        trigFail = controller?.findInput("trigFail");
-                      }), 'assets/character.riv'),
+                        stateMachines: const ["Login Machine"],
+                        onInit: ((artboard) {
+                          controller = StateMachineController.fromArtboard(
+                              artboard, "Login Machine");
+                          if (controller == null) return;
+                          artboard.addController(controller!);
+                          isChecking = controller?.findInput("isChecking");
+                          numLook = controller?.findInput("numLook");
+                          isHandsUp = controller?.findInput("isHandsUp");
+                          trigSuccess = controller?.findInput("trigSuccess");
+                          trigFail = controller?.findInput("trigFail");
+                        }),
+                        'assets/character.riv',
+                      ),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
