@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:iamdb/exceptions/events/conflict.exception.dart';
 import 'package:iamdb/exceptions/not-found.exception.dart';
 import 'package:iamdb/exceptions/unauthorized.exception.dart';
 
@@ -67,7 +68,9 @@ class AuthService {
         case 401:
           throw Exception('401: Unauthorized');
         case 404:
-          throw Exception('404: Not Found');
+          throw NotFoundException('404: Not Found');
+        case 409:
+          throw ConflictException('409: Conflict');
         case 429:
           throw Exception('429: Too Many Request');
         case 500:

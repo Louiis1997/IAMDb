@@ -37,6 +37,7 @@ class LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _showPassword = true;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -59,118 +60,143 @@ class LoginState extends State<Login> {
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                // Login title
-                Text(
-                  'Login',
-                  style: Theme.of(context).appBarTheme.titleTextStyle,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * .3,
-                  child: RiveAnimation.asset(
-                      stateMachines: const ["Login Machine"],
-                      onInit: ((artboard) {
-                    controller = StateMachineController.fromArtboard(
-                        artboard, "Login Machine");
-                    if (controller == null) return;
-                    artboard.addController(controller!);
-                    isChecking = controller?.findInput("isChecking");
-                    numLook = controller?.findInput("numLook");
-                    isHandsUp = controller?.findInput("isHandsUp");
-                    trigSuccess = controller?.findInput("trigSuccess");
-                    trigFail = controller?.findInput("trigFail");
-                  }), 'assets/character.riv'),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    focusNode: emailFocusNode,
-                    onChanged: (value) {
-                      numLook?.change(value.length.toDouble());
-                    },
-                    controller: _emailController,
-                    validator: (value) {
-                      return Validator.validateEmail(value ?? "");
-                    },
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email address',
-                      hintText: 'john.doe@example.com',
-                      helperText: 'Enter your email address',
-                      filled: false,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    // Login title
+                    Text(
+                      'Login',
+                      style: Theme.of(context).appBarTheme.titleTextStyle,
                     ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextFormField(
-                    focusNode: passwordFocusNode,
-                    obscureText: _showPassword,
-                    controller: _passwordController,
-                    validator: (value) {
-                      return Validator.validatePassword(value ?? "");
-                    },
-                    decoration: InputDecoration(
-                      filled: false,
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() => _showPassword = !_showPassword);
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * .3,
+                      child: RiveAnimation.asset(
+                          stateMachines: const ["Login Machine"],
+                          onInit: ((artboard) {
+                        controller = StateMachineController.fromArtboard(
+                            artboard, "Login Machine");
+                        if (controller == null) return;
+                        artboard.addController(controller!);
+                        isChecking = controller?.findInput("isChecking");
+                        numLook = controller?.findInput("numLook");
+                        isHandsUp = controller?.findInput("isHandsUp");
+                        trigSuccess = controller?.findInput("trigSuccess");
+                        trigFail = controller?.findInput("trigFail");
+                      }), 'assets/character.riv'),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: TextFormField(
+                        focusNode: emailFocusNode,
+                        onChanged: (value) {
+                          numLook?.change(value.length.toDouble());
                         },
-                        child: Icon(
-                          _showPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: Colors.grey,
+                        controller: _emailController,
+                        validator: (value) {
+                          return Validator.validateEmail(value ?? "");
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Email address',
+                          hintText: 'john.doe@example.com',
+                          helperText: 'Enter your email address',
+                          filled: false,
+                        ),
+                        textInputAction: TextInputAction.next,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: TextFormField(
+                        focusNode: passwordFocusNode,
+                        obscureText: _showPassword,
+                        controller: _passwordController,
+                        validator: (value) {
+                          return Validator.validatePassword(value ?? "");
+                        },
+                        decoration: InputDecoration(
+                          filled: false,
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() => _showPassword = !_showPassword);
+                            },
+                            child: Icon(
+                              _showPassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          border: const OutlineInputBorder(),
+                          labelText: 'Password',
+                          hintText: '********',
+                          helperText: 'Enter your password',
+                        ),
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: ElevatedButton(
+                        onPressed: onClickLoginButton,
+                        child: const Text(
+                          'Login',
                         ),
                       ),
-                      border: const OutlineInputBorder(),
-                      labelText: 'Password',
-                      hintText: '********',
-                      helperText: 'Enter your password',
                     ),
-                    textInputAction: TextInputAction.done,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 50,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: ElevatedButton(
-                    onPressed: onClickLoginButton,
-                    child: const Text(
-                      'Login',
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'Don\'t have an account yet?',
-                    ),
-                    TextButton(
-                      child: const Text('Sign up',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          )),
-                      onPressed: () {
-                        Signup.navigateTo(context);
-                      },
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Text(
+                          'Don\'t have an account yet?',
+                        ),
+                        TextButton(
+                          child: const Text('Sign up',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )),
+                          onPressed: () {
+                            Signup.navigateTo(context);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              // Loading
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Visibility(
+                  child: AlertDialog(
+                    elevation: 500,
+                    backgroundColor: Colors.transparent,
+                    content: Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  visible: _isLoading,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -178,49 +204,49 @@ class LoginState extends State<Login> {
   }
 
   void onClickLoginButton() async {
-    await Future.delayed(Duration(seconds: 1));
     passwordFocusNode.unfocus(disposition: disposition);
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       try {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Processing Data',
-                style: Theme.of(context).textTheme.bodyText1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            duration: Duration(seconds: 1),
-          ),
-        );
         Map<String, dynamic> response = await AuthService.login(
             _emailController.text.trim(), _passwordController.text.trim());
         await storage.write(key: "token", value: response["access_token"]);
         trigSuccess?.change(true);
+
+        Utils.displaySnackBar(
+          context: context,
+          message: "Login successful",
+          messageType: MessageType.success,
+        );
         await Future.delayed(Duration(seconds: 1));
         Navigator.of(context).pushReplacementNamed(Home.routeName);
       } catch (err) {
         if (err is UnauthorizedException) {
-          Utils.displayAlertDialog(
-            context,
-            "Authentication failed",
-            "The email or password you entered is incorrect",
+          Utils.displaySnackBar(
+            context: context,
+            message: "The email or password you entered is incorrect",
+            messageType: MessageType.error,
           );
         } else if (err is NotFoundException) {
-          Utils.displayAlertDialog(
-            context,
-            "Authentication failed",
-            "The email or password you entered is incorrect",
+          Utils.displaySnackBar(
+            context: context,
+            message: "The email or password you entered is incorrect",
+            messageType: MessageType.error,
           );
         } else {
-          Utils.displayAlertDialog(
-            context,
-            "Authentication failed",
-            "Something went wrong",
+          Utils.displaySnackBar(
+            context: context,
+            message:
+                "Authentication failed, something went wrong. Please try again later or contact support",
+            messageType: MessageType.error,
           );
         }
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
     trigFail?.change(true);
