@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/components/maps/map-view.dart';
-import 'package:iamdb/models/maps/map-arguments.dart';
-import 'package:iamdb/screens/events/event-creation.dart';
-import 'package:iamdb/screens/events/event-details.dart';
-import 'package:iamdb/screens/manga_detail.dart';
 
+import '../components/maps/map-view.dart';
+import '../models/maps/map-arguments.dart';
 import '../screens/events/event-creation.dart';
 import '../screens/events/event-details.dart';
 import '../screens/manga_detail.dart';
@@ -20,6 +17,7 @@ import '../screens/search.dart';
 import '../screens/signup.dart';
 import '../screens/events/events.dart';
 import '../models/event.dart';
+import '../screens/characters.dart';
 
 class MyRouter {
   static Map<String, Widget Function(BuildContext context)> routes() {
@@ -77,6 +75,14 @@ class MyRouter {
         if (args is MapArguments) {
           screen = MapView(
             mapArguments: args,
+          );
+        }
+        break;
+      case AllCharacters.routeName:
+        final args = settings.arguments;
+        if (args is int) {
+          screen = AllCharacters(
+            animeId: args,
           );
         }
         break;
