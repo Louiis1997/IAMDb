@@ -60,7 +60,7 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
                     SizedBox(
                       width: maxWidth * .58,
                       child: Text(
-                        widget.anime.titleEnglish ?? widget.anime.title,
+                        widget.anime.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyText1,

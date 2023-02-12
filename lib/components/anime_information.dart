@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:expandable_text/expandable_text.dart';
+import 'package:iamdb/models/character.dart';
 
+import '../main.dart';
 import '../models/anime.dart';
+import '../screens/anime_detail.dart';
+import '../screens/characters.dart';
+import '../services/character.dart';
 
 class AnimeInformation extends StatelessWidget {
   final Future<Anime> future;
@@ -73,6 +78,58 @@ class AnimeInformation extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline2,
                 ),
               ),
+              SizedBox(height: 10),
+              //VOTE widget
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          data.score.toString() + "/10",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          "for " + data.scoredBy.toString() + " votes",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        Text("#" + data.rank.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            )),
+                        SizedBox(height: 5),
+                        Text(
+                          "Rank",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
               Text("SYNOPSIS", style: TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
               Container(
@@ -86,7 +143,7 @@ class AnimeInformation extends StatelessWidget {
                   expandOnTextTap: true,
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               Background(data.background),
               Text("INFORMATION",
                   style: TextStyle(fontWeight: FontWeight.bold)),
@@ -110,7 +167,7 @@ class AnimeInformation extends StatelessWidget {
                   expandOnTextTap: true,
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -118,8 +175,7 @@ class AnimeInformation extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/anime/characters',
-                          arguments: data.characters);
+                      AllCharacters.navigateTo(context, data.malId);
                     },
                     child: Text(
                       "Show more",
@@ -130,7 +186,79 @@ class AnimeInformation extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 200),
+              SizedBox(height: 10),
+              FutureBuilder(
+                future: _getAnimeCharacters(data.malId),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      if (snapshot.hasData) {
+                        final characters = snapshot.data;
+                        if (characters == null || characters.isEmpty) {
+                          return Center(
+                            child: Text(
+                              'No Characters found',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          );
+                        }
+                        return SizedBox(
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: characters.length >= 15
+                                ? 15
+                                : characters.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                  vertical: 5,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 120,
+                                      height: 140,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              characters[index].imageUrl ?? ""),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    SizedBox(
+                                      width: 100,
+                                      child: Text(
+                                        characters[index].name,
+                                        style: Theme.of(context).textTheme.bodyText1,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return Text('${snapshot.error}');
+                    default:
+                      return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+              SizedBox(height: 150),
             ],
           ),
         );
@@ -141,6 +269,7 @@ class AnimeInformation extends StatelessWidget {
   Background(String background) {
     if (background != "") {
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("BACKGROUND", style: TextStyle(fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
@@ -155,10 +284,15 @@ class AnimeInformation extends StatelessWidget {
               expandOnTextTap: true,
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 20),
         ],
       );
     }
     return Container();
+  }
+
+  Future<List<Character>> _getAnimeCharacters(int animeId) async {
+    final token = await storage.read(key: "token");
+    return CharacterService.getCharacters(token!, animeId);
   }
 }

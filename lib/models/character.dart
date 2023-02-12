@@ -10,9 +10,9 @@ class Character {
   });
 
   factory Character.fromJson(Map<String, dynamic> json) {
-    int malId = json['mal_id'];
-    String imageUrl = json['images']['jpg']['image_url'] ?? "";
-    String name = json['name'];
+    int malId = json['character']['mal_id'];
+    String imageUrl = json['character']['images']['jpg']['image_url'] ?? "";
+    String name = json['character']['name'];
 
     return Character(
       malId: malId,

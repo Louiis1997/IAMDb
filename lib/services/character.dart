@@ -7,7 +7,7 @@ import '../models/character.dart';
 class CharacterService {
   static const _baseUrl = "http://localhost/characters";
 
-  Future<List<Character>> getCharacters(String token, String id) async {
+  static Future<List<Character>> getCharacters(String token, int id) async {
     final response = await http.get(
       Uri.parse("$_baseUrl/anime/$id"),
       headers: <String, String>{
@@ -33,7 +33,7 @@ class CharacterService {
     }
     final jsonBody = json.decode(response.body);
     final List<Character> characters = [];
-    for (final characterJson in jsonBody['data']['character']) {
+    for (final characterJson in jsonBody['data']) {
       characters.add(Character.fromJson(characterJson));
     }
     return characters;
