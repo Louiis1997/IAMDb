@@ -1,5 +1,4 @@
 class MapCameraPosition {
-
   final double northEastLatitude;
   final double northEastLongitude;
   final double southWestLatitude;

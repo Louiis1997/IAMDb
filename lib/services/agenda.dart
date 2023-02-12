@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:iamdb/models/agenda.dart';
+
+import '../models/agenda.dart';
 
 class AgendaService {
   static const _baseUrl = "http://localhost/agendas";

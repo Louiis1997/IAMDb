@@ -103,14 +103,16 @@ class _SearchState extends State<Search> {
                     itemBuilder: (context, index) {
                       return AnimeCard(
                         anime: _animes[index],
-                        onTap: () =>
-                            {AnimeDetail.navigateTo(context, _animes[index].malId)},
+                        onTap: () => {
+                          AnimeDetail.navigateTo(context, _animes[index].malId)
+                        },
                       );
                     },
                   ),
                 ),
               ],
-            ),Positioned(
+            ),
+            Positioned(
               top: 0,
               left: 0,
               right: 0,
@@ -151,14 +153,13 @@ class _SearchState extends State<Search> {
         Utils.displaySnackBar(
             context: context,
             message: "Internal Server Error",
-            messageType: MessageType.error
-        );
+            messageType: MessageType.error);
       } else {
         Utils.displaySnackBar(
             context: context,
-            message: "An error occurred while searching. Please try again later or contact us.",
-            messageType: MessageType.error
-        );
+            message:
+                "An error occurred while searching. Please try again later or contact us.",
+            messageType: MessageType.error);
       }
     } finally {
       setState(() {

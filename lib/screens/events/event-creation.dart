@@ -1,12 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:iamdb/common/date_helpers.dart';
-import 'package:iamdb/components/maps/map-view.dart';
-import 'package:iamdb/models/maps/map-arguments.dart';
-import 'package:iamdb/services/locator.service.dart';
+
+import '../../common/date_helpers.dart';
 import '../../common/utils.dart';
 import '../../common/validator.dart';
+import '../../components/maps/map-view.dart';
 import '../../components/event_end_date_picker.dart';
 import '../../components/event_end_time_picker.dart';
 import '../../components/event_start_date_picker.dart';
@@ -14,8 +12,10 @@ import '../../components/event_start_time_picker.dart';
 import '../../exceptions/events/event-creation.exception.dart';
 import '../../exceptions/events/event-duplicate.exception.dart';
 import '../../exceptions/unauthorized.exception.dart';
-import '../../main.dart';
+import '../../models/maps/map-arguments.dart';
+import '../../services/locator.service.dart';
 import '../../services/event.dart';
+import '../../main.dart';
 
 class EventCreation extends StatefulWidget {
   const EventCreation({Key? key}) : super(key: key);
@@ -460,7 +460,8 @@ class _EventCreationState extends State<EventCreation> {
           if (locations.isEmpty) {
             Utils.displaySnackBar(
               context: context,
-              message: 'We could not find the location of your event. Please check the event address you entered.',
+              message:
+                  'We could not find the location of your event. Please check the event address you entered.',
               messageType: MessageType.error,
             );
             return false;
@@ -468,7 +469,8 @@ class _EventCreationState extends State<EventCreation> {
         } catch (e) {
           Utils.displaySnackBar(
             context: context,
-            message: 'We could not find the location of your event. Please check the event address you entered.',
+            message:
+                'We could not find the location of your event. Please check the event address you entered.',
             messageType: MessageType.error,
           );
           return false;
@@ -626,7 +628,8 @@ class _EventCreationState extends State<EventCreation> {
         } else {
           Utils.displaySnackBar(
             context: context,
-            message: "Couldn't create event. Please try again later or contact us if the problem persists.",
+            message:
+                "Couldn't create event. Please try again later or contact us if the problem persists.",
             messageType: MessageType.error,
           );
         }

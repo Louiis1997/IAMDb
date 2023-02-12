@@ -1,5 +1,4 @@
 class MapArguments {
-
   final double startLatitude;
   final double startLongitude;
   final String startFullAddress;

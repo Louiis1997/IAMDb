@@ -34,10 +34,8 @@ class EventCell extends StatelessWidget {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Text(
-                                event.name,
-                                style: Theme.of(context).textTheme.headline2
-                              ),
+                              child: Text(event.name,
+                                  style: Theme.of(context).textTheme.headline2),
                             ),
                           ],
                         ),
@@ -67,8 +65,7 @@ class EventCell extends StatelessWidget {
                                 event.description.length > 100
                                     ? '${event.description.substring(0, 100)}...'
                                     : event.description,
-                              style: Theme.of(context).textTheme.bodyText2
-                            ),
+                                style: Theme.of(context).textTheme.bodyText2),
                           ),
                         ],
                       ),
@@ -77,7 +74,9 @@ class EventCell extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              DateHelpers.formatEventDates(startDate: event.startDate, endDate: event.endDate),
+                              DateHelpers.formatEventDates(
+                                  startDate: event.startDate,
+                                  endDate: event.endDate),
                               style: const TextStyle(
                                 fontStyle: FontStyle.italic,
                                 fontSize: 12,

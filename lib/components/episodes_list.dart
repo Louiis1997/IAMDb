@@ -25,7 +25,7 @@ class EpisodeList extends StatelessWidget {
                 return Center(
                   child: Text(
                     'No episode for this anime yet',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 );
               }

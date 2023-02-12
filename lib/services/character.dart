@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 
 import '../models/character.dart';
@@ -8,6 +7,7 @@ class CharacterService {
   static const _baseUrl = "http://localhost/characters";
 
   static Future<List<Character>> getCharacters(String token, int id) async {
+    await Future.delayed(const Duration(seconds: 1));
     final response = await http.get(
       Uri.parse("$_baseUrl/anime/$id"),
       headers: <String, String>{

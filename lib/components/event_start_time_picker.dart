@@ -6,7 +6,8 @@ import '../common/validator.dart';
 class EventStartScrollTimePicker extends StatefulWidget {
   final TextEditingController eventStartTimeController;
 
-  const EventStartScrollTimePicker({Key? key, required this.eventStartTimeController})
+  const EventStartScrollTimePicker(
+      {Key? key, required this.eventStartTimeController})
       : super(key: key);
 
   @override
@@ -14,7 +15,8 @@ class EventStartScrollTimePicker extends StatefulWidget {
       _EventStartScrollTimePickerState();
 }
 
-class _EventStartScrollTimePickerState extends State<EventStartScrollTimePicker> {
+class _EventStartScrollTimePickerState
+    extends State<EventStartScrollTimePicker> {
   DateTime _selectedDate = DateTime.now();
 
   @override

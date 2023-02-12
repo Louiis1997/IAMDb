@@ -113,8 +113,7 @@ class MyApp extends StatelessWidget {
         ),
         cardColor: const Color.fromRGBO(230, 230, 230, 0.8),
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
-        primaryColorLight: const Color.fromRGBO(
-            255, 223, 99, 1.0),
+        primaryColorLight: const Color.fromRGBO(255, 223, 99, 1.0),
         secondaryHeaderColor: const Color.fromRGBO(255, 240, 178, 1.0),
       ),
       darkTheme: ThemeData(
@@ -203,8 +202,7 @@ class MyApp extends StatelessWidget {
         ),
         cardColor: const Color.fromRGBO(30, 30, 30, 0.8),
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
-        primaryColorLight: const Color.fromRGBO(
-            255, 223, 99, 1.0),
+        primaryColorLight: const Color.fromRGBO(255, 223, 99, 1.0),
       ),
       themeMode: ThemeMode.dark,
       routes: MyRouter.routes(),

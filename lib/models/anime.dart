@@ -6,6 +6,7 @@ class Anime {
   final String? type;
   final int? episodes;
   final String? status;
+
   //final String? airedString;
   final String? duration;
   final num? score;

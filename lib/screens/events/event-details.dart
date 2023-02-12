@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:iamdb/common/date_helpers.dart';
-import 'package:iamdb/common/utils.dart';
-import 'package:iamdb/components/maps/map-view.dart';
-import 'package:iamdb/models/event.dart';
-import 'package:iamdb/models/maps/map-arguments.dart';
-import 'package:iamdb/services/locator.service.dart';
+
+import '../../common/date_helpers.dart';
+import '../../common/utils.dart';
+import '../../components/maps/map-view.dart';
+import '../../models/event.dart';
+import '../../models/maps/map-arguments.dart';
+import '../../services/locator.service.dart';
 
 class EventDetails extends StatefulWidget {
   final Event event;
@@ -99,7 +99,8 @@ class _EventDetailsState extends State<EventDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
+                padding:
+                    const EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
                 child: Row(
                   children: [
                     Expanded(
@@ -118,7 +119,8 @@ class _EventDetailsState extends State<EventDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
+                padding:
+                    const EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
                 child: Column(
                   children: [
                     Row(
@@ -184,8 +186,8 @@ class _EventDetailsState extends State<EventDetails> {
                               children: [
                                 CircleAvatar(
                                   radius: 30,
-                                  backgroundColor: Color.fromRGBO(
-                                      240, 240, 240, 1.0),
+                                  backgroundColor:
+                                      Color.fromRGBO(240, 240, 240, 1.0),
                                   child: IconButton(
                                     iconSize: 40,
                                     icon: const Icon(
@@ -221,8 +223,10 @@ class _EventDetailsState extends State<EventDetails> {
                                         return;
                                       }
 
-                                      _eventLatitude = eventLocations.first.latitude;
-                                      _eventLongitude = eventLocations.first.longitude;
+                                      _eventLatitude =
+                                          eventLocations.first.latitude;
+                                      _eventLongitude =
+                                          eventLocations.first.longitude;
 
                                       _userFullAddress = await LocatorService()
                                           .getAddressFromCoordinates(
@@ -238,7 +242,8 @@ class _EventDetailsState extends State<EventDetails> {
                                           startFullAddress: _userFullAddress,
                                           destinationLatitude: _eventLatitude,
                                           destinationLongitude: _eventLongitude,
-                                          destinationFullAddress: eventFullAddress,
+                                          destinationFullAddress:
+                                              eventFullAddress,
                                           withRouting: true,
                                         ),
                                       );

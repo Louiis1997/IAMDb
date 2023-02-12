@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:iamdb/exceptions/events/conflict.exception.dart';
-import 'package:iamdb/exceptions/not-found.exception.dart';
-import 'package:iamdb/exceptions/unauthorized.exception.dart';
+
+import '../exceptions/events/conflict.exception.dart';
+import '../exceptions/not-found.exception.dart';
+import '../exceptions/unauthorized.exception.dart';
 
 class AuthService {
   static const _baseUrl = "http://localhost/auth";

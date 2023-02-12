@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 class EventEndScrollTimePicker extends StatefulWidget {
   final TextEditingController eventEndTimeController;
 
-  const EventEndScrollTimePicker({Key? key, required this.eventEndTimeController})
+  const EventEndScrollTimePicker(
+      {Key? key, required this.eventEndTimeController})
       : super(key: key);
 
   @override

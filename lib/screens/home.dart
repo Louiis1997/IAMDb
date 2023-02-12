@@ -70,8 +70,9 @@ class _Home extends State<Home> {
             label: "Events",
           ),
           BottomNavigationBarItem(
-            icon:
-                Icon(_currentScreen == 3 ? Icons.person_rounded : Icons.person_outline_rounded),
+            icon: Icon(_currentScreen == 3
+                ? Icons.person_rounded
+                : Icons.person_outline_rounded),
             label: "Profile",
           ),
         ],

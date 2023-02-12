@@ -52,7 +52,8 @@ class Events extends StatelessWidget {
             backgroundColor: Theme.of(context).primaryColor,
           ),
           floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
         ),
       ),
     );

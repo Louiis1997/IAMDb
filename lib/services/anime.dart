@@ -149,6 +149,7 @@ class AnimeService {
   }
 
   static Future<List<Episode>> getAnimeEpisodes(String token, int id) async {
+    await Future.delayed(const Duration(seconds: 3));
     final response = await http.get(
       Uri.parse("$_baseUrl/$id/episodes"),
       headers: <String, String>{

@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:expandable_text/expandable_text.dart';
-import 'package:iamdb/models/character.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+import '../common/utils.dart';
 import '../main.dart';
 import '../models/anime.dart';
-import '../screens/anime_detail.dart';
+import '../models/character.dart';
 import '../screens/characters.dart';
+import '../services/rating.dart';
 import '../services/character.dart';
 
-class AnimeInformation extends StatelessWidget {
+class AnimeInformation extends StatefulWidget {
   final Future<Anime> future;
+  final int animeId;
 
-  const AnimeInformation({Key? key, required this.future}) : super(key: key);
+  const AnimeInformation(
+      {Key? key, required this.future, required this.animeId})
+      : super(key: key);
+
+  @override
+  State<AnimeInformation> createState() => _AnimeInformationState();
+}
+
+class _AnimeInformationState extends State<AnimeInformation> {
+  TextEditingController _ratingController = TextEditingController(text: "0.0");
+  double _userRating = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserRating(widget.animeId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +39,7 @@ class AnimeInformation extends StatelessWidget {
 
   FutureBuilder buildFutureBuilderAnime() {
     return FutureBuilder(
-      future: future,
+      future: widget.future,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
@@ -79,8 +98,42 @@ class AnimeInformation extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              //VOTE widget
-              SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  RatingBarIndicator(
+                    rating: _userRating / 2,
+                    itemBuilder: (context, index) => Icon(
+                      Icons.star,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    itemCount: 5,
+                    itemSize: 50.0,
+                  ),
+                  SizedBox(height: 20.0),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: TextFormField(
+                      controller: _ratingController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Enter rating',
+                        labelText: 'Enter rating',
+                        suffixIcon: MaterialButton(
+                          onPressed: () {
+                            _userRating = double.parse(_ratingController.text);
+                            setState(() {});
+                            _rate(widget.animeId, _userRating);
+                          },
+                          child: Text('Rate'),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -236,7 +289,9 @@ class AnimeInformation extends StatelessWidget {
                                       width: 100,
                                       child: Text(
                                         characters[index].name,
-                                        style: Theme.of(context).textTheme.bodyText1,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
                                         textAlign: TextAlign.center,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
@@ -294,5 +349,40 @@ class AnimeInformation extends StatelessWidget {
   Future<List<Character>> _getAnimeCharacters(int animeId) async {
     final token = await storage.read(key: "token");
     return CharacterService.getCharacters(token!, animeId);
+  }
+
+  void _getUserRating(int animeId) async {
+    try {
+      final token = await storage.read(key: "token");
+      double rating =
+          await RatingService.getUserRatingByAnimeId(token!, animeId);
+      setState(() {
+        _userRating = rating;
+        _ratingController = TextEditingController(text: rating.toString());
+      });
+    } catch (err) {
+      setState(() {
+        _userRating = 0;
+        _ratingController = TextEditingController(text: "0.0");
+      });
+    }
+  }
+
+  void _rate(int animeId, double rate) async {
+    try {
+      final token = await storage.read(key: "token");
+      await RatingService.rate(token!, animeId, rate);
+      setState(() {
+        _userRating = rate;
+        _ratingController = TextEditingController(text: rate.toString());
+      });
+    } catch (err) {
+      Utils.displaySnackBar(
+        context: context,
+        message:
+            "Rating failed, something went wrong. Please try again later or contact support",
+        messageType: MessageType.error,
+      );
+    }
   }
 }

@@ -38,7 +38,7 @@ class RatingService {
     return ratings;
   }
 
-  static Future updateRating(String token, String id, double newRating) async {
+  static Future rate(String token, int id, double rate) async {
     final response = await http.post(
       Uri.parse("$_baseUrl/anime/$id/rate"),
       headers: <String, String>{
@@ -46,7 +46,7 @@ class RatingService {
         'Authorization': 'bearer $token'
       },
       body: jsonEncode(<String, double>{
-        'rating': newRating,
+        'rating': rate,
       }),
     );
     if (response.statusCode != 201) {
@@ -97,5 +97,33 @@ class RatingService {
       ratings.add(Rating.fromJson(ratingJson));
     }
     return ratings;
+  }
+
+  static Future<double> getUserRatingByAnimeId(
+      String token, int animeId) async {
+    final response = await http.get(
+      Uri.parse("$_baseUrl/user-ratings/anime/$animeId/rating"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'bearer $token'
+      },
+    );
+    if (response.statusCode != 200) {
+      switch (response.statusCode) {
+        case 400:
+          throw Exception('400: Bad request');
+        case 401:
+          throw Exception('401: Unauthorized');
+        case 404:
+          throw Exception('404: Not Found');
+        case 429:
+          throw Exception('429: Too Many Request');
+        case 500:
+          throw Exception('500: Internal Server Error');
+        case 503:
+          throw Exception('503: Service Unavailable');
+      }
+    }
+    return double.parse(response.body);
   }
 }

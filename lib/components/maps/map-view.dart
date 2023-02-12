@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:iamdb/common/utils.dart';
-import 'package:iamdb/models/maps/map-arguments.dart';
-import 'package:iamdb/services/locator.service.dart';
-import 'package:iamdb/services/map.service.dart';
+
+import '../../common/utils.dart';
+import '../../models/maps/map-arguments.dart';
+import '../../services/locator.service.dart';
+import '../../services/map.service.dart';
 
 // Tutorial : https://blog.codemagic.io/creating-a-route-calculator-using-google-maps/
 class MapView extends StatefulWidget {

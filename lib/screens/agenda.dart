@@ -40,7 +40,8 @@ class Agenda extends ConsumerWidget {
                   backgroundColor: Theme.of(context).colorScheme.background,
                   bottom: TabBar(
                     labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                    unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+                    unselectedLabelStyle:
+                        TextStyle(fontWeight: FontWeight.normal),
                     indicatorSize: TabBarIndicatorSize.label,
                     tabs: agendaTabs,
                   ),
@@ -50,13 +51,19 @@ class Agenda extends ConsumerWidget {
             body: TabBarView(
               children: [
                 AgendaList(
-                  future: (_changed == true) ? _getAgenda("En cours ⏳") : _getAgenda("En cours ⏳"),
+                  future: (_changed == true)
+                      ? _getAgenda("En cours ⏳")
+                      : _getAgenda("En cours ⏳"),
                 ),
                 AgendaList(
-                  future: (_changed == true) ? _getAgenda("En pause 🤒") : _getAgenda("En pause 🤒"),
+                  future: (_changed == true)
+                      ? _getAgenda("En pause 🤒")
+                      : _getAgenda("En pause 🤒"),
                 ),
                 AgendaList(
-                  future: (_changed == true) ? _getAgenda("Envie de voir 🤤") : _getAgenda("Envie de voir 🤤"),
+                  future: (_changed == true)
+                      ? _getAgenda("Envie de voir 🤤")
+                      : _getAgenda("Envie de voir 🤤"),
                 ),
               ],
             ),

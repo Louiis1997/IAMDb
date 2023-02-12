@@ -5,12 +5,10 @@ class DateHelpers {
     required DateTime? startDate,
     required DateTime? endDate,
   }) {
-    var formattedStartDate = startDate != null
-        ? DateFormat.yMMMEd().format(startDate)
-        : Null;
-    var formattedEndDate = endDate != null
-        ? DateFormat.yMMMEd().format(endDate)
-        : Null;
+    var formattedStartDate =
+        startDate != null ? DateFormat.yMMMEd().format(startDate) : Null;
+    var formattedEndDate =
+        endDate != null ? DateFormat.yMMMEd().format(endDate) : Null;
 
     if (formattedStartDate != Null && formattedEndDate != Null) {
       return 'From $formattedStartDate - To $formattedEndDate';
@@ -22,10 +20,7 @@ class DateHelpers {
   }
 
   static DateTime parseDateTime(String date, String time) {
-    String startDateTime = date.trim() +
-        'T' +
-        time.trim() +
-        'Z';
+    String startDateTime = date.trim() + 'T' + time.trim() + 'Z';
     return DateTime.parse(startDateTime);
   }
 }

@@ -269,7 +269,8 @@ class _SignupState extends State<Signup> {
         } else if (err is NotFoundException) {
           Utils.displaySnackBar(
             context: context,
-            message: "Failed to register (please try again or contact us if the problem persists))",
+            message:
+                "Failed to register (please try again or contact us if the problem persists))",
             messageType: MessageType.error,
           );
         } else if (err.toString().contains("500")) {

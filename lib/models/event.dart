@@ -56,7 +56,9 @@ class Event {
       longitude: json['longitude'].toDouble(),
       startDate: DateTime.parse(json['startDate']),
       endDate: json['endDate'] != null ? DateTime.parse(json['endDate']) : null,
-      status: EventStatus.values.byName(json['status'].toString().toLowerCase()).toString(),
+      status: EventStatus.values
+          .byName(json['status'].toString().toLowerCase())
+          .toString(),
       cancelledAt: json['cancelledAt'] != null
           ? DateTime.parse(json['cancelledAt'])
           : null,

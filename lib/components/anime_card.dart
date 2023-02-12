@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../common/utils.dart';
 import '../screens/agenda.dart';
 import '../services/agenda.dart';
 import '../main.dart';
@@ -19,6 +20,7 @@ class AnimeCard extends ConsumerStatefulWidget {
 
 class AnimeCardState extends ConsumerState<AnimeCard> {
   String _status = "";
+  String _initStatus = "";
 
   @override
   void initState() {
@@ -102,7 +104,8 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
                   CheckboxListTile(
                     title: const Text("Envie de voir"),
                     value: _status == "Envie de voir 🤤",
-                    onChanged: (bool? value) => setState(() => _onChanged(value, "Envie de voir 🤤")),
+                    onChanged: (bool? value) =>
+                        setState(() => _onChanged(value, "Envie de voir 🤤")),
                     activeColor: Colors.orange,
                     checkboxShape: const CircleBorder(),
                     secondary: const Icon(
@@ -113,7 +116,8 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
                   CheckboxListTile(
                     title: const Text("En pause"),
                     value: _status == "En pause 🤒",
-                    onChanged: (bool? value) => setState(() => _onChanged(value, "En pause 🤒")),
+                    onChanged: (bool? value) =>
+                        setState(() => _onChanged(value, "En pause 🤒")),
                     activeColor: Colors.orange,
                     checkboxShape: const CircleBorder(),
                     secondary: const Icon(
@@ -124,7 +128,8 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
                   CheckboxListTile(
                     title: const Text("En cours"),
                     value: _status == "En cours ⏳",
-                    onChanged: (bool? value) => setState(() => _onChanged(value, "En cours ⏳")),
+                    onChanged: (bool? value) =>
+                        setState(() => _onChanged(value, "En cours ⏳")),
                     activeColor: Colors.orange,
                     checkboxShape: const CircleBorder(),
                     secondary: const Icon(
@@ -135,7 +140,8 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
                   CheckboxListTile(
                     title: const Text("Terminés"),
                     value: _status == "Terminés ✅",
-                    onChanged: (bool? value) => setState(() => _onChanged(value, "Terminés ✅")),
+                    onChanged: (bool? value) =>
+                        setState(() => _onChanged(value, "Terminés ✅")),
                     activeColor: Colors.orange,
                     checkboxShape: const CircleBorder(),
                     secondary: const Icon(Icons.check_circle_outline,
@@ -147,15 +153,26 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
           },
         );
       },
-    ).whenComplete(() => _updateStatus());
+    ).whenComplete(() => (_initStatus != _status) ? _updateStatus() : null);
   }
 
   void _getStatus(String animeId) async {
-    final token = await storage.read(key: "token");
-    String status = await AgendaService.getAnimeStatus(token!, animeId);
-    setState(() {
-      _status = status;
-    });
+    try {
+      final token = await storage.read(key: "token");
+      String status = await AgendaService.getAnimeStatus(token!, animeId);
+      setState(() {
+        _initStatus = status;
+        _status = status;
+      });
+    } catch (err) {
+      if (err.toString().contains("500")) {
+        Utils.displayAlertDialog(context, "Error when getting the anime status",
+            "Internal Server Error");
+      } else {
+        Utils.displayAlertDialog(
+            context, "Error when getting the anime status", err.toString());
+      }
+    }
   }
 
   void _updateStatus() async {

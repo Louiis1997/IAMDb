@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator_android/geolocator_android.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocatorService {

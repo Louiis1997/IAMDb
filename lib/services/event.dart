@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:iamdb/exceptions/events/event-duplicate.exception.dart';
-import 'package:iamdb/exceptions/unauthorized.exception.dart';
 
+import '../exceptions/events/event-duplicate.exception.dart';
+import '../exceptions/unauthorized.exception.dart';
 import '../models/event.dart';
 
 class EventService {
@@ -20,8 +20,8 @@ class EventService {
     return getEventsByStatus(token, "upcoming");
   }
 
-  static Future<List<Event>> getEventsByStatus(String token,
-      String status) async {
+  static Future<List<Event>> getEventsByStatus(
+      String token, String status) async {
     final response = await http.get(
       Uri.parse("$_baseUrl/$status"),
       headers: <String, String>{
