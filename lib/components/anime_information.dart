@@ -114,15 +114,26 @@ class _AnimeInformationState extends State<AnimeInformation> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: TextFormField(
+                      autocorrect: false,
+                      enableSuggestions: false,
                       controller: _ratingController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.transparent,
                         border: OutlineInputBorder(),
                         hintText: 'Enter rating',
                         labelText: 'Enter rating',
                         suffixIcon: MaterialButton(
                           onPressed: () {
-                            _userRating = double.parse(_ratingController.text);
+                            try {
+                              _userRating =
+                                  double.parse(_ratingController.text);
+                            } catch (e) {
+                              Utils.displayAlertDialog(context,
+                                  "Error when rating the anime",
+                                  "Please enter a valid rating");
+                            }
                             setState(() {});
                             _rate(widget.animeId, _userRating);
                           },
@@ -370,6 +381,12 @@ class _AnimeInformationState extends State<AnimeInformation> {
 
   void _rate(int animeId, double rate) async {
     try {
+      if (rate >= 10) {
+        Utils.displayAlertDialog(context,
+            "Error when rating the anime",
+            "Please enter a rating below 10");
+        return;
+      }
       final token = await storage.read(key: "token");
       await RatingService.rate(token!, animeId, rate);
       setState(() {
