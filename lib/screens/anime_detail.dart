@@ -130,18 +130,6 @@ class _AnimeDetailState extends State<AnimeDetail> {
           child: Column(
             children: [
               Container(
-                // appBar: AppBar(
-                //   centerTitle: true,
-                //   title: const Text('Animes'),
-                //   bottom: PreferredSize(
-                //     preferredSize: _tabBar.preferredSize,
-                //     child: Material(
-                //       color: Colors.transparent,
-                //       child: _tabBar,
-                //     ),
-                //   ),
-                //   backgroundColor: Theme.of(context).colorScheme.surface,
-                // ),
                 constraints: const BoxConstraints.expand(height: 70),
                 child: Material(
                   color: Theme.of(context).colorScheme.surface,

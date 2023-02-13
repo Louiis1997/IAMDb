@@ -341,7 +341,7 @@ class _AnimeInformationState extends State<AnimeInformation> {
           SizedBox(height: 10),
           Container(
             child: ExpandableText(
-              background,
+              background + "\n",
               expandText: '\nRead more',
               collapseText: '\nShow less',
               maxLines: 3,

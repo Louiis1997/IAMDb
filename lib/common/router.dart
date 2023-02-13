@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../components/maps/map-view.dart';
 import '../models/maps/map-arguments.dart';
+import '../models/top_manga.dart';
 import '../screens/events/event-creation.dart';
 import '../screens/events/event-details.dart';
 import '../screens/manga_detail.dart';
@@ -48,9 +49,9 @@ class MyRouter {
         break;
       case MangaDetail.routeName:
         final args = settings.arguments;
-        if (args is int) {
+        if (args is TopManga) {
           screen = MangaDetail(
-            mangaId: args,
+            manga: args,
           );
         }
         break;

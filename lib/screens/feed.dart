@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../components/carousel_banner.dart';
 import '../components/suggestion_list.dart';
 import '../main.dart';
+import '../models/top_manga.dart';
 import '../services/anime.dart';
 import '../services/manga.dart';
 import 'anime_detail.dart';
@@ -68,7 +69,7 @@ class Feed extends StatelessWidget {
     AnimeDetail.navigateTo(context, id);
   }
 
-  void _onTapToManga(BuildContext context, int id) {
-    MangaDetail.navigateTo(context, id);
+  void _onTapToManga(BuildContext context, TopManga manga) {
+    MangaDetail.navigateTo(context, manga);
   }
 }

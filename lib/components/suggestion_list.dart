@@ -50,7 +50,11 @@ class SuggestionList extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              onTap(context, data[index].malId);
+              if ((data[index].imageUrl).contains("manga")) {
+                onTap(context, data[index]);
+              } else {
+                onTap(context, data[index].malId);
+              }
             },
             child: Container(
               margin: const EdgeInsets.symmetric(
