@@ -175,6 +175,7 @@ class _SearchState extends State<Search> {
       _debouncer.run(() {
         if (text != '') {
           setState(() {
+            _animes.clear();
             _getAnimes(text.trim(), _filter);
           });
         } else {
@@ -189,11 +190,13 @@ class _SearchState extends State<Search> {
   void _onPressed(String filter) {
     if (_controller.text != '') {
       setState(() {
+        _animes.clear();
         _filter = filter;
         _getAnimes(_controller.text.trim(), filter);
       });
     } else {
       setState(() {
+        _animes.clear();
         _filter = filter;
       });
     }

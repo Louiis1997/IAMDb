@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -183,6 +185,7 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
     else
       await AgendaService.updateAgendaStatus(
           token!, widget.anime.malId, _status);
+    _initStatus = _status;
     ref.read(boolProvider.notifier).state = !ref.watch(boolProvider);
   }
 
