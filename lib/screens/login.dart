@@ -96,6 +96,9 @@ class LoginState extends State<Login> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       child: TextFormField(
+                        autocorrect: false,
+                        enableSuggestions: false,
+                        keyboardType: TextInputType.emailAddress,
                         focusNode: emailFocusNode,
                         onChanged: (value) {
                           numLook?.change(value.length.toDouble());
@@ -118,6 +121,9 @@ class LoginState extends State<Login> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       child: TextFormField(
+                        autocorrect: false,
+                        enableSuggestions: false,
+                        keyboardType: TextInputType.visiblePassword,
                         focusNode: passwordFocusNode,
                         obscureText: _showPassword,
                         controller: _passwordController,

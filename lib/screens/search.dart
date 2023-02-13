@@ -47,6 +47,8 @@ class _SearchState extends State<Search> {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: TextField(
+                    autocorrect: false,
+                    enableSuggestions: false,
                     autofocus: true,
                     controller: _controller,
                     onChanged: _onChanged(),

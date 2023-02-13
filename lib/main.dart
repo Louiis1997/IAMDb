@@ -204,7 +204,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
         primaryColorLight: const Color.fromRGBO(255, 223, 99, 1.0),
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       routes: MyRouter.routes(),
       onGenerateRoute: MyRouter.getRouter,
     );
