@@ -10,10 +10,12 @@ class SmallImageGrid extends StatelessWidget {
   final int itemCount;
   final String status;
 
-
-  const SmallImageGrid(
-      {Key? key, required this.snapshot, required this.itemCount, required this.status})
-      : super(key: key);
+  const SmallImageGrid({
+    Key? key,
+    required this.snapshot,
+    required this.itemCount,
+    required this.status,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +148,6 @@ class SmallImageGrid extends StatelessWidget {
   }
 
   Future<dynamic> _getAnime(int id, int index) async {
-    await Future.delayed(Duration(seconds: (index / 2).round()));
-    final anime = await AnimeService.getAnimeById(id);
-    return anime;
+    return AnimeService.getAnimeById(id, index: index);
   }
 }

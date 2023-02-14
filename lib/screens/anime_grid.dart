@@ -18,12 +18,37 @@ class AnimeGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Anime - $status'),
-          backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Image.asset(
+          'assets/iamdb-logo.png',
+          fit: BoxFit.contain,
+          height: 64,
         ),
-        body: buildFutureBuilderItem());
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    'Anime - $status',
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: buildFutureBuilderItem(),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   FutureBuilder buildFutureBuilderItem() {

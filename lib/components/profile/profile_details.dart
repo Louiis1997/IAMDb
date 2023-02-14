@@ -81,7 +81,7 @@ class ProfileDetails extends StatelessWidget {
                                     padding: const EdgeInsets.all(5.0),
                                     child: ClipOval(
                                       child: Image.network(
-                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWdArwtZM3Gky98tefwUkAmTxS6KLSqI5NFg&usqp=CAU",
+                                        '${user.profilePictureUrl != null ? user.profilePictureUrl : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWdArwtZM3Gky98tefwUkAmTxS6KLSqI5NFg&usqp=CAU"}',
                                         fit: BoxFit.cover,
                                         width: 100,
                                         height: 100,
@@ -102,7 +102,7 @@ class ProfileDetails extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${user.bio}',
+                                  '${user.bio == null ? '' : user.bio}',
                                   style: GoogleFonts.aBeeZee(
                                     textStyle: const TextStyle(
                                       color: Color.fromRGBO(0, 0, 0, 1),
@@ -130,7 +130,10 @@ class ProfileDetails extends StatelessWidget {
                                 onPressed: () async {
                                   selectParam(context);
                                 },
-                                child: const Icon(Icons.more_vert),
+                                child: const Icon(
+                                  Icons.settings,
+                                  color: Colors.white,
+                                ),
                                 backgroundColor: Theme.of(context).primaryColor,
                               ),
                             ),

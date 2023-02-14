@@ -89,8 +89,6 @@ class ImageGrid extends StatelessWidget {
   }
 
   Future<dynamic> _getAnime(int id, int index) async {
-    await Future.delayed(Duration(seconds: (index / 2).round()));
-    final anime = await AnimeService.getAnimeById(id);
-    return anime;
+    return AnimeService.getAnimeById(id);
   }
 }

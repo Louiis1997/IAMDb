@@ -10,6 +10,7 @@ class User {
   final String? bio;
   final String? birthdate;
   final String? status;
+  final String? profilePictureUrl;
 
   User({
     required this.id,
@@ -23,6 +24,7 @@ class User {
     required this.bio,
     required this.birthdate,
     required this.status,
+    required this.profilePictureUrl,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class User {
     String bio = json['bio'] ?? "";
     String birthdate = json['birthdate'] ?? "";
     String status = json['status'] ?? "";
+    String profilePictureUrl = json['profilePictureUrl'] ?? null;
 
     return User(
       id: id,
@@ -50,6 +53,7 @@ class User {
       bio: bio,
       birthdate: birthdate,
       status: status,
+      profilePictureUrl: profilePictureUrl,
     );
   }
 
@@ -68,6 +72,6 @@ class User {
     return 'User{id: $id, username: $username, firstname: $firstname, '
         'lastname: $lastname, email: $email, createdAt: $createdAt, '
         'updatedAt: $updatedAt, deletedAt: $deletedAt, bio: $bio, '
-        'birthdate: $birthdate, status: $status}';
+        'birthdate: $birthdate, status: $status, profilePictureUrl: $profilePictureUrl}';
   }
 }

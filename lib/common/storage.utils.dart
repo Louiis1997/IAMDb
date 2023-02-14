@@ -9,4 +9,8 @@ class StorageUtils {
     }
     return token;
   }
+
+  static Future<void> saveUserAuthToken(String token) async {
+    await storage.write(key: "token", value: token);
+  }
 }

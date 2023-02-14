@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/common/storage.utils.dart';
 import 'package:rive/rive.dart';
 
 import '../exceptions/not-found.exception.dart';
 import '../exceptions/unauthorized.exception.dart';
 import '../common/user-interface-dialog.utils.dart';
 import '../common/validators.dart';
-import '../main.dart';
 import '../services/auth.dart';
 import 'home.dart';
 import 'signup.dart';
@@ -223,7 +223,7 @@ class LoginState extends State<Login> {
       try {
         Map<String, dynamic> response = await AuthService.login(
             _emailController.text.trim(), _passwordController.text.trim());
-        await storage.write(key: "token", value: response["access_token"]);
+        await StorageUtils.saveUserAuthToken(response["access_token"]);
         trigSuccess?.change(true);
 
         UserInterfaceDialog.displaySnackBar(

@@ -125,7 +125,7 @@ class AnimeService {
     return animes;
   }
 
-  static Future<Anime> getAnimeById(int id) async {
+  static Future<Anime> getAnimeById(int id, { int index = 1}) async {
     int retry = 0;
     while (retry < 20) {
       try {
@@ -163,7 +163,7 @@ class AnimeService {
           print('Nombre maximum de tentatives atteint');
           break;
         }
-        await Future.delayed(Duration(milliseconds: 800));
+        await Future.delayed(Duration(seconds: index));
       }
     }
     return Future.error(Exception('500: Impossible de récupérer les données'));
