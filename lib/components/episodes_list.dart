@@ -32,9 +32,9 @@ class EpisodeList extends StatelessWidget {
               return buildEpisodeListView(snapshot.data);
             }
             if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return Center(child: Text("Sorry, couldn't load episodes"));
             }
-            return Text('${snapshot.error}');
+            return Center(child: Text("Sorry, couldn't load episodes"));
           default:
             return const Center(child: CircularProgressIndicator());
         }

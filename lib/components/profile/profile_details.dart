@@ -33,7 +33,7 @@ class ProfileDetails extends ConsumerWidget {
               if (user.isEmpty()) {
                 return Center(
                   child: Text(
-                    'No anime added yet',
+                    'No profile found.',
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 );
@@ -149,12 +149,7 @@ class ProfileDetails extends ConsumerWidget {
                 ),
               );
             }
-            return Center(
-              child: Text(
-                'No anime added yet',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            );
+            return Center(child: Text("Sorry, couldn't load the profile."));
           default:
             return Center(
               child: CircularProgressIndicator(),

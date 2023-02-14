@@ -32,9 +32,9 @@ class CarouselBanner extends StatelessWidget {
               return buildCarouselSliderTopAnime(snapshot.data);
             }
             if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return Center(child: Text('Sorry, couldn\'t load top animes.'));
             }
-            return Text('${snapshot.error}');
+            return Center(child: Text('Sorry, couldn\'t load top animes.'));
           default:
             return const Center(child: CircularProgressIndicator());
         }

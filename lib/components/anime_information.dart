@@ -316,9 +316,9 @@ class _AnimeInformationState extends State<AnimeInformation> {
                         );
                       }
                       if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
+                        return Center(child: Text('Sorry, couldn\'t load the anime info.'));
                       }
-                      return Text('${snapshot.error}');
+                      return Center(child: Text('Sorry, couldn\'t load the anime info.'));
                     default:
                       return const Center(child: CircularProgressIndicator());
                   }

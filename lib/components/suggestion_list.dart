@@ -31,9 +31,9 @@ class SuggestionList extends StatelessWidget {
               return buildSuggestionListView(snapshot.data);
             }
             if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return Center(child: Text('Sorry, couldn\'t load animes/mangas'));
             }
-            return Text('${snapshot.error}');
+            return Center(child: Text('Sorry, couldn\'t load animes/mangas'));
           default:
             return const Center(child: CircularProgressIndicator());
         }

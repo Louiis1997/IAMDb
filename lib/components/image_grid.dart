@@ -52,6 +52,9 @@ class ImageGrid extends StatelessWidget {
       builder: (context, imageSnapshot) {
         // Vérifie si la future a renvoyé une donnée valide
         if (imageSnapshot.hasData) {
+          if (imageSnapshot.data == null) {
+            return Center(child: Text("No anime found."));
+          }
           return Padding(
             // Padding de 5 pixels autour de chaque image
             padding: EdgeInsets.all(5),
@@ -76,6 +79,9 @@ class ImageGrid extends StatelessWidget {
             ),
           );
         } else {
+          if (imageSnapshot.hasError) {
+            return Center(child: Text("Sorry, counldn't load agendas."));
+          }
           // Affiche un spinner lorsque la future n'a pas encore renvoyé de données
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 60.0, horizontal: 12),

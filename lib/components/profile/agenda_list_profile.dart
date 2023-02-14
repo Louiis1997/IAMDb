@@ -63,9 +63,9 @@ class AgendaListProfil extends StatelessWidget {
               );
             }
             if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return Center(child: Text("Sorry, couldn't load anime in the agenda."));
             }
-            return Text('${snapshot.error}');
+            return Center(child: Text("Sorry, couldn't load anime in the agenda."));
           default:
             return const Center(child: CircularProgressIndicator());
         }
