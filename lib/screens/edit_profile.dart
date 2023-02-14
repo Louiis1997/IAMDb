@@ -138,7 +138,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: StatusDropDownButton(onChanged: _onChanged),
+              child: StatusDropDownButton(onChanged: _onChanged, value: _status),
             ),
             const SizedBox(height: 10),
             Container(
@@ -199,6 +199,7 @@ class _EditProfileState extends State<EditProfile> {
     _firstNameController.text = data.firstname;
     _lastNameController.text = data.lastname;
     _bioController.text = data.bio;
+    _status = data.status;
   }
 
   static void editProfile(

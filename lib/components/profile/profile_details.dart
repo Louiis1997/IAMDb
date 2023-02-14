@@ -177,7 +177,7 @@ class ProfileDetails extends StatelessWidget {
               ),
             ),
             onPressed: (context) {
-              Navigator.pushNamed(context, '/edit_profile');
+              Navigator.popAndPushNamed(context, '/edit_profile');
             }),
         BottomSheetAction(
             title: Text(

@@ -10,8 +10,13 @@ const List<String> status = <String>[
 
 class StatusDropDownButton extends StatefulWidget {
   final void Function(String) onChanged;
+  final String? value;
 
-  const StatusDropDownButton({super.key, required this.onChanged});
+  const StatusDropDownButton({
+    super.key,
+    required this.onChanged,
+    this.value,
+  });
 
   @override
   State<StatusDropDownButton> createState() => _StatusDropDownButtonState();
@@ -24,7 +29,7 @@ class _StatusDropDownButtonState extends State<StatusDropDownButton> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: _dropdownValue,
+      value: _dropdownValue == null ? widget.value : _dropdownValue,
       hint: const Text('Social status'),
       elevation: 16,
       style: Theme.of(context).textTheme.bodyText1,
