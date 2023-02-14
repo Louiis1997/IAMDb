@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
 import '../models/character.dart';
 import '../services/character.dart';
 
@@ -91,7 +90,6 @@ class AllCharacters extends StatelessWidget {
   }
 
   Future<List<Character>> _getAnimeCharacters(int animeId) async {
-    final token = await storage.read(key: "token");
-    return CharacterService.getCharacters(token!, animeId);
+    return CharacterService.getCharacters(animeId);
   }
 }

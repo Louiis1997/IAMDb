@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../common/utils.dart';
-import '../main.dart';
+import '../common/user-interface-dialog.utils.dart';
 import '../models/anime.dart';
 import '../models/character.dart';
 import '../screens/characters.dart';
@@ -130,7 +129,8 @@ class _AnimeInformationState extends State<AnimeInformation> {
                               _userRating =
                                   double.parse(_ratingController.text);
                             } catch (e) {
-                              Utils.displayAlertDialog(context,
+                              UserInterfaceDialog.displayAlertDialog(
+                                  context,
                                   "Error when rating the anime",
                                   "Please enter a valid rating");
                             }
@@ -358,15 +358,12 @@ class _AnimeInformationState extends State<AnimeInformation> {
   }
 
   Future<List<Character>> _getAnimeCharacters(int animeId) async {
-    final token = await storage.read(key: "token");
-    return CharacterService.getCharacters(token!, animeId);
+    return CharacterService.getCharacters(animeId);
   }
 
   void _getUserRating(int animeId) async {
     try {
-      final token = await storage.read(key: "token");
-      double rating =
-          await RatingService.getUserRatingByAnimeId(token!, animeId);
+      double rating = await RatingService.getUserRatingByAnimeId(animeId);
       setState(() {
         _userRating = rating;
         _ratingController = TextEditingController(text: rating.toString());
@@ -382,19 +379,17 @@ class _AnimeInformationState extends State<AnimeInformation> {
   void _rate(int animeId, double rate) async {
     try {
       if (rate >= 10) {
-        Utils.displayAlertDialog(context,
-            "Error when rating the anime",
-            "Please enter a rating below 10");
+        UserInterfaceDialog.displayAlertDialog(context,
+            "Error when rating the anime", "Please enter a rating below 10");
         return;
       }
-      final token = await storage.read(key: "token");
-      await RatingService.rate(token!, animeId, rate);
+      await RatingService.rate(animeId, rate);
       setState(() {
         _userRating = rate;
         _ratingController = TextEditingController(text: rate.toString());
       });
     } catch (err) {
-      Utils.displaySnackBar(
+      UserInterfaceDialog.displaySnackBar(
         context: context,
         message:
             "Rating failed, something went wrong. Please try again later or contact support",

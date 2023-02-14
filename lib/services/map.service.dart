@@ -246,7 +246,6 @@ class MapService {
           "https://maps.googleapis.com/maps/api/distancematrix/json";
       var response = await http.get(Uri.parse(
           "$mapsDistanceTimeUrl?units=imperial&origins=$startLongitude,$startLatitude&destinations=$destinationLongitude,$destinationLatitude&key=$googleMapsApiKey!&mode=$mode"));
-      // print("Response status: ${response.body}");
       if (response.statusCode != 200) {
         // log("Error getting time to travel: ${response.body} - ${response.statusCode} - ${response.reasonPhrase}");
         return null;

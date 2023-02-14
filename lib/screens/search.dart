@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../common/utils.dart';
+import '../common/user-interface-dialog.utils.dart';
 import '../screens/anime_detail.dart';
 import '../services/anime.dart';
 import '../common/debouncer.dart';
 import '../components/anime_card.dart';
-import '../main.dart';
 import '../models/anime.dart';
 
 class Search extends StatefulWidget {
@@ -64,8 +63,18 @@ class _SearchState extends State<Search> {
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
-                            _animes.clear();
+                            final searchTextBeforeClear = _controller.text;
                             _controller.clear();
+                            if (_filter.isNotEmpty &&
+                                searchTextBeforeClear.isNotEmpty) {
+                              _animes.clear();
+                              _getAnimes(_controller.text.trim(), _filter);
+                            } else if (_filter.isNotEmpty &&
+                                searchTextBeforeClear.isEmpty) {
+                              // Not reloading the list when the search text is empty
+                            } else {
+                              _animes.clear();
+                            }
                           });
                         },
                         icon: const Icon(Icons.close),
@@ -97,21 +106,30 @@ class _SearchState extends State<Search> {
                         .toList(),
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: _animes.length,
-                    itemBuilder: (context, index) {
-                      return AnimeCard(
-                        anime: _animes[index],
-                        onTap: () => {
-                          AnimeDetail.navigateTo(context, _animes[index].malId)
-                        },
-                      );
-                    },
-                  ),
-                ),
+                _animes.isEmpty && !_isLoading
+                    ? Expanded(
+                        child: Center(
+                          child: Text(
+                            "No results found corresponding to your search",
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: _animes.length,
+                          itemBuilder: (context, index) {
+                            return AnimeCard(
+                              anime: _animes[index],
+                              onTap: () => {
+                                AnimeDetail.navigateTo(
+                                    context, _animes[index].malId)
+                              },
+                            );
+                          },
+                        ),
+                      ),
               ],
             ),
             Positioned(
@@ -145,19 +163,18 @@ class _SearchState extends State<Search> {
       setState(() {
         _isLoading = true;
       });
-      final token = await storage.read(key: "token");
-      var response = await AnimeService.search(token!, name, filter);
+      var response = await AnimeService.search(name, filter);
       setState(() {
         _animes = response;
       });
     } catch (err) {
       if (err.toString().contains("500")) {
-        Utils.displaySnackBar(
+        UserInterfaceDialog.displaySnackBar(
             context: context,
             message: "Internal Server Error",
             messageType: MessageType.error);
       } else {
-        Utils.displaySnackBar(
+        UserInterfaceDialog.displaySnackBar(
             context: context,
             message:
                 "An error occurred while searching. Please try again later or contact us.",
@@ -173,32 +190,19 @@ class _SearchState extends State<Search> {
   void Function(String) _onChanged() {
     return (String text) {
       _debouncer.run(() {
-        if (text != '') {
-          setState(() {
-            _animes.clear();
-            _getAnimes(text.trim(), _filter);
-          });
-        } else {
-          setState(() {
-            _animes.clear();
-          });
-        }
+        setState(() {
+          _animes.clear();
+          _getAnimes(text.trim(), _filter);
+        });
       });
     };
   }
 
   void _onPressed(String filter) {
-    if (_controller.text != '') {
-      setState(() {
-        _animes.clear();
-        _filter = filter;
-        _getAnimes(_controller.text.trim(), filter);
-      });
-    } else {
-      setState(() {
-        _animes.clear();
-        _filter = filter;
-      });
-    }
+    setState(() {
+      _animes.clear();
+      _filter = filter;
+      _getAnimes(_controller.text.trim(), filter);
+    });
   }
 }

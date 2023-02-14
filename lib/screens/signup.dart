@@ -7,8 +7,8 @@ import 'package:image_picker/image_picker.dart';
 
 import '../components/status_drop_down_button.dart';
 import '../services/auth.dart';
-import '../common/utils.dart';
-import '../common/validator.dart';
+import '../common/user-interface-dialog.utils.dart';
+import '../common/validators.dart';
 import '../components/birthday_date_picker.dart';
 import '../components/profile_image_picker.dart';
 import 'login.dart';
@@ -60,11 +60,13 @@ class _SignupState extends State<Signup> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Create your account',
-                        style: Theme.of(context).appBarTheme.titleTextStyle,
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          'Sign up',
+                          style: Theme.of(context).appBarTheme.titleTextStyle,
+                        ),
                       ),
                     ),
                     Center(
@@ -256,7 +258,7 @@ class _SignupState extends State<Signup> {
             _birthdayController.text.trim(),
             _status,
             _imageFile);
-        Utils.displaySnackBar(
+        UserInterfaceDialog.displaySnackBar(
           context: context,
           message: "Registration successful",
           messageType: MessageType.success,
@@ -266,27 +268,27 @@ class _SignupState extends State<Signup> {
       } catch (err) {
         print("Error: $err");
         if (err is ConflictException) {
-          Utils.displaySnackBar(
+          UserInterfaceDialog.displaySnackBar(
             context: context,
             message: "This email or username is already used",
             messageType: MessageType.error,
           );
         } else if (err is NotFoundException) {
-          Utils.displaySnackBar(
+          UserInterfaceDialog.displaySnackBar(
             context: context,
             message:
                 "Failed to register (please try again or contact us if the problem persists))",
             messageType: MessageType.error,
           );
         } else if (err.toString().contains("500")) {
-          Utils.displaySnackBar(
+          UserInterfaceDialog.displaySnackBar(
             context: context,
             message:
                 "Failed to register (please try again or contact us if the problem persists))",
             messageType: MessageType.error,
           );
         } else {
-          Utils.displaySnackBar(
+          UserInterfaceDialog.displaySnackBar(
             context: context,
             message: err.toString(),
             messageType: MessageType.error,

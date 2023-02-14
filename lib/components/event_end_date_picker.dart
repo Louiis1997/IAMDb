@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class EventEndScrollDatePicker extends StatefulWidget {
+class EventEndDatePicker extends StatefulWidget {
   final TextEditingController eventEndDateController;
   final DateTime minDate;
 
-  const EventEndScrollDatePicker({
+  const EventEndDatePicker({
     Key? key,
     required this.eventEndDateController,
     required this.minDate,
   }) : super(key: key);
 
   @override
-  State<EventEndScrollDatePicker> createState() =>
-      _EventEndScrollDatePickerState();
+  State<EventEndDatePicker> createState() =>
+      _EventEndDatePickerState();
 }
 
-class _EventEndScrollDatePickerState extends State<EventEndScrollDatePicker> {
+class _EventEndDatePickerState extends State<EventEndDatePicker> {
   DateTime _selectedDate = DateTime.now();
 
   @override
@@ -37,7 +37,9 @@ class _EventEndScrollDatePickerState extends State<EventEndScrollDatePicker> {
   void _onTap() {
     showDatePicker(
       context: context,
-      initialDate: _selectedDate,
+      initialDate: _selectedDate.isAfter(widget.minDate)
+          ? _selectedDate
+          : widget.minDate,
       firstDate: widget.minDate,
       lastDate: DateTime.now().add(const Duration(days: 365 * 100)),
     ).then((value) {

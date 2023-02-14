@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
 import '../screens/anime_detail.dart';
 import '../services/anime.dart';
 import 'anime_card.dart';
@@ -88,7 +87,6 @@ class AgendaList extends StatelessWidget {
 
   Future<dynamic> _getAnime(int id, int index) async {
     await Future.delayed(Duration(seconds: (index / 2).round()));
-    final token = await storage.read(key: "token");
-    return AnimeService.getAnimeById(token!, id);
+    return AnimeService.getAnimeById(id);
   }
 }

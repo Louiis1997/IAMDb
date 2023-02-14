@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import '../main.dart';
 import '../screens/anime_detail.dart';
 import '../screens/anime_trailer.dart';
 import '../services/anime.dart';
@@ -139,7 +138,6 @@ class CarouselBanner extends StatelessWidget {
   }
 
   Future<List<dynamic>> _getTopAnime() async {
-    final token = await storage.read(key: "token");
-    return AnimeService.getTopAnime(token!);
+    return AnimeService.getTopAnime();
   }
 }

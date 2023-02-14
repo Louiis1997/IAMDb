@@ -9,7 +9,7 @@ const getColorFromMessageType = {
   MessageType.warning: Colors.orange,
 };
 
-class Utils {
+class UserInterfaceDialog {
   static void displaySnackBar({
     required BuildContext context,
     required String message,
@@ -100,14 +100,15 @@ class Utils {
     );
   }
 
-  static void displayAlertDialogChoices({
+  static Future<dynamic> displayAlertDialogChoices({
     required BuildContext context,
     required String title,
     required String question,
     required Widget cancelBtn,
     required Widget confirmBtn,
+    required MessageType messageType,
   }) {
-    showDialog(
+    return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -117,6 +118,15 @@ class Utils {
             cancelBtn,
             confirmBtn,
           ],
+          icon: messageType == MessageType.error
+              ? const Icon(Icons.error)
+              : messageType == MessageType.success
+                  ? const Icon(Icons.check)
+                  : messageType == MessageType.warning
+                      ? const Icon(Icons.warning)
+                      : const Icon(Icons.info),
+          iconPadding: const EdgeInsets.all(10),
+          iconColor: getColorFromMessageType[messageType],
         );
       },
     );

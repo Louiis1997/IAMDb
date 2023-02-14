@@ -109,6 +109,13 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w900,
             ),
           ),
+          // titleTextStyle: GoogleFonts.montserrat(
+          //   textStyle: const TextStyle(
+          //     color: Color.fromRGBO(0, 0, 0, 1),
+          //     fontSize: 32,
+          //     fontWeight: FontWeight.w900,
+          //   ),
+          // ),
           backgroundColor: const Color.fromRGBO(244, 197, 24, 1),
         ),
         cardColor: const Color.fromRGBO(230, 230, 230, 0.8),
@@ -204,7 +211,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color.fromRGBO(244, 197, 24, 1),
         primaryColorLight: const Color.fromRGBO(255, 223, 99, 1.0),
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       routes: MyRouter.routes(),
       onGenerateRoute: MyRouter.getRouter,
     );

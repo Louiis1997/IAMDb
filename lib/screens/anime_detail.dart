@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/common/storage.utils.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../common/utils.dart';
-import '../main.dart';
+import '../common/user-interface-dialog.utils.dart';
 import '../components/episodes_list.dart';
 import '../components/anime_information.dart';
 import '../models/anime.dart';
@@ -166,19 +166,16 @@ class _AnimeDetailState extends State<AnimeDetail> {
   }
 
   Future<Anime> _getAnime(int animeId) async {
-    final token = await storage.read(key: "token");
-    return AnimeService.getAnimeById(token!, animeId);
+    return AnimeService.getAnimeById(animeId);
   }
 
   Future<List<Episode>> _getEpisodes(int animeId) async {
-    final token = await storage.read(key: "token");
-    return AnimeService.getAnimeEpisodes(token!, animeId);
+    return AnimeService.getAnimeEpisodes(animeId);
   }
 
   void _getStatus(String animeId) async {
     try {
-      final token = await storage.read(key: "token");
-      String status = await AgendaService.getAnimeStatus(token!, animeId);
+      String status = await AgendaService.getAnimeStatus(animeId);
       setState(() {
         if (status != "") {
           _status = status;
@@ -186,21 +183,21 @@ class _AnimeDetailState extends State<AnimeDetail> {
       });
     } catch (err) {
       if (err.toString().contains("500")) {
-        Utils.displayAlertDialog(context, "Error when getting the anime status",
-            "Internal Server Error");
+        UserInterfaceDialog.displayAlertDialog(context,
+            "Error when getting the anime status", "Internal Server Error");
       } else {
-        Utils.displayAlertDialog(
+        UserInterfaceDialog.displayAlertDialog(
             context, "Error when getting the anime status", err.toString());
       }
     }
   }
 
   void _updateStatus() async {
-    final token = await storage.read(key: "token");
+    final token = await StorageUtils.getAuthToken();
     if (_status == "Add to agenda")
-      await AgendaService.deleteAnimeStatus(token!, widget.animeId.toString());
+      await AgendaService.deleteAnimeStatus(token, widget.animeId.toString());
     else
-      await AgendaService.updateAgendaStatus(token!, widget.animeId, _status);
+      await AgendaService.updateAgendaStatus(token, widget.animeId, _status);
   }
 
   void _onChanged(bool? value, String status) {

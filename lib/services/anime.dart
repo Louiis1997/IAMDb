@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:iamdb/common/storage.utils.dart';
 
 import '../models/anime.dart';
 import '../models/episode.dart';
@@ -10,8 +11,11 @@ class AnimeService {
   static const _baseUrl = "http://localhost/animes";
 
   static Future<List<Anime>> search(
-      String token, String letter, String filter) async {
+    String letter,
+    String filter,
+  ) async {
     final http.Response response;
+    final token = await StorageUtils.getAuthToken();
     if (filter == "") {
       response = await http.get(
         Uri.parse("$_baseUrl/search?letter=$letter"),
@@ -53,7 +57,8 @@ class AnimeService {
     return animes;
   }
 
-  static Future<List<TopAnime>> getTopAnime(String token) async {
+  static Future<List<TopAnime>> getTopAnime() async {
+    final token = await StorageUtils.getAuthToken();
     await Future.delayed(const Duration(seconds: 1));
     final response = await http.get(
       Uri.parse("$_baseUrl/top"),
@@ -86,7 +91,8 @@ class AnimeService {
     return animes;
   }
 
-  static Future<List<Season>> getSeasonNow(String token) async {
+  static Future<List<Season>> getSeasonNow() async {
+    final token = await StorageUtils.getAuthToken();
     await Future.delayed(const Duration(seconds: 1));
     final response = await http.get(
       Uri.parse("$_baseUrl/seasons/now"),
@@ -119,7 +125,8 @@ class AnimeService {
     return animes;
   }
 
-  static Future<Anime> getAnimeById(String token, int id) async {
+  static Future<Anime> getAnimeById(int id) async {
+    final token = await StorageUtils.getAuthToken();
     final response = await http.get(
       Uri.parse("$_baseUrl/$id"),
       headers: <String, String>{
@@ -148,7 +155,8 @@ class AnimeService {
     return anime;
   }
 
-  static Future<List<Episode>> getAnimeEpisodes(String token, int id) async {
+  static Future<List<Episode>> getAnimeEpisodes(int id) async {
+    final token = await StorageUtils.getAuthToken();
     await Future.delayed(const Duration(seconds: 3));
     final response = await http.get(
       Uri.parse("$_baseUrl/$id/episodes"),

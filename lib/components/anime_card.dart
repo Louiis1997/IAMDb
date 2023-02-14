@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iamdb/common/storage.utils.dart';
 
-import '../common/utils.dart';
+import '../common/user-interface-dialog.utils.dart';
 import '../screens/agenda.dart';
 import '../services/agenda.dart';
-import '../main.dart';
 import '../models/anime.dart';
 
 class AnimeCard extends ConsumerStatefulWidget {
@@ -160,25 +158,24 @@ class AnimeCardState extends ConsumerState<AnimeCard> {
 
   void _getStatus(String animeId) async {
     try {
-      final token = await storage.read(key: "token");
-      String status = await AgendaService.getAnimeStatus(token!, animeId);
+      String status = await AgendaService.getAnimeStatus(animeId);
       setState(() {
         _initStatus = status;
         _status = status;
       });
     } catch (err) {
       if (err.toString().contains("500")) {
-        Utils.displayAlertDialog(context, "Error when getting the anime status",
-            "Internal Server Error");
+        UserInterfaceDialog.displayAlertDialog(context,
+            "Error when getting the anime status", "Internal Server Error");
       } else {
-        Utils.displayAlertDialog(
+        UserInterfaceDialog.displayAlertDialog(
             context, "Error when getting the anime status", err.toString());
       }
     }
   }
 
   void _updateStatus() async {
-    final token = await storage.read(key: "token");
+    final token = await StorageUtils.getAuthToken();
     if (_status == "")
       await AgendaService.deleteAnimeStatus(
           token!, widget.anime.malId.toString());

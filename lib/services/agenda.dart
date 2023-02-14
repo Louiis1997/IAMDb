@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:iamdb/common/storage.utils.dart';
 
 import '../models/agenda.dart';
 
@@ -64,8 +65,8 @@ class AgendaService {
     }
   }
 
-  static Future<List<Agenda>> getAgendaByStatus(
-      String token, String status) async {
+  static Future<List<Agenda>> getAgendaByStatus(String status) async {
+    final token = await StorageUtils.getAuthToken();
     final response = await http.get(
       Uri.parse("$_baseUrl/$status"),
       headers: <String, String>{
@@ -97,7 +98,8 @@ class AgendaService {
     return agendas;
   }
 
-  static Future<String> getAnimeStatus(String token, String animeId) async {
+  static Future<String> getAnimeStatus(String animeId) async {
+    final token = await StorageUtils.getAuthToken();
     final response = await http.get(
       Uri.parse("$_baseUrl/anime/$animeId/status"),
       headers: <String, String>{

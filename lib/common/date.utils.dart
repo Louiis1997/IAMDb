@@ -19,6 +19,24 @@ class DateHelpers {
     }
   }
 
+  static String formatCompleteEventDates({
+    required DateTime? startDate,
+    required DateTime? endDate,
+  }) {
+    var formattedStartDate =
+        startDate != null ? DateFormat.yMMMMEEEEd().add_Hm().format(startDate) : Null;
+    var formattedEndDate =
+        endDate != null ? DateFormat.yMMMMEEEEd().add_Hm().format(endDate) : Null;
+
+    if (formattedStartDate != Null && formattedEndDate != Null) {
+      return 'From ${formattedStartDate}\nTo $formattedEndDate';
+    } else if (formattedStartDate != Null && formattedEndDate == Null) {
+      return 'On $formattedStartDate';
+    } else {
+      throw Exception('Invalid event dates : $startDate - $endDate');
+    }
+  }
+
   static DateTime parseDateTime(String date, String time) {
     String startDateTime = date.trim() + 'T' + time.trim() + 'Z';
     return DateTime.parse(startDateTime);

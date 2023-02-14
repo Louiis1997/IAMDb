@@ -3,8 +3,8 @@ import 'package:rive/rive.dart';
 
 import '../exceptions/not-found.exception.dart';
 import '../exceptions/unauthorized.exception.dart';
-import '../common/utils.dart';
-import '../common/validator.dart';
+import '../common/user-interface-dialog.utils.dart';
+import '../common/validators.dart';
 import '../main.dart';
 import '../services/auth.dart';
 import 'home.dart';
@@ -65,12 +65,13 @@ class LoginState extends State<Login> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    // Login title
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Login',
-                        style: Theme.of(context).appBarTheme.titleTextStyle,
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          'Sign in',
+                          style: Theme.of(context).appBarTheme.titleTextStyle,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -225,7 +226,7 @@ class LoginState extends State<Login> {
         await storage.write(key: "token", value: response["access_token"]);
         trigSuccess?.change(true);
 
-        Utils.displaySnackBar(
+        UserInterfaceDialog.displaySnackBar(
           context: context,
           message: "Login successful",
           messageType: MessageType.success,
@@ -234,19 +235,19 @@ class LoginState extends State<Login> {
         Navigator.of(context).pushReplacementNamed(Home.routeName);
       } catch (err) {
         if (err is UnauthorizedException) {
-          Utils.displaySnackBar(
+          UserInterfaceDialog.displaySnackBar(
             context: context,
             message: "The email or password you entered is incorrect",
             messageType: MessageType.error,
           );
         } else if (err is NotFoundException) {
-          Utils.displaySnackBar(
+          UserInterfaceDialog.displaySnackBar(
             context: context,
             message: "The email or password you entered is incorrect",
             messageType: MessageType.error,
           );
         } else {
-          Utils.displaySnackBar(
+          UserInterfaceDialog.displaySnackBar(
             context: context,
             message:
                 "Authentication failed, something went wrong. Please try again later or contact support",

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-
-import '../../main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../screens/events/event-creation.dart';
 import '../../screens/events/live_events.dart';
 import '../../screens/events/past_events.dart';
 import '../../screens/events/upcoming_events.dart';
 import '../../services/event.dart';
 
-class Events extends StatelessWidget {
+final eventChangedProvider = StateProvider((ref) => false);
+final eventCreatedProvider = StateProvider((ref) => false);
+
+class Events extends ConsumerWidget {
   const Events({Key? key}) : super(key: key);
 
   static const String routeName = '/event';
@@ -18,7 +20,10 @@ class Events extends StatelessWidget {
 
   // This page has 3 tabs : Past events, Live events, Upcoming events
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    bool _changed = ref.watch(eventChangedProvider);
+    bool _created = ref.watch(eventCreatedProvider);
+
     TabBar _tabBar = TabBar(
       labelStyle: TextStyle(
         fontWeight: FontWeight.bold,
@@ -54,13 +59,19 @@ class Events extends StatelessWidget {
           body: TabBarView(
             children: [
               PastEvents(
-                future: _getPastEvents(),
+                future: (_changed == true || _created == true)
+                    ? _getPastEvents()
+                    : _getPastEvents(),
               ),
               LiveEvents(
-                future: _getLiveEvents(),
+                future: (_changed == true || _created == true)
+                    ? _getLiveEvents()
+                    : _getLiveEvents(),
               ),
               UpcomingEvents(
-                future: _getUpcomingEvents(),
+                future: (_changed == true || _created == true)
+                    ? _getUpcomingEvents()
+                    : _getUpcomingEvents(),
               ),
             ],
           ),
@@ -80,26 +91,18 @@ class Events extends StatelessWidget {
   }
 
   Future<List<dynamic>> _getPastEvents() async {
-    final token = await storage.read(key: "token");
-    if (token == null) {
-      throw Exception('No JWT token found');
-    }
-    return EventService.getPastEvents(token);
+    return EventService.getPastEvents();
   }
 
   Future<List<dynamic>> _getLiveEvents() async {
-    final token = await storage.read(key: "token");
-    if (token == null) {
-      throw Exception('No JWT token found');
-    }
-    return EventService.getLiveEvents(token);
+    return EventService.getLiveEvents();
   }
 
   Future<List<dynamic>> _getUpcomingEvents() async {
-    final token = await storage.read(key: "token");
-    if (token == null) {
-      throw Exception('No JWT token found');
-    }
-    return EventService.getUpcomingEvents(token);
+    return EventService.getUpcomingEvents();
+  }
+
+  newEventCreated() {
+    // Reload page
   }
 }

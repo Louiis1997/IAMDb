@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:iamdb/common/storage.utils.dart';
 
 import '../models/character.dart';
 
 class CharacterService {
   static const _baseUrl = "http://localhost/characters";
 
-  static Future<List<Character>> getCharacters(String token, int id) async {
+  static Future<List<Character>> getCharacters(int id) async {
+    final token = await StorageUtils.getAuthToken();
     await Future.delayed(const Duration(seconds: 1));
     final response = await http.get(
       Uri.parse("$_baseUrl/anime/$id"),

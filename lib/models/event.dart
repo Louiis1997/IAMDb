@@ -16,6 +16,7 @@ class Event {
   final DateTime? endDate;
   final String status;
   final DateTime? cancelledAt;
+  final bool isCreator;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
@@ -36,6 +37,7 @@ class Event {
     required this.endDate,
     required this.status,
     this.cancelledAt,
+    required this.isCreator,
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
@@ -62,6 +64,7 @@ class Event {
       cancelledAt: json['cancelledAt'] != null
           ? DateTime.parse(json['cancelledAt'])
           : null,
+      isCreator: json['isCreator'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       deletedAt:
@@ -71,6 +74,6 @@ class Event {
 
   @override
   String toString() {
-    return 'Event{id: $id, name: $name, description: $description, category: $category, organizer: $organizer, city: $city, address: $address, zipCode: $zipCode, country: $country, latitude: $latitude, longitude: $longitude, startDate: $startDate, endDate: $endDate, cancelledAt: $cancelledAt, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt}';
+    return 'Event{id: $id, name: $name, description: $description, category: $category, organizer: $organizer, city: $city, address: $address, zipCode: $zipCode, country: $country, latitude: $latitude, longitude: $longitude, startDate: $startDate, endDate: $endDate, status: $status, cancelledAt: $cancelledAt, isCreator: $isCreator, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt}';
   }
 }

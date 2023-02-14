@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../components/carousel_banner.dart';
 import '../components/suggestion_list.dart';
-import '../main.dart';
 import '../models/top_manga.dart';
 import '../services/anime.dart';
 import '../services/manga.dart';
@@ -56,13 +55,11 @@ class Feed extends StatelessWidget {
   }
 
   Future<List<dynamic>> _getTopManga() async {
-    final token = await storage.read(key: "token");
-    return MangaService.getTopManga(token!);
+    return MangaService.getTopManga();
   }
 
   Future<List<dynamic>> _getSeasonNow() async {
-    final token = await storage.read(key: "token");
-    return AnimeService.getSeasonNow(token!);
+    return AnimeService.getSeasonNow();
   }
 
   void _onTapToAnime(BuildContext context, int id) {

@@ -1,14 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
+import 'dart:developer';
 
-import '../../common/date_helpers.dart';
-import '../../common/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:iamdb/common/date.utils.dart';
+import 'package:iamdb/screens/events/events.dart';
+import 'package:iamdb/services/event.dart';
+
+import '../../common/user-interface-dialog.utils.dart';
 import '../../components/maps/map-view.dart';
 import '../../models/event.dart';
 import '../../models/maps/map-arguments.dart';
 import '../../services/locator.service.dart';
 
-class EventDetails extends StatefulWidget {
+class EventDetails extends ConsumerStatefulWidget {
   final Event event;
 
   const EventDetails({
@@ -23,10 +28,10 @@ class EventDetails extends StatefulWidget {
   }
 
   @override
-  State<EventDetails> createState() => _EventDetailsState();
+  EventDetailsState createState() => EventDetailsState();
 }
 
-class _EventDetailsState extends State<EventDetails> {
+class EventDetailsState extends ConsumerState<EventDetails> {
   double _userLatitude = 0;
   double _userLongitude = 0;
   String _userFullAddress = '';
@@ -36,12 +41,26 @@ class _EventDetailsState extends State<EventDetails> {
   @override
   void initState() {
     super.initState();
-    LocatorService().localizeMe().then((position) => {
-          setState(() {
-            _userLatitude = position.latitude;
-            _userLongitude = position.longitude;
-          })
-        });
+    LocatorService()
+        .localizeMe()
+        .then(
+          (position) => {
+            setState(() {
+              _userLatitude = position.latitude;
+              _userLongitude = position.longitude;
+            })
+          },
+        )
+        .catchError(
+          (error) => {
+            log('Failed to get user location : $error'),
+            UserInterfaceDialog.displaySnackBar(
+              context: context,
+              message: 'Failed to get your location :(',
+              messageType: MessageType.error,
+            ),
+          },
+        );
   }
 
   // This page is the event details page
@@ -54,6 +73,30 @@ class _EventDetailsState extends State<EventDetails> {
           fit: BoxFit.contain,
           height: 64,
         ),
+        centerTitle: true,
+        actions: [
+          Row(
+            children: [
+              _shouldBeAbleToCancelEvent(widget.event)
+                  ? IconButton(
+                      icon: const Icon(Icons.free_cancellation_sharp),
+                      color: Colors.grey,
+                      iconSize: 30,
+                      onPressed: () => _onClickCancelEvent(),
+                    )
+                  : Container(),
+              // Delete button
+              widget.event.isCreator
+                  ? IconButton(
+                      icon: const Icon(Icons.delete_outline_rounded),
+                      color: Colors.deepOrange,
+                      iconSize: 30,
+                      onPressed: () => _onClickDeleteEvent(),
+                    )
+                  : Container(),
+            ],
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -106,13 +149,15 @@ class _EventDetailsState extends State<EventDetails> {
                       child: Container(),
                     ),
                     Text(
-                      DateHelpers.formatEventDates(
+                      DateHelpers.formatCompleteEventDates(
                           startDate: widget.event.startDate,
                           endDate: widget.event.endDate),
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                          fontSize: 16),
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 16,
+                      ),
+                      textAlign: TextAlign.right,
                     ),
                   ],
                 ),
@@ -197,7 +242,7 @@ class _EventDetailsState extends State<EventDetails> {
                                     onPressed: () async {
                                       if (_userLatitude == null ||
                                           _userLongitude == null) {
-                                        Utils.displaySnackBar(
+                                        UserInterfaceDialog.displaySnackBar(
                                           context: context,
                                           message:
                                               'Please wait while we get your location :D',
@@ -213,7 +258,7 @@ class _EventDetailsState extends State<EventDetails> {
                                         eventFullAddress,
                                       );
                                       if (eventLocations.isEmpty) {
-                                        Utils.displaySnackBar(
+                                        UserInterfaceDialog.displaySnackBar(
                                           context: context,
                                           message:
                                               'We could not find the location of this event',
@@ -269,5 +314,69 @@ class _EventDetailsState extends State<EventDetails> {
         ),
       ),
     );
+  }
+
+  Future<void> _onClickCancelEvent() async {
+    var reallyWantsToCancel =
+        await UserInterfaceDialog.displayAlertDialogChoices(
+      context: context,
+      title: 'Cancel my event',
+      question:
+          'Are you sure you want to cancel this event? This action cannot be undone.',
+      messageType: MessageType.warning,
+      confirmBtn: TextButton(
+        onPressed: () {
+          Navigator.of(context).pop(true);
+        },
+        child: const Text('Yes', style: TextStyle(color: Colors.red)),
+      ),
+      cancelBtn: TextButton(
+        onPressed: () {
+          Navigator.of(context).pop(false);
+        },
+        child: const Text('No'),
+      ),
+    );
+    if (reallyWantsToCancel) {
+      await EventService.cancelEvent(widget.event.id);
+      Navigator.of(context).pop(true);
+      ref.read(eventChangedProvider.notifier).state =
+          !ref.watch(eventChangedProvider);
+    }
+  }
+
+  Future<void> _onClickDeleteEvent() async {
+    var reallyWantsToDelete =
+        await UserInterfaceDialog.displayAlertDialogChoices(
+      context: context,
+      title: 'Delete my event',
+      question:
+          'Are you SURE you want to delete this event? This action cannot be undone!',
+      messageType: MessageType.error,
+      confirmBtn: TextButton(
+        onPressed: () {
+          Navigator.of(context).pop(true);
+        },
+        child: const Text('Yes', style: TextStyle(color: Colors.red)),
+      ),
+      cancelBtn: TextButton(
+        onPressed: () {
+          Navigator.of(context).pop(false);
+        },
+        child: const Text('No'),
+      ),
+    );
+    if (reallyWantsToDelete) {
+      await EventService.deleteEvent(widget.event.id);
+      Navigator.of(context).pop(true);
+      ref.read(eventChangedProvider.notifier).state =
+          !ref.watch(eventChangedProvider);
+    }
+  }
+
+  bool _shouldBeAbleToCancelEvent(Event event) {
+    return event.cancelledAt == null &&
+        event.startDate.isAfter(DateTime.now()) &&
+        event.isCreator;
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:iamdb/common/storage.utils.dart';
 
 import '../models/rating.dart';
 
@@ -38,7 +39,8 @@ class RatingService {
     return ratings;
   }
 
-  static Future rate(String token, int id, double rate) async {
+  static Future rate(int id, double rate) async {
+    final token = await StorageUtils.getAuthToken();
     final response = await http.post(
       Uri.parse("$_baseUrl/anime/$id/rate"),
       headers: <String, String>{
@@ -99,8 +101,8 @@ class RatingService {
     return ratings;
   }
 
-  static Future<double> getUserRatingByAnimeId(
-      String token, int animeId) async {
+  static Future<double> getUserRatingByAnimeId(int animeId) async {
+    final token = await StorageUtils.getAuthToken();
     final response = await http.get(
       Uri.parse("$_baseUrl/user-ratings/anime/$animeId/rating"),
       headers: <String, String>{

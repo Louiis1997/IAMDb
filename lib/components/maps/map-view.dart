@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../common/utils.dart';
+import '../../common/user-interface-dialog.utils.dart';
 import '../../models/maps/map-arguments.dart';
 import '../../services/locator.service.dart';
 import '../../services/map.service.dart';
@@ -134,7 +134,7 @@ class _MapViewState extends State<MapView> {
         _isLoading = false;
         _distanceInMetersFromStartToDestination = "impossible";
       });
-      Utils.displaySnackBar(
+      UserInterfaceDialog.displaySnackBar(
         context: context,
         message: 'Could not find start address on the map',
         messageType: MessageType.error,
@@ -154,7 +154,7 @@ class _MapViewState extends State<MapView> {
           _isLoading = false;
           _distanceInMetersFromStartToDestination = "impossible";
         });
-        Utils.displaySnackBar(
+        UserInterfaceDialog.displaySnackBar(
           context: context,
           message: 'Could not find destination address on the map',
           messageType: MessageType.error,
@@ -188,7 +188,7 @@ class _MapViewState extends State<MapView> {
           _isLoading = false;
           _distanceInMetersFromStartToDestination = "impossible";
         });
-        Utils.displaySnackBar(
+        UserInterfaceDialog.displaySnackBar(
           context: context,
           message: 'Could not find start address on the map',
           messageType: MessageType.error,
@@ -218,7 +218,7 @@ class _MapViewState extends State<MapView> {
             _isLoading = false;
             _distanceInMetersFromStartToDestination = "impossible";
           });
-          Utils.displaySnackBar(
+          UserInterfaceDialog.displaySnackBar(
             context: context,
             message: 'Could not find destination address on the map',
             messageType: MessageType.error,
@@ -241,13 +241,17 @@ class _MapViewState extends State<MapView> {
             _destinationLongitude,
             _travelMode,
           );
+          setState(() {
+            _polylineCoordinates = createdPolylines.polylineCoordinates;
+            _polylinePoints = createdPolylines.polylinePoints;
+          });
         } catch (e) {
           if (widget.mapArguments.withRouting == true) {
             setState(() {
               _isLoading = false;
               _distanceInMetersFromStartToDestination = "impossible";
             });
-            Utils.displaySnackBar(
+            UserInterfaceDialog.displaySnackBar(
               context: context,
               message:
                   'Could not find a route between the two addresses, please try again with another travel mode or start address.',
@@ -267,12 +271,12 @@ class _MapViewState extends State<MapView> {
 
         double preciseDistance = 0;
         if (widget.mapArguments.withRouting == true) {
-          if (createdPolylines.polylineCoordinates.isEmpty) {
+          if (_polylineCoordinates.isEmpty) {
             setState(() {
               _isLoading = false;
               _distanceInMetersFromStartToDestination = "impossible";
             });
-            Utils.displaySnackBar(
+            UserInterfaceDialog.displaySnackBar(
               context: context,
               message:
                   'Could not find a route between the two addresses, please try again with another travel mode or start address.',
@@ -281,7 +285,7 @@ class _MapViewState extends State<MapView> {
           } else {
             preciseDistance =
                 await MapService().getPreciseDistanceBetweenTwoPoints(
-              createdPolylines.polylineCoordinates,
+              _polylineCoordinates,
             );
 
             // TODO Not working yet
@@ -297,11 +301,7 @@ class _MapViewState extends State<MapView> {
 
         setState(() {
           _polylines = createdPolylines.polylines;
-          _polylineCoordinates = createdPolylines.polylineCoordinates;
-          _polylinePoints = createdPolylines.polylinePoints;
-
           _isLoading = false;
-          print("Loading finished");
 
           // Storing the calculated total distance of the route
           _distanceInMetersFromStartToDestination = preciseDistance == 0
@@ -496,7 +496,7 @@ class _MapViewState extends State<MapView> {
                                       child: ElevatedButton(
                                         onPressed: () async {
                                           if (_startFullAddress.isEmpty) {
-                                            Utils.displaySnackBar(
+                                            UserInterfaceDialog.displaySnackBar(
                                               context: context,
                                               message:
                                                   'Please enter start address',
@@ -505,7 +505,7 @@ class _MapViewState extends State<MapView> {
                                             return;
                                           }
                                           if (_destinationFullAddress.isEmpty) {
-                                            Utils.displaySnackBar(
+                                            UserInterfaceDialog.displaySnackBar(
                                               context: context,
                                               message:
                                                   'Please enter destination address',

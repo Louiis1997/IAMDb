@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:iamdb/common/storage.utils.dart';
 
 import '../models/top_manga.dart';
 
 class MangaService {
   static const _baseUrl = "http://localhost/mangas";
 
-  static Future<List<TopManga>> getTopManga(String token) async {
+  static Future<List<TopManga>> getTopManga() async {
+    final token = await StorageUtils.getAuthToken();
     await Future.delayed(const Duration(seconds: 2));
     final response = await http.get(
       Uri.parse("$_baseUrl/top/manga"),

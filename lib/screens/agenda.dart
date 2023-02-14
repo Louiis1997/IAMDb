@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../components/agenda_list.dart';
-import '../main.dart';
 import '../services/agenda.dart';
 
 final boolProvider = StateProvider((ref) => false);
@@ -79,7 +78,6 @@ class Agenda extends ConsumerWidget {
   }
 
   Future<List<dynamic>> _getAgenda(String status) async {
-    final token = await storage.read(key: "token");
-    return AgendaService.getAgendaByStatus(token!, status);
+    return AgendaService.getAgendaByStatus(status);
   }
 }
