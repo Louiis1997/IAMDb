@@ -44,7 +44,7 @@ class _EventStartDatePickerState
     showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime.now().subtract(const Duration(days: 365 * 100)),
+      firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365 * 100)),
     ).then((value) {
       if (value != null) {

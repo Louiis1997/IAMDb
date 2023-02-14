@@ -10,8 +10,8 @@ import GoogleMaps
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
 
-    // TODO : voir avec le prof : comment faire pour que le fichier env soit utilisé ici
-    GMSServices.provideAPIKey("AIzaSyCaXQKD1kAJnqy9VikgvALEgLRfv0V18jk")
+    // TODO : voir avec le prof : comment faire pour que le fichier env soit utilisé ici -> schema ios / flavors - androi
+    GMSServices.provideAPIKey("#API_KEY#")
 
     GeneratedPluginRegistrant.register(with: self)
 

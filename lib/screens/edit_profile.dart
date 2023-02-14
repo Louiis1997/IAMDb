@@ -141,7 +141,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: StatusDropDownButton(onChanged: _onChanged, value: _status),
+              child: StatusDropDownButton(
+                  onChanged: _onChanged, value: data.status),
             ),
             const SizedBox(height: 10),
             Container(
@@ -177,19 +178,22 @@ class _EditProfileState extends ConsumerState<EditProfile> {
             duration: Duration(seconds: 1),
           ),
         );
+        print("Before edit profile : $_status");
         await editProfile(
-            _userNameController.text.trim(),
-            _firstNameController.text.trim(),
-            _lastNameController.text.trim(),
-            _bioController.text.trim(),
-            _birthdayController.text.trim(),
-            _status);
+          _userNameController.text.trim(),
+          _firstNameController.text.trim(),
+          _lastNameController.text.trim(),
+          _bioController.text.trim(),
+          _birthdayController.text.trim(),
+          _status,
+        );
         Navigator.pop(context);
-        ref.read(profileUpdatedProvider.notifier).state = !ref.watch(profileUpdatedProvider);
+        ref.read(profileUpdatedProvider.notifier).state =
+            !ref.watch(profileUpdatedProvider);
       } catch (err) {
         if (err.toString().contains("500")) {
-          UserInterfaceDialog.displayAlertDialog(context, "Error during the Authentication",
-              "Internal Server Error");
+          UserInterfaceDialog.displayAlertDialog(context,
+              "Error during the Authentication", "Internal Server Error");
         } else {
           UserInterfaceDialog.displayAlertDialog(
               context, "Error during the Authentication", err.toString());
@@ -199,11 +203,18 @@ class _EditProfileState extends ConsumerState<EditProfile> {
   }
 
   void initializeControllers(data) {
-    _userNameController.text = data.username;
-    _firstNameController.text = data.firstname;
-    _lastNameController.text = data.lastname;
-    _bioController.text = data.bio;
-    _status = data.status;
+    if (_userNameController.text.isEmpty) {
+      _userNameController.text = data.username;
+    }
+    if (_firstNameController.text.isEmpty) {
+      _firstNameController.text = data.firstname;
+    }
+    if (_lastNameController.text.isEmpty) {
+      _lastNameController.text = data.lastname;
+    }
+    if (_bioController.text.isEmpty) {
+      _bioController.text = data.bio;
+    }
   }
 
   static Future<void> editProfile(
