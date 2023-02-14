@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iamdb/components/profile/profile_details.dart';
+import 'package:iamdb/models/user.dart';
 import 'package:iamdb/services/user.dart';
 import '../common/user-interface-dialog.utils.dart';
 import '../common/validators.dart';
 import '../components/status_drop_down_button.dart';
 import '../main.dart';
 
-class EditProfile extends StatefulWidget {
+class EditProfile extends ConsumerStatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
 
   static const String routeName = '/edit_profile';
@@ -15,10 +18,10 @@ class EditProfile extends StatefulWidget {
   }
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  _EditProfileState createState() => _EditProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _EditProfileState extends ConsumerState<EditProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -61,7 +64,7 @@ class _EditProfileState extends State<EditProfile> {
                 padding: const EdgeInsets.all(5.0),
                 child: ClipOval(
                   child: Image.network(
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWdArwtZM3Gky98tefwUkAmTxS6KLSqI5NFg&usqp=CAU",
+                    '${data.profilePictureUrl != null ? data.profilePictureUrl : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWdArwtZM3Gky98tefwUkAmTxS6KLSqI5NFg&usqp=CAU"}',
                     fit: BoxFit.cover,
                     width: 100,
                     height: 100,
@@ -174,7 +177,7 @@ class _EditProfileState extends State<EditProfile> {
             duration: Duration(seconds: 1),
           ),
         );
-        editProfile(
+        await editProfile(
             _userNameController.text.trim(),
             _firstNameController.text.trim(),
             _lastNameController.text.trim(),
@@ -182,6 +185,7 @@ class _EditProfileState extends State<EditProfile> {
             _birthdayController.text.trim(),
             _status);
         Navigator.pop(context);
+        ref.read(profileUpdatedProvider.notifier).state = !ref.watch(profileUpdatedProvider);
       } catch (err) {
         if (err.toString().contains("500")) {
           UserInterfaceDialog.displayAlertDialog(context, "Error during the Authentication",
@@ -202,7 +206,7 @@ class _EditProfileState extends State<EditProfile> {
     _status = data.status;
   }
 
-  static void editProfile(
+  static Future<void> editProfile(
     String userName,
     String firstName,
     String lastName,
@@ -211,7 +215,7 @@ class _EditProfileState extends State<EditProfile> {
     String status,
   ) async {
     final token = await storage.read(key: "token");
-    UserService.updateUser(
+    await UserService.updateUser(
       token!,
       userName,
       firstName,
@@ -228,7 +232,7 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
-  Future<dynamic> _getUserProfil() async {
+  Future<User> _getUserProfil() async {
     final token = await storage.read(key: "token");
     return await UserService.getUser(token!);
   }
