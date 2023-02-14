@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iamdb/components/image_grid.dart';
 
-import '../main.dart';
 import '../services/agenda.dart';
 
 class AnimeGrid extends StatelessWidget {
@@ -59,7 +58,6 @@ class AnimeGrid extends StatelessWidget {
   }
 
   Future<List<dynamic>> _getAgenda(String status) async {
-    final token = await storage.read(key: "token");
-    return AgendaService.getAgendaByStatus(token!, status);
+    return AgendaService.getAgendaByStatus(status);
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:iamdb/components/profile/profile_details.dart';
 
 import '../components/profile/agenda_list_profile.dart';
-import '../main.dart';
 import '../services/agenda.dart';
 
 enum Status { enCours, enPause, envieDeVoir }
@@ -51,7 +50,6 @@ class Profile extends StatelessWidget {
   }
 
   Future<List<dynamic>> _getAgenda(String status) async {
-    final token = await storage.read(key: "token");
-    return AgendaService.getAgendaByStatus(token!, status);
+    return AgendaService.getAgendaByStatus(status);
   }
 }

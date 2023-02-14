@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
 import '../screens/anime_detail.dart';
 import '../screens/anime_grid.dart';
 import '../services/anime.dart';
@@ -148,8 +147,7 @@ class SmallImageGrid extends StatelessWidget {
 
   Future<dynamic> _getAnime(int id, int index) async {
     await Future.delayed(Duration(seconds: (index / 2).round()));
-    final token = await storage.read(key: "token");
-    final anime = await AnimeService.getAnimeById(token!, id);
+    final anime = await AnimeService.getAnimeById(id);
     return anime;
   }
 }

@@ -4,7 +4,7 @@ import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../common/utils.dart';
+import '../../common/user-interface-dialog.utils.dart';
 import '../../main.dart';
 import '../../models/user.dart';
 import '../../screens/login.dart';
@@ -232,7 +232,7 @@ class ProfileDetails extends StatelessWidget {
       );
     } catch (err) {
       log("Error: $err");
-      Utils.displayAlertDialog(
+      UserInterfaceDialog.displayAlertDialog(
           context, "Error during the deleting of the account", err.toString());
     }
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iamdb/services/user.dart';
+import '../common/user-interface-dialog.utils.dart';
+import '../common/validators.dart';
 import '../components/status_drop_down_button.dart';
 import '../main.dart';
-import '../common/utils.dart';
-import '../common/validator.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -184,10 +184,10 @@ class _EditProfileState extends State<EditProfile> {
         Navigator.pop(context);
       } catch (err) {
         if (err.toString().contains("500")) {
-          Utils.displayAlertDialog(context, "Error during the Authentication",
+          UserInterfaceDialog.displayAlertDialog(context, "Error during the Authentication",
               "Internal Server Error");
         } else {
-          Utils.displayAlertDialog(
+          UserInterfaceDialog.displayAlertDialog(
               context, "Error during the Authentication", err.toString());
         }
       }
