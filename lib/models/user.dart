@@ -39,7 +39,7 @@ class User {
     String bio = json['bio'] ?? "";
     String birthdate = json['birthdate'] ?? "";
     String status = json['status'] ?? "";
-    String profilePictureUrl = json['profilePictureUrl'] ?? null;
+    String profilePictureUrl = json['profilePictureUrl'] ?? "";
 
     return User(
       id: id,

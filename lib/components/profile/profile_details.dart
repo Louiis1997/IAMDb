@@ -81,7 +81,7 @@ class ProfileDetails extends StatelessWidget {
                                     padding: const EdgeInsets.all(5.0),
                                     child: ClipOval(
                                       child: Image.network(
-                                        '${user.profilePictureUrl != null ? user.profilePictureUrl : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWdArwtZM3Gky98tefwUkAmTxS6KLSqI5NFg&usqp=CAU"}',
+                                        '${user.profilePictureUrl != "" ? user.profilePictureUrl : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWdArwtZM3Gky98tefwUkAmTxS6KLSqI5NFg&usqp=CAU"}',
                                         fit: BoxFit.cover,
                                         width: 100,
                                         height: 100,
