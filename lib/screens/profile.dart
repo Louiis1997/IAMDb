@@ -25,39 +25,27 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, _) {
-          return [
-            SliverAppBar(
-              title: Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Profile',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              floating: true,
-              forceElevated: true,
-            ),
-          ];
-        },
-        body: ListView(
-          children: [
-            ProfileDetails(),
-            AgendaListProfil(
-              future: _getAgenda(status[Status.enCours]!),
-              status: status[Status.enCours]!,
-            ),
-            AgendaListProfil(
-              future: _getAgenda(status[Status.enPause]!),
-              status: status[Status.enPause]!,
-            ),
-            AgendaListProfil(
-              future: _getAgenda(status[Status.envieDeVoir]!),
-              status: status[Status.envieDeVoir]!,
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Profile'),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+      ),
+      body: ListView(
+        children: [
+          ProfileDetails(),
+          AgendaListProfil(
+            future: _getAgenda(status[Status.enCours]!),
+            status: status[Status.enCours]!,
+          ),
+          AgendaListProfil(
+            future: _getAgenda(status[Status.enPause]!),
+            status: status[Status.enPause]!,
+          ),
+          AgendaListProfil(
+            future: _getAgenda(status[Status.envieDeVoir]!),
+            status: status[Status.envieDeVoir]!,
+          ),
+        ],
       ),
     );
   }

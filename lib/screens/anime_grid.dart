@@ -19,24 +19,12 @@ class AnimeGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-          headerSliverBuilder: (context, _) {
-            return [
-              SliverAppBar(
-                title: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Anime - ${status}',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                floating: true,
-                forceElevated: true,
-              ),
-            ];
-          },
-          body: buildFutureBuilderItem()),
-    );
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('Anime - $status'),
+          backgroundColor: Theme.of(context).colorScheme.surface,
+        ),
+        body: buildFutureBuilderItem());
   }
 
   FutureBuilder buildFutureBuilderItem() {
