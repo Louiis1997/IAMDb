@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../common/user-interface-dialog.utils.dart';
@@ -10,17 +11,20 @@ import '../../models/user.dart';
 import '../../screens/login.dart';
 import '../../services/user.dart';
 
-class ProfileDetails extends StatelessWidget {
+final profileUpdatedProvider = StateProvider((ref) => false);
+
+class ProfileDetails extends ConsumerWidget {
   const ProfileDetails({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return buildFutureBuilderProfileDetails();
+  Widget build(BuildContext context, WidgetRef ref) {
+    bool _changed = ref.watch(profileUpdatedProvider);
+    return buildFutureBuilderProfileDetails(_changed);
   }
 
-  FutureBuilder buildFutureBuilderProfileDetails() {
+  FutureBuilder buildFutureBuilderProfileDetails(bool _changed) {
     return FutureBuilder(
-      future: _getUserProfil(),
+      future: _changed ? _getUserProfil() : _getUserProfil(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:

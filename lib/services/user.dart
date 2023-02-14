@@ -64,7 +64,7 @@ class UserService {
     return user;
   }
 
-  static void updateUser(
+  static Future<void> updateUser(
     String  token,
     String username,
     String firstname,
