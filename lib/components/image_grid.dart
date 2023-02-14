@@ -15,12 +15,12 @@ class ImageGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return buildSmallImageGrid();
+    return buildSmallImageGrid(context);
   }
 
-  Container buildSmallImageGrid() {
+  Container buildSmallImageGrid(context) {
     return Container(
-      color: Colors.black,
+      color: Theme.of(context).cardColor,
       child: Column(
         children: [
           Padding(
@@ -57,17 +57,15 @@ class ImageGrid extends StatelessWidget {
             // Padding de 5 pixels autour de chaque image
             padding: EdgeInsets.all(5),
             child: Material(
+              color: Colors.transparent,
               child: InkWell(
                 // Comportement de clic sur l'image
                 onTap: () => {
                   // Code à exécuter lors du clic sur l'image
                   AnimeDetail.navigateTo(context, imageSnapshot.data.malId)
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.grey,
-                  ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
                   child: Image.network(
                     imageSnapshot.data!.imageUrl,
                     height: double.infinity,

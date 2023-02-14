@@ -18,12 +18,12 @@ class SmallImageGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return buildSmallImageGrid();
+    return buildSmallImageGrid(context);
   }
 
-  Container buildSmallImageGrid() {
+  Container buildSmallImageGrid(context) {
     return Container(
-      color: Colors.black,
+      color: Theme.of(context).cardColor,
       child: Column(
         children: [
           Padding(
@@ -69,29 +69,34 @@ class SmallImageGrid extends StatelessWidget {
                 child: Container(
                   height: 45,
                   width: 30,
-                  color: Colors.grey,
                   child: Stack(
                     //center on x axis and y axis
                     children: [
-                      Image.network(
-                        imageSnapshot.data!.imageUrl,
-                        fit: BoxFit.fill,
-                        width: double.infinity,
-                        height: double.infinity,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          imageSnapshot.data!.imageUrl,
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
                       ),
-                      Container(
-                        color: Colors.black.withOpacity(0.5),
-                        width: double.infinity,
-                        height: double.infinity,
-                        alignment: Alignment.center,
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          "Voir plus\n" + "(+${snapshot.data.length - 6})",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'Roboto',
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          color: Colors.black.withOpacity(0.5),
+                          width: double.infinity,
+                          height: double.infinity,
+                          alignment: Alignment.center,
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            "Voir plus\n" + "(+${snapshot.data.length - 5})",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Roboto',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -111,15 +116,18 @@ class SmallImageGrid extends StatelessWidget {
                   AnimeDetail.navigateTo(context, imageSnapshot.data.malId)
                 },
                 child: Container(
+                  padding: EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Image.network(
-                    imageSnapshot.data!.imageUrl,
-                    height: double.infinity,
-                    width: double.infinity,
-                    fit: BoxFit.fill,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      imageSnapshot.data!.imageUrl,
+                      height: double.infinity,
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ),

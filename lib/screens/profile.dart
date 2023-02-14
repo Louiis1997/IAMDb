@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iamdb/services/user.dart';
+import 'package:iamdb/components/profile/profile_details.dart';
 
-import '../components/agenda_list_profil.dart';
+import '../components/profile/agenda_list_profile.dart';
 import '../main.dart';
 import '../services/agenda.dart';
 
@@ -43,9 +43,7 @@ class Profile extends StatelessWidget {
         },
         body: ListView(
           children: [
-            Container(
-
-            ),
+            ProfileDetails(),
             AgendaListProfil(
               future: _getAgenda(status[Status.enCours]!),
               status: status[Status.enCours]!,
@@ -67,10 +65,5 @@ class Profile extends StatelessWidget {
   Future<List<dynamic>> _getAgenda(String status) async {
     final token = await storage.read(key: "token");
     return AgendaService.getAgendaByStatus(token!, status);
-  }
-
-  Future<dynamic> _getUserProfil() async {
-    final token = await storage.read(key: "token");
-    return await  UserService.getUser(token!);
   }
 }

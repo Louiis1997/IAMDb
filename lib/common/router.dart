@@ -6,6 +6,7 @@ import 'package:iamdb/screens/events/event-creation.dart';
 import 'package:iamdb/screens/events/event-details.dart';
 import 'package:iamdb/screens/manga_detail.dart';
 
+import '../screens/edit_profile.dart';
 import '../components/maps/map-view.dart';
 import '../models/maps/map-arguments.dart';
 import '../models/top_manga.dart';
@@ -38,6 +39,7 @@ class MyRouter {
       Profile.routeName: (context) => const Profile(),
       Events.routeName: (context) => const Events(),
       EventCreation.routeName: (context) => const EventCreation(),
+      EditProfile.routeName: (context) => const EditProfile(),
     };
   }
 
@@ -99,6 +101,12 @@ class MyRouter {
           screen = AllCharacters(
             animeId: args,
           );
+        }
+        break;
+      case EditProfile.routeName:
+        final args = settings.arguments;
+        if (args is String) {
+          screen = EditProfile();
         }
         break;
     }

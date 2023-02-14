@@ -53,6 +53,16 @@ class User {
     );
   }
 
+  bool isEmpty() {
+    return this.id == "" &&
+        this.username == "" &&
+        this.firstname == "" &&
+        this.lastname == "" &&
+        this.email == "" &&
+        this.createdAt == "" &&
+        this.updatedAt == "";
+  }
+
   @override
   String toString() {
     return 'User{id: $id, username: $username, firstname: $firstname, '

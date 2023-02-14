@@ -47,7 +47,8 @@ class AgendaListProfil extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            fontFamily: 'Roboto',
+                            color: Colors.grey,
                           ),
                         ),
                       ),

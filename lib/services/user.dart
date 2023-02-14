@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import '../models/user.dart';
@@ -65,30 +64,31 @@ class UserService {
     return user;
   }
 
-  static Future<User> updateUser(
-      String token,
-      String username,
-      String firstname,
-      String lastname,
-      String email,
-      String bio,
-      String birthdate,
-      String status,
-      File? image) async {
+  static void updateUser(
+    String  token,
+    String username,
+    String firstname,
+    String lastname,
+    String bio,
+    String birthdate,
+    String status,
+  ) async {
     final request =
         http.MultipartRequest('PATCH', Uri.parse("$_baseUrl/profile"));
-    if (image != null) {
-      request.files.add(await http.MultipartFile.fromPath('file', image.path));
-    }
-    request.fields['username'] = username;
-    request.fields['firstName'] = firstname;
-    request.fields['lastName'] = lastname;
-    request.fields['email'] = email;
-    if (bio != "") request.fields['bio'] = bio;
-    if (birthdate != "") request.fields['birthdate'] = birthdate;
-    if (status != "") request.fields['status'] = status;
+    request.headers['Content-Type'] = 'application/json; charset=UTF-8';
+    request.headers['authorization'] = 'bearer $token';
+    if (username != null && username.isNotEmpty)
+      request.fields['username'] = username;
+    if (firstname != null && firstname.isNotEmpty)
+      request.fields['firstName'] = firstname;
+    if (lastname != null && lastname.isNotEmpty)
+      request.fields['lastName'] = lastname;
+    if (bio != null && bio.isNotEmpty) request.fields['bio'] = bio;
+    if (birthdate != null && birthdate.isNotEmpty)
+      request.fields['birthdate'] = birthdate;
+    if (status != null && status.isNotEmpty) request.fields['status'] = status;
     final response = await request.send();
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       switch (response.statusCode) {
         case 400:
           throw Exception('400: Bad request');
@@ -104,8 +104,6 @@ class UserService {
           throw Exception('503: Service Unavailable');
       }
     }
-    var responseData = await http.Response.fromStream(response);
-    return json.decode(responseData.body);
   }
 
   static Future updatePassword(String oldPassword, String newPassword) async {

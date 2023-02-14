@@ -62,21 +62,21 @@ class MyApp extends StatelessWidget {
               color: Color.fromRGBO(0, 0, 0, 1),
             ),
           ),
-          bodyText1: GoogleFonts.roboto(
+          bodyText1: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color.fromRGBO(0, 0, 0, 1),
             ),
           ),
-          bodyText2: GoogleFonts.roboto(
+          bodyText2: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color.fromRGBO(0, 0, 0, 0.7),
             ),
           ),
-          subtitle2: GoogleFonts.roboto(
+          subtitle2: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
@@ -141,35 +141,35 @@ class MyApp extends StatelessWidget {
           onError: Color.fromRGBO(244, 197, 24, 1),
         ),
         textTheme: TextTheme(
-          headline1: GoogleFonts.roboto(
+          headline1: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.w500,
               color: Color.fromRGBO(244, 197, 24, 1),
             ),
           ),
-          headline2: GoogleFonts.roboto(
+          headline2: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Color.fromRGBO(255, 255, 255, 1),
             ),
           ),
-          bodyText1: GoogleFonts.roboto(
+          bodyText1: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color.fromRGBO(255, 255, 255, 1),
             ),
           ),
-          bodyText2: GoogleFonts.roboto(
+          bodyText2: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color.fromRGBO(255, 255, 255, 0.7),
             ),
           ),
-          subtitle2: GoogleFonts.roboto(
+          subtitle2: GoogleFonts.montserrat(
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
