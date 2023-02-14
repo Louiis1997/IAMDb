@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/components/maps/error-message.dart';
 
 class SuggestionList extends StatelessWidget {
   final Future<List<dynamic>> future;
@@ -30,10 +31,9 @@ class SuggestionList extends StatelessWidget {
               }
               return buildSuggestionListView(snapshot.data);
             }
-            if (snapshot.hasError) {
-              return Center(child: Text('Sorry, couldn\'t load animes/mangas'));
+            else {
+              return const ErrorMessage(message: 'Sorry, couldn\'t load animes / mangas');
             }
-            return Center(child: Text('Sorry, couldn\'t load animes/mangas'));
           default:
             return const Center(child: CircularProgressIndicator());
         }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/components/maps/error-message.dart';
 
 import '../../models/event.dart';
 import '../../screens/events/event-cell.dart';
@@ -19,25 +20,33 @@ class UpcomingEvents extends StatelessWidget {
     return FutureBuilder<List<dynamic>>(
       future: future,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data!.isEmpty) {
-            return const Center(child: Text('No events have happened yet!'));
-          }
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              // Cast to Event
-              final event = snapshot.data![index] as Event;
-              // Clickable cell
-              return EventCell(
-                event: event,
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            if (snapshot.hasData) {
+              if (snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text('No events have happened yet!'),
+                );
+              }
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  // Cast to Event
+                  final event = snapshot.data![index] as Event;
+                  // Clickable cell
+                  return EventCell(
+                    event: event,
+                  );
+                },
               );
-            },
-          );
-        } else if (snapshot.hasError) {
-          return const Center(child: Text('Failed to load past events'));
+            } else {
+              return const ErrorMessage(message: 'Failed to load upcoming events 😞');
+            }
+          case ConnectionState.none:
+            return const Center(child: Text('No connection'));
+          default:
+            return const Center(child: CircularProgressIndicator());
         }
-        return const Center(child: CircularProgressIndicator());
       },
     );
   }

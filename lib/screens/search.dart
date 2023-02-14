@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iamdb/components/maps/error-message.dart';
 
 import '../common/user-interface-dialog.utils.dart';
 import '../screens/anime_detail.dart';
@@ -34,6 +35,7 @@ class _SearchState extends State<Search> {
   List<Anime> _animes = [];
   String _filter = "";
   bool _isLoading = false;
+  bool _hasError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +108,13 @@ class _SearchState extends State<Search> {
                         .toList(),
                   ),
                 ),
-                _animes.isEmpty && !_isLoading
+                !_isLoading && _hasError
+                    ? ErrorMessage(
+                        message:
+                            "Could not load the list. Please try again later or contact us.",
+                      )
+                    : Container(),
+                _animes.isEmpty && !_isLoading && !_hasError
                     ? Expanded(
                         child: Center(
                           child: Text(
@@ -162,24 +170,20 @@ class _SearchState extends State<Search> {
     try {
       setState(() {
         _isLoading = true;
+        _hasError = false;
       });
       var response = await AnimeService.search(name, filter);
       setState(() {
         _animes = response;
       });
     } catch (err) {
-      if (err.toString().contains("500")) {
-        UserInterfaceDialog.displaySnackBar(
-            context: context,
-            message: "Internal Server Error",
-            messageType: MessageType.error);
-      } else {
-        UserInterfaceDialog.displaySnackBar(
-            context: context,
-            message:
-                "An error occurred while searching. Please try again later or contact us.",
-            messageType: MessageType.error);
-      }
+      UserInterfaceDialog.displaySnackBar(
+        context: context,
+        message:
+            "An error occurred while searching. Please try again later or contact us.",
+        messageType: MessageType.error,
+      );
+      _hasError = true;
     } finally {
       setState(() {
         _isLoading = false;

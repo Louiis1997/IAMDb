@@ -32,10 +32,9 @@ class AgendaList extends StatelessWidget {
               }
               return buildAgendaListView(snapshot.data);
             }
-            if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+            else {
+              return Center(child: Text('Sorry, could not load agenda 😞'));
             }
-            return Text('${snapshot.error}');
           default:
             return const Center(child: CircularProgressIndicator());
         }

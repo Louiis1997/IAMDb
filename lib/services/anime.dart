@@ -158,7 +158,7 @@ class AnimeService {
         return anime;
       } catch (e) {
         retry++;
-        print('Échec de la requête. Nombre de tentatives restantes : $retry');
+        // print('Échec de la requête. Nombre de tentatives restantes : $retry');
         if (retry == 20) {
           print('Nombre maximum de tentatives atteint');
           break;

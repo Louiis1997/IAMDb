@@ -274,11 +274,20 @@ class EventDetailsState extends ConsumerState<EventDetails> {
                                       _eventLongitude =
                                           eventLocations.first.longitude;
 
-                                      _userFullAddress = await LocatorService()
-                                          .getAddressFromCoordinates(
-                                        _userLatitude,
-                                        _userLongitude,
-                                      );
+                                      try {
+                                        _userFullAddress = await LocatorService()
+                                            .getAddressFromCoordinates(
+                                          _userLatitude,
+                                          _userLongitude,
+                                        );
+                                      } catch(e) {
+                                        UserInterfaceDialog.displaySnackBar(
+                                          context: context,
+                                          message: 'We could not load navigation map',
+                                          messageType: MessageType.error,
+                                        );
+                                        return;
+                                      }
 
                                       MapView.navigateTo(
                                         context,
