@@ -77,6 +77,8 @@ class _SignupState extends State<Signup> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       child: TextFormField(
+                        autocorrect: false,
+                        enableSuggestions: false,
                         controller: _userNameController,
                         validator: (value) =>
                             Validator.validateForm(value ?? ""),
@@ -93,6 +95,8 @@ class _SignupState extends State<Signup> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       child: TextFormField(
+                        autocorrect: false,
+                        enableSuggestions: false,
                         controller: _firstNameController,
                         validator: (value) =>
                             Validator.validateForm(value ?? ""),
@@ -109,6 +113,8 @@ class _SignupState extends State<Signup> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       child: TextFormField(
+                        autocorrect: false,
+                        enableSuggestions: false,
                         controller: _lastNameController,
                         validator: (value) =>
                             Validator.validateForm(value ?? ""),
@@ -125,6 +131,8 @@ class _SignupState extends State<Signup> {
                       padding: const EdgeInsets.only(
                           left: 10, right: 10, top: 10, bottom: 5),
                       child: TextFormField(
+                        autocorrect: false,
+                        enableSuggestions: false,
                         controller: _emailController,
                         validator: (value) =>
                             Validator.validateEmail(value ?? ""),
@@ -141,6 +149,8 @@ class _SignupState extends State<Signup> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       child: TextFormField(
+                        autocorrect: false,
+                        enableSuggestions: false,
                         obscureText: true,
                         controller: _passwordController,
                         validator: (value) =>
@@ -158,6 +168,8 @@ class _SignupState extends State<Signup> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       child: TextFormField(
+                        autocorrect: false,
+                        enableSuggestions: false,
                         obscureText: true,
                         controller: _passwordConfirmationController,
                         validator: (value) => Validator.validateConfirmPassword(
