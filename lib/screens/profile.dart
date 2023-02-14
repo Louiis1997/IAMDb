@@ -29,22 +29,24 @@ class Profile extends StatelessWidget {
         title: const Text('Profile'),
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
-      body: ListView(
-        children: [
-          ProfileDetails(),
-          AgendaListProfil(
-            future: _getAgenda(status[Status.enCours]!),
-            status: status[Status.enCours]!,
-          ),
-          AgendaListProfil(
-            future: _getAgenda(status[Status.enPause]!),
-            status: status[Status.enPause]!,
-          ),
-          AgendaListProfil(
-            future: _getAgenda(status[Status.envieDeVoir]!),
-            status: status[Status.envieDeVoir]!,
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ProfileDetails(),
+            AgendaListProfil(
+              future: _getAgenda(status[Status.enCours]!),
+              status: status[Status.enCours]!,
+            ),
+            AgendaListProfil(
+              future: _getAgenda(status[Status.enPause]!),
+              status: status[Status.enPause]!,
+            ),
+            AgendaListProfil(
+              future: _getAgenda(status[Status.envieDeVoir]!),
+              status: status[Status.envieDeVoir]!,
+            ),
+          ],
+        ),
       ),
     );
   }
